@@ -6,7 +6,7 @@ import Image from "next/image";
 import ButtonLoader from "@/components/Loaders/buttonLoader";
 import { Switch } from "@headlessui/react";
 import { useRouter } from "next/navigation";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 import { ArrowBack } from "@mui/icons-material";
 
 const  Page=({ params }: { params: { id: string } })=> {

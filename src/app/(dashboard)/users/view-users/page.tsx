@@ -1,6 +1,6 @@
 "use client";
 import React,{ useEffect, useState,Fragment, useLayoutEffect } from "react";
-import TableComponent from "@/components/ui/table";
+import TableComponent from "@/components/Ui/table";
 import Image from "next/image";
 import { Menu, Switch, Transition } from '@headlessui/react';
 import { useRouter } from "next/navigation";
@@ -8,8 +8,8 @@ import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
 import { Alerts } from "@/components/atomics";
 import { redirect } from "next/navigation";
-import withAuth from "@/components/withAuth";
-import PaginationComponent from "@/components/ui/Pagination";
+import withAuth from "@/components/WithAuth";
+import PaginationComponent from "@/components/Ui/Pagination";
 
 interface UserData {
   userId: string;

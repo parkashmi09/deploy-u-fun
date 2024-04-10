@@ -1,7 +1,7 @@
 "use client";
 import ButtonLoader from "@/components/Loaders/buttonLoader";
 import { Badge, Button, Title } from "@/components/atomics";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 

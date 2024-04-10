@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TableComponent from "@/components/ui/table";
+import TableComponent from "@/components/Ui/table";
 import Image from "next/image";
 import ModalComponent from "../../../../components/Modal";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 
 interface UserData {
   images?: string[];

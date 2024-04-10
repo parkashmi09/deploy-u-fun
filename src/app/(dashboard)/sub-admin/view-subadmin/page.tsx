@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TableComponent from "@/components/ui/table";
+import TableComponent from "@/components/Ui/table";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -8,7 +8,7 @@ import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
 import { Button, Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
 import EditManager, { EditFormData } from "@/components/EditManager";

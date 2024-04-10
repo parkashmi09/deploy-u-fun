@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, Fragment } from "react";
-import TableComponent from "@/components/ui/table";
+import TableComponent from "@/components/Ui/table";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -9,7 +9,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
 import EditManager from "@/components/EditManager";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 
 interface UserData {
   userId: string;

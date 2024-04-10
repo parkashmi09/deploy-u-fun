@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 
-export default function withAuth(Component: React.ComponentType<any>) {
-  return function WithAuth(props: any) {
+export default function WithAuth(Component: React.ComponentType<any>) {
+  return function withAuth(props: any) {
     const [checkedToken, setCheckedToken] = useState(false);
 
     useEffect(() => {

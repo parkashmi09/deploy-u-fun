@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react";
 import { Button, Title } from "@/components/atomics";
 import { PencilSimpleIcon, PlusIcon, SortAscendingIcon } from "@/assets/icons";
@@ -28,7 +29,7 @@ interface Header {
   renderCell?: (rowData: any) => JSX.Element | null;
 }
 
-const TableComponent: React.FC<TableProps> = ({
+export default function TableComponent ({
   data,
   headers,
   title,
@@ -41,7 +42,7 @@ const TableComponent: React.FC<TableProps> = ({
   setCountrySelect,
   setCountryCode,
   setPayload
-}) => {
+}:TableProps){
   const convertToCSV = () => {
     if (!data) return;
 
@@ -275,4 +276,3 @@ const TableComponent: React.FC<TableProps> = ({
   );
 };
 
-export default TableComponent;

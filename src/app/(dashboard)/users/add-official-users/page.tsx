@@ -1,7 +1,7 @@
 "use client";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 import { Button, Title } from "@/components/atomics";
-import Form from "@/components/ui/form";
+import Form from "@/components/Ui/form";
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

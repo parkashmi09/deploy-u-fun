@@ -6,13 +6,13 @@ import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
 import { Button, Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
 import { EditFormData } from "@/components/EditManager";
 import axios from "axios";
 import EditAdmin from "@/components/EditAdmin";
-import TableComponent from "@/components/ui/table";
+import TableComponent from "@/components/Ui/table";
 
 interface UserData {
   userId: string;

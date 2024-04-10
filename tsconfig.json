@@ -23,7 +23,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(dashboard)/users/view-users/edit-user/[_id].js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(dashboard)/users/view-users/edit-user/[_id].js","src/components/*" ],
   "exclude": ["node_modules"]
 }
 
