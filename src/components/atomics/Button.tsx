@@ -27,7 +27,7 @@ interface Button {
   onClick?: React.MouseEventHandler
 }
 
-const Button: React.FC<Button> = ({
+export default function Button({
   children,
   className,
   disabled = false,
@@ -35,7 +35,7 @@ const Button: React.FC<Button> = ({
   onClick,
   size = "lg",
   variant = "primary-bg"
-}) => {
+}:Button){
   const router = useRouter()
 
   const gotoLink = () => {
@@ -90,5 +90,3 @@ const Button: React.FC<Button> = ({
     </button>
   )
 }
-
-export default Button

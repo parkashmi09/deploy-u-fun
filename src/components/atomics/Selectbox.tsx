@@ -12,13 +12,13 @@ interface Selectbox {
   variant?: 'default' | 'status' | 'no-border'
 }
 
-const Selectbox: React.FC<Selectbox> = ({
+export default function  Selectbox({
   datas,
   label,
   selectedNow = false,
   variant = 'default',
   className
-}) => {
+}:Selectbox){
   const [selected, setSelected] = useState(datas[0])
   const [selectedNowState, setSelectedNowState] = useState(selectedNow)
   return (
@@ -124,4 +124,3 @@ const Selectbox: React.FC<Selectbox> = ({
     </Listbox>
   )
 }
-export default Selectbox

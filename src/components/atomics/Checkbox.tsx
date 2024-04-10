@@ -8,7 +8,7 @@ interface Checkbox {
   setActive: any
 }
 
-const Checkbox: React.FC<Checkbox> = ({ active, setActive }) => {
+export default function Checkbox({ active, setActive }:Checkbox){
   return (
     <div className='Checkbox h-6 w-6'>
       <Switch
@@ -26,5 +26,3 @@ const Checkbox: React.FC<Checkbox> = ({ active, setActive }) => {
     </div>
   )
 }
-
-export default Checkbox

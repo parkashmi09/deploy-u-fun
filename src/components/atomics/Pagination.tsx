@@ -7,11 +7,11 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+export default function  Pagination({
   currentPage,
   totalPages,
   onPageChange,
-}) => {
+}:PaginationProps){
   const generatePagination = () => {
     const paginations = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -70,4 +70,3 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination;

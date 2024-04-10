@@ -11,13 +11,13 @@ interface Alerts {
   variant: 'success' | 'info' | 'warning' | 'error'
 }
 
-const Alerts: React.FC<Alerts> = ({
+export default function Alerts({
   desc,
   open,
   setOpen,
   title,
   variant = 'error'
-}) => {
+}:Alerts) {
   setTimeout(() => {
     setOpen && setOpen(false)
   }, 1000)
@@ -74,4 +74,3 @@ const Alerts: React.FC<Alerts> = ({
   )
 }
 
-export default Alerts

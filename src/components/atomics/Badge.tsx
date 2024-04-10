@@ -5,7 +5,7 @@ interface Badge {
   variant: "default" | "success" | "warning" | "info" | "error"
 }
 
-const Badge: React.FC<Badge> = ({ children, variant }) => {
+export default function Badge ({ children, variant }:Badge){
   return (
     <div
       className={`BADGE inline-block ${
@@ -23,5 +23,3 @@ const Badge: React.FC<Badge> = ({ children, variant }) => {
     </div>
   )
 }
-
-export default Badge
