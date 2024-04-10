@@ -23,7 +23,14 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(dashboard)/users/view-users/edit-user/[_id].js","src/components/*" ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/(dashboard)/users/view-users/edit-user/[_id].js",
+    "src/components/*" // Include components folder
+  ],
   "exclude": ["node_modules"]
 }
 
