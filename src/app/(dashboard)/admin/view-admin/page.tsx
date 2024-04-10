@@ -2,17 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import ModalComponent from "../../../../components/Modal";
-import { Menu, Transition } from "@headlessui/react";
-import { Button, Input } from "@/components/atomics";
+// import ModalComponent from "../../../../components/Modal";
+// import {  Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
-import withAuth from "@/components/withAuth";
+// import withAuth from "@/components/withAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
 import { EditFormData } from "@/components/EditManager";
 import axios from "axios";
-import EditAdmin from "@/components/EditAdmin";
-import TableComponent from "@/components/ui/table";
+// import EditAdmin from "@/components/EditAdmin";
+// import TableComponent from "@/components/ui/table";
 
 interface UserData {
   userId: string;
@@ -137,8 +136,6 @@ const ViewAdmin = () => {
   const handleOnAdd = () => {
     setOpenAddCountryAdminModal(true);
   };
-
-  console.log("use country code", useCountryCode)
 
   const handleAddCountryModal = async () => {
     debugger
@@ -280,31 +277,7 @@ const ViewAdmin = () => {
 
   return (
     <div className="mt-24 p-4">
-      {/* <div className="w-full">
-            <label className="text-white text-body-base font-semibold mb-6">Country</label>
-            <Select
-            className='w-[20%]'
-              placeholder="Select Country"
-              value={selectedCountryByValue} // Selected values should match one of the options exactly
-              onChange={(selectedOptions) => {
-              setSelectCountryByValue(selectedOptions);
-              }}
-              options={filteredOptions}
-            />
-            </div> */}
-
-      <div className="flex gap-2 items-center">
-        {/* <Button
-          size="sm"
-          variant="default-bg"
-          className="bg-netral-25"
-          onClick={getAllDetails}
-        >
-          Get All Countries
-        </Button> */}
-      </div>
-
-      <TableComponent
+      {/* <TableComponent
         onAdd={handleOnAdd}
         isLoading={isLoading}
         data={userData}
@@ -386,8 +359,8 @@ const ViewAdmin = () => {
             modal
           />
         </div>
-      </ModalComponent>
-      <ModalComponent
+      </ModalComponent> */}
+      {/* <ModalComponent
         loading={isModalLoading}
         onAction={() => {}}
         isOpen={openEditManagerModal}
@@ -401,9 +374,9 @@ const ViewAdmin = () => {
           setOpenEditManagerModal={setOpenEditManagerModal}
           formData={editFormDetails}
         />
-      </ModalComponent>
+      </ModalComponent> */}
     </div>
   );
 };
 
-export default withAuth(ViewAdmin);
+export default ViewAdmin;
