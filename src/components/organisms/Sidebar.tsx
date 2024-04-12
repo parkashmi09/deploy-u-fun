@@ -74,7 +74,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   return (
     <aside
       id="sidebar"
-      className="hidden fixed 2xl:flex Sidebar min-h-screen mt-12 w-64 overflow-y-auto overflow-x-hidden bg-black px-6 py-4 pt-8 shadow-sm 2xl:w-80 2xl:pt-10"
+      className="hidden fixed md:flex Sidebar min-h-screen mt-12 w-64 overflow-y-auto overflow-x-hidden bg-black px-6 py-4 pt-8 shadow-sm 2xl:w-80 2xl:pt-10"
       style={{
         scrollbarWidth: "none",
         msOverflowStyle: "none",

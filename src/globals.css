@@ -3,43 +3,50 @@
 @tailwind utilities;
 
 
+body {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
 
 .buttonloader {
     width: 50px;
     aspect-ratio: 1;
-    display:grid;
-    -webkit-mask: conic-gradient(from 15deg,#0000,#000);
+    display: grid;
+    -webkit-mask: conic-gradient(from 15deg, #0000, #000);
     animation: l26 1s infinite steps(12);
-  }
-  .buttonloader,
-  .buttonloader:before,
-  .buttonloader:after{
+}
+
+.buttonloader,
+.buttonloader:before,
+.buttonloader:after {
     background:
-      radial-gradient(closest-side at 50% 12.5%,
-      radial-gradient(closest-side at 12.5% 50%,
-      #9acd32 96%,#0000) 0 50%/80% 20% repeat-x;
-  }
-  .buttonloader:before,
-  .buttonloader:after {
+        radial-gradient(closest-side at 50% 12.5%, radial-gradient(closest-side at 12.5% 50%, #9acd32 96%, #0000) 0 50%/80% 20% repeat-x);
+}
+
+.buttonloader:before,
+.buttonloader:after {
     content: "";
     grid-area: 1/1;
     transform: rotate(30deg);
-  }
-  .buttonloader:after {
+}
+
+.buttonloader:after {
     transform: rotate(60deg);
-  }
-  
-  @keyframes l26 {
-    100% {transform:rotate(1turn)}
-  }
-  
-  .switch input { 
+}
+
+@keyframes l26 {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -47,11 +54,10 @@
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -59,35 +65,31 @@
     left: 4px;
     bottom: 4px;
     background-color: white;
-    -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked + .slider {
     background-color: #BF00ED;
-  }
-  
-  input:focus + .slider {
+}
+
+input:focus + .slider {
     box-shadow: 0 0 1px #BF00ED;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
+}
+
+input:checked + .slider:before {
     transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
+}
+
+/* Rounded sliders */
+.slider.round {
     border-radius: 34px;
-  }
-  
-  .slider.round:before {
+}
+
+.slider.round:before {
     border-radius: 50%;
-  }
+}
 
-
-  .page-loader {
+.page-loader {
     width: 48px;
     height: 48px;
     border: 5px solid #000;
@@ -96,20 +98,31 @@
     display: inline-block;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
-    }
+}
 
-    @keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
+@keyframes rotation {
     100% {
         transform: rotate(360deg);
     }
-    } 
+}
 
+.scrollhost::-webkit-scrollbar {
+    display: none;
+}
 
-    const data=[{},{}]
+.scrollhost::-moz-scrollbar {
+    display: none;
+}
 
-    const handleDelete(index){
-      data.filter((data,i)=>data[i]!==data[index])
-    }
+.scrollhost {
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-color: transparent transparent; /*just hides the scrollbar for firefox */
+}
+
+/* JavaScript */
+const data = [{}, {}];
+
+const handleDelete = (index) => {
+    data.filter((item, i) => i !== index);
+}

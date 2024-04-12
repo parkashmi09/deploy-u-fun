@@ -150,6 +150,7 @@ module.exports = {
     nextui(),
     require("@headlessui/tailwindcss"),
     require("@tailwindcss/forms"),
+    require('tailwind-scrollbar-hide'),
     { prefix: "ui" },
   ],
 };

@@ -104,13 +104,12 @@ export default function TableComponent ({
   };
 
 
-  console.log("daatata", typeof data)
   
   return (
     <>
       <div className="h-screen py-8 mb-12">
    {
-    data?.length===0&&(   <div className="flex gap-2 items-center justify-end w-full">
+    data?.length===0 && isAdd &&(   <div className="flex gap-2 items-center justify-end w-full">
     <Button
      size="sm"
      variant="default-bg"

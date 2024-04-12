@@ -32,14 +32,14 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
       {variant === "default" && (
         <Link
           href={`${href}`}
-          className={`relative flex w-full items-center justify-between gap-3${
+          className={`relative flex w-full  items-center justify-between gap-3${
             exact
               ? href === currentActive
-                ? "bg-netral-20 w-[200px] text-netral-25"
-                : "bg-gray-900 w-[200px] text-netral-25"
+                ? "bg-netral-20 w-[190px]  text-netral-25"
+                : "bg-gray-900 w-[190px] text-netral-25"
               : currentActive?.includes(`${href}`)
-              ? "bg-netral-20 w-[200px] text-primary-main"
-              : "bg-black w-[200px] text-netral-25"
+              ? "bg-netral-2  w-[190px] text-primary-main"
+              : "bg-black w-[190px] text-netral-25"
           }
           } p-3 transition-all duration-300 ease-out hover:bg-neutral-25`}
         >
@@ -84,13 +84,13 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
       )}
 
       {variant === "expand" && (
-      <div className="w-[200px]">
+      <div className="w-[190px]">
           <Link
           href={`${href}`}
           className={`relative flex  w-full items-center justify-between gap-3 rounded-lg-10 ${
             currentActive.includes(`${href}`)
-              ? "bg-netral-20 w-[200px] text-netral-25"
-              : "text-netral-10 w-[200px]"
+              ? "bg-netral-20 w-[190px] text-netral-25"
+              : "text-netral-10 w-[190px]"
           }  p-3 transition-all duration-300 ease-out hover:bg-gray-900`}
         >
           <span className='text-body-sm font-medium 2xl:font-semibold'>

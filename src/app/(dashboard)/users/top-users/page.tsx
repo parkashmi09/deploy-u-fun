@@ -136,6 +136,7 @@ const PageComponent: React.FC = () => {
         isLoading={isLoading}
         headers={headerData}
         title="Top Users"
+        isAdd={false}
       />
       <ModalComponent
         onAction={handleDeleteAction}
