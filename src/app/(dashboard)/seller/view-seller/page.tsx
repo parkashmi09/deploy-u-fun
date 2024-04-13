@@ -67,10 +67,17 @@ const ViewSubAdmin = () => {
     role: localStorage.getItem("role")?.toLowerCase(),
     userId: localStorage.getItem("userId"),
   });
+  const [photo, setPhoto] = useState<File | null>(null);
 
-  const [adharFront, setAdharFront] = useState<any>(null);
-  const [adharBack, setAdharBack] = useState<any>(null);
   const [agency, setAgency] = useState<string>("");
+  const [imageFormdata, setImageFormData] = useState()
+
+  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setPhoto(file);
+    }
+  };
 
   const handleDeleteModal = (id: string) => {
     setIsOpenDeleteModal(true);
@@ -130,24 +137,31 @@ const ViewSubAdmin = () => {
   };
 
   const handleAddCountryModal = async () => {
+    
+    debugger
     try {
-      const formData = new FormData();
-      formData.set("username", username);
-      formData.set("userId", userid);
-      formData.set("password", password);
-      formData.set("agency", agency);
-      formData.append("images", adharFront);
-      formData.append("images", adharBack);
-      formData.set(
-        "countryCode",
-        manager === "Country Admin" ? useCountryCode : selectedCountry?.value
-      );
-      const createdByValue = `{role: ${manager.toLowerCase()}, userId: ${managerId}}`;
-      formData.set("createdBy", createdByValue);
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("userId", userid);
+        formData.append("password", password);
+        formData.append("agency", agency);
+        formData.append(
+          "countryCode",
+          manager === "Country Admin" ? useCountryCode : selectedCountry?.value
+        );
+        formData.append(
+          "createdBy",
+          JSON.stringify({
+            role: manager.toLowerCase(),
+            userId: managerId,
+          })
+        );
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("dataToSend", Object.fromEntries(formData));
-      const payload = Object.fromEntries(formData);
+
+    
+    await new Promise((resolve)=>setTimeout(resolve, 1000));
+    console.log("dataToSend", Object.fromEntries(formData));
+    const payload= Object.fromEntries(formData);
 
       const response = await axios.post(
         "https://fun2fun.live/admin/make/bd",
@@ -308,6 +322,23 @@ const ViewSubAdmin = () => {
         title="Add"
       >
         <div className="p-8">
+          {photo ? (
+            <div className="mb-8 flex justify-center">
+              <Image
+                src={URL.createObjectURL(photo)}
+                alt="Uploaded Image"
+                width={150}
+                height={150}
+              />
+            </div>
+          ) : (
+            <div className="flex justify-center items-center w-full">
+              <Avatar className="h-24 w-24" />
+            </div>
+          )}
+          <div className="mb-4 flex justify-center">
+            <input type="file" accept="image/*" onChange={handlePhotoUpload} />
+          </div>
           <div className="grid grid-cols-1 gap-6">
             <Input
               id="username"
@@ -351,48 +382,13 @@ const ViewSubAdmin = () => {
               onChange={(e) => setPassword(e.target.value)}
               modal
             />
-            <Input
-              id="agency"
-              placeholder="Enter Agency"
-              label="Agency"
-              variant="default"
-              value={agency}
-              onChange={(e) => setAgency(e.target.value)}
-              modal
-            />
 
-            <Input
-              id="adhar_front"
-              placeholder=""
-              label="Adhar Front"
-              type="file"
-              accept="image/*"
-              defaultValue={adharFront} // Change value to defaultValue
-              onChange={(e) => {
-                if (e.target.files) {
-                  setAdharFront(e.target.files[0]);
-                }
-              }}
-              modal
-            />
-            <Input
-              id="adhar_back"
-              placeholder=""
-              label="Adhar Back"
-              type="file"
-              accept="image/*"
-              defaultValue={adharBack} // Change value to defaultValue
-              onChange={(e) => {
-                if (e.target.files) {
-                  setAdharBack(e.target.files[0]);
-                }
-              }}
-              modal
-            />
+            
           </div>
+
         </div>
       </ModalComponent>
-      <ModalComponent
+      {/* <ModalComponent
         loading={isModalLoading}
         onAction={() => {}}
         isOpen={openEditManagerModal}
@@ -406,7 +402,7 @@ const ViewSubAdmin = () => {
           setOpenEditManagerModal={setOpenEditManagerModal}
           formData={editFormDetails}
         />
-      </ModalComponent>
+      </ModalComponent> */}
     </div>
   );
 };

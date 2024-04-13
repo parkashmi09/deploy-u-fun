@@ -11,7 +11,8 @@ interface Input {
   modal?:boolean
   logoSrc?: string
   placeholder: string
-  type?: "text" | "password"
+  accept?:string;
+  type?: "text" | "password" | "file"
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   variant?:
@@ -37,6 +38,7 @@ const Input: React.FC<Input> = ({
   onChange,
   type = "text",
   value,
+  accept,
   variant = "default"
 }) => {
   return (
@@ -98,6 +100,7 @@ const Input: React.FC<Input> = ({
           id={id}
           name={id}
           type={type}
+          accept={accept && accept}
           className={`relative z-0 w-full rounded-lg border p-3 text-body-base font-normal text-netral-80 shadow-1 outline-none ring-[2.5px] ring-transparent transition-all duration-300 ease-out placeholder:text-netral-50 2xl:p-3.5 ${
             (variant === "default" &&
               "border-netral-30 focus:border-primary-border focus:ring-primary-surface disabled:bg-netral-20") ||
@@ -118,7 +121,6 @@ const Input: React.FC<Input> = ({
           }`}
           placeholder={placeholder ?? "Please add your placeholder"}
           value={value}
-          defaultValue={defaultValue}
           disabled={disabled}
           onChange={onChange} 
         />
