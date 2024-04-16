@@ -74,13 +74,13 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   return (
     <aside
       id="sidebar"
-      className="hidden fixed md:flex Sidebar mb-12 h-screen mt-12 w-64 overflow-scroll bg-black px-6 py-4 pt-8 shadow-sm 2xl:w-80 2xl:pt-10"
+      className="hidden fixed md:flex Sidebar  h-screen mt-12 w-64 overflow-scroll bg-black px-6 pt-8 shadow-sm 2xl:w-80 2xl:pt-10"
       style={{
         scrollbarWidth: "none",
         msOverflowStyle: "none",
       }}
     >
-      <nav className="mt-10 flex w-full flex-col items-start gap-3">
+      <nav className="mt-10 pb-56 flex w-full flex-col items-start gap-3">
         <SidebarMenu
           icon={<HouseSimpleIcon />}
           name="HOME"
@@ -166,6 +166,15 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           </SidebarExpand>
         )}
+          {(isAdmin || isManager) && (
+          <SidebarExpand show={showMerchant}>
+            <SidebarMenu
+              name="Merchant Recharge History"
+              variant="expand"
+              href="/merchant/recharge-history"
+            />
+          </SidebarExpand>
+        )}
 
         {(isAdmin || isManager) && (
           <SidebarMenu
@@ -246,34 +255,41 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           isManager ||
           isSubAdmin ||
           isMerchant) && (
-          <SidebarExpand show={coinSeller}>
+            <SidebarExpand show={coinSeller}>
             <SidebarMenu
               name="Seller View"
               variant="expand"
               href="/seller/view-seller"
             />
-          </SidebarExpand>
-        )}
-        {/* 
-{(isMerchant) && (
-          <SidebarMenu
-            active={coins}
-            onClick={() => setCoins(!coins)}
-            icon={<UsersIcon/>}
-            name="Seller"
-            variant="sub-menu"
-          />
+          </SidebarExpand>  
         )}
 
-        {(isMerchant) && (
-          <SidebarExpand show={coins}>
+{(isCountryAdmin ||
+          isAdmin ||
+          isManager ||
+          isSubAdmin ||
+          isMerchant) && (
+          <SidebarExpand show={coinSeller}>
             <SidebarMenu
-              name="Coins"
+              name="Seller Recharge History"
               variant="expand"
-              href="/merchant/view-merchant"
+              href="/seller/coin-seller-recharge-history"
             />
           </SidebarExpand>
-        )} */}
+        )}
+        {(isCountryAdmin ||
+          isAdmin ||
+          isManager ||
+          isSubAdmin ||
+          isMerchant) && (
+          <SidebarExpand show={coinSeller}>
+            <SidebarMenu
+              name="My Recharge History"
+              variant="expand"
+              href="/seller/my-recharge-history"
+            />
+          </SidebarExpand>
+        )}
       </nav>
     </aside>
   );

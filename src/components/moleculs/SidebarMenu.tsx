@@ -48,7 +48,7 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
               {icon}
             </span>
 
-            <span className='text-body-sm text-[#9acd32] font-medium 2xl:font-semibold'>
+            <span className='text-body-sm text-nowrap text-[#9acd32] font-medium 2xl:font-semibold'>
               {name}
             </span>
           </div>
@@ -70,7 +70,7 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
               {icon}
             </span>
 
-            <span className='text-body-sm font-medium 2xl:font-semibold'>
+            <span className='text-body-sm text-nowrap font-medium 2xl:font-semibold'>
               {name}
             </span>
           </div>

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
-import { Input } from "@/components/atomics";
+import { Alerts, Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
 import EditManager from "@/components/EditManager";
 import withAuth from "@/components/WithAuth";
@@ -93,6 +93,7 @@ const ViewManager = () => {
   const [userid, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [country, setCountry] = useState<string>("");
+  const [openAlertsSuccess, setOpenAlertsSuccess] = useState<boolean>(false);
   const [managerId, setManagerId] = useState<string>("");
   const handleDeleteModal = (id: string) => {
     setIsOpenDeleteModal(true);
@@ -242,6 +243,7 @@ const ViewManager = () => {
         // Request was successful
         const data = await response.json();
         console.log("Manager added successfully:", data);
+        setOpenAlertsSuccess(true);
         fetchData();
         // Optionally, perform any actions after successful addition
       } else {
@@ -337,6 +339,17 @@ const ViewManager = () => {
         <div></div>
 {/* <EditManager formData={editFr}/> */}
       </ModalComponent>
+   
+
+      <Alerts
+       variant='success'
+       open={openAlertsSuccess}
+       setOpen={setOpenAlertsSuccess}  
+       title='Edit'
+       desc='Data is Edited Successfully!'
+      
+      
+      />
     </div>
   );
 };

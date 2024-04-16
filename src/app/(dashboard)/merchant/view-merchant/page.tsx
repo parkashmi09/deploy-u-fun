@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
 import { Button, Input } from "@/components/atomics";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Diamond, Edit } from "@mui/icons-material";
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
@@ -65,11 +65,15 @@ const ViewAdmin = () => {
     const storedManager = localStorage.getItem("role");
     return storedManager !== null ? storedManager : "";
   });
+  const [addRechargeModal, setAddRechargeModal] = useState<boolean>(false);
   const [isFilter, setIsFilter] = useState<boolean>();
   const [payload, setPayload] = useState<any>({
     role: localStorage.getItem("role")?.toLowerCase(),
     userId: localStorage.getItem("userId"),
   });
+
+  const [merchentId, setMerchentId] = useState<string>("");
+  const [diamonds, setDiamonds] = useState<string>("");
 
   const filteredOptions = [
     {
@@ -226,6 +230,34 @@ const ViewAdmin = () => {
       setIsModalLoading(false);
     }
   };
+
+
+  const handleAddCoinsRecharge = async() => {
+    try {
+      const res=await axios.post("https://fun2fun.live/admin/merchent/recharge",{
+        merchentId :merchentId,
+        diamonds:diamonds,
+        paymentBy:{
+          role: manager.toLowerCase(),
+          userId: managerId
+        }
+      })
+      if(res.status>=200 && res.status<300) {
+        toast.success("Coins Recharge Added Successfully");
+        setAddRechargeModal(false);
+        fetchData();
+      }
+    } catch (error) {
+      console.log("Error while adding coins recharge",error);
+    }
+      
+      }
+    
+      const addCoinsRecharge = (data: any) => {
+        setAddRechargeModal(true);
+        setMerchentId(data.userid);
+        // setSellerId(data.userid);
+      };
   useEffect(() => {
     if (manager === "Master" || manager === "Manager") {
       setIsFilter(true);
@@ -262,6 +294,24 @@ const ViewAdmin = () => {
         >
           {rowData?.is_active ? "Active" : "InActive"}
         </span>
+      ),
+    },
+    {
+      key: "is_active",
+      label: "Recharge",
+      renderCell: (rowData: UserData) => (
+        <div className="flex items-center ml-4 gap-2">
+          <Diamond
+            onClick={() => addCoinsRecharge(rowData)}
+            className="cursor-pointer text-yellow-600"
+          />
+          {/* <div onClick={() => handleEditModal(rowData)}>
+            <Edit className="cursor-pointer text-gray-600" />
+          </div>
+          <div onClick={() => handleDeleteModal(rowData?.userId)}>
+            <Delete className="cursor-pointer text-red-600" />
+          </div> */}
+        </div>
       ),
     },
     {
@@ -403,6 +453,38 @@ const ViewAdmin = () => {
           setOpenEditManagerModal={setOpenEditManagerModal}
           formData={editFormDetails}
         />
+      </ModalComponent>
+      <ModalComponent
+        loading={isModalLoading}
+        onAction={handleAddCoinsRecharge}
+        isOpen={addRechargeModal}
+        setIsOpen={setAddRechargeModal}
+        size="2xl"
+        title="Add Recharge"
+      >
+        <div className="p-8">
+          <div className="grid grid-cols-1 gap-6">
+            <Input
+              id="merchentId"
+              placeholder="Enter Merchant Id"
+              label="Merchant Id"
+              variant="default"
+              disabled
+              value={merchentId}
+              onChange={(e) => setMerchentId(e.target.value)}
+              modal
+            />
+            <Input
+              id="diamonds"
+              placeholder="Enter Diamonds"
+              label="Diamonds"
+              variant="default"
+              value={diamonds}
+              onChange={(e) => setDiamonds(e.target.value)}
+              modal
+            />
+          </div>
+        </div>
       </ModalComponent>
     </div>
   );

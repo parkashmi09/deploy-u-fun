@@ -7,13 +7,7 @@ import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
 import { Button, Input } from "@/components/atomics";
-import {
-  Add,
-  AddBoxOutlined,
-  Delete,
-  Diamond,
-  Edit,
-} from "@mui/icons-material";
+import { Add, Delete, Edit } from "@mui/icons-material";
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
@@ -35,7 +29,7 @@ interface UserData {
   _id?: string;
 }
 
-const ViewSubAdmin = () => {
+const RechargeHistory = () => {
   const [userData, setUserData] = useState<UserData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -75,17 +69,9 @@ const ViewSubAdmin = () => {
     userId: localStorage.getItem("userId"),
   });
   const [photo, setPhoto] = useState<File | null>(null);
-  const [addRechargeModal, setAddRechargeModal] = useState<boolean>(false);
 
   const [adharFront, setAdharFront] = useState<any>(null);
   const [adharBack, setAdharBack] = useState<any>(null);
-
-  const [sellerId, setSellerId] = useState<string>("");
-  const [coins, setCoins] = useState<string>();
-  const [merhcantId, setMerchantId] = useState<string>(() => {
-    const storedManager = localStorage.getItem("userId");
-    return storedManager !== null ? storedManager : "";
-  });
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -124,9 +110,8 @@ const ViewSubAdmin = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await axios.post(
-        "https://fun2fun.live/admin/coinSeller/getByRole",
-        payload
+      const data = await axios.get(
+        `https://fun2fun.live/admin/merchent/get/myRechargeHistory/${managerId}`,
       );
       console.log("data response", data);
       const modifiedData = data?.data?.data?.map(
@@ -227,28 +212,17 @@ const ViewSubAdmin = () => {
     }
   };
 
-  const handleAddCoinsRecharge = async() => {
-try {
-  const res=await axios.post("https://fun2fun.live/coinseller/recharge",{
-    coinSellerId :sellerId,
-    amount:coins,
-    merchentId:merhcantId
-  })
-  if(res.status>=200 && res.status<300) {
-    toast.success("Coins Recharge Added Successfully");
-    setAddRechargeModal(false);
-    fetchData();
-  }
-} catch (error) {
-  console.log("Error while adding coins recharge",error);
-}
-  
-  }
+  function formatTime(timeString: any) {
+    const date = new Date(timeString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
 
-  const addCoinsRecharge = (data: any) => {
-    setAddRechargeModal(true);
-    setSellerId(data.userid);
-  };
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
 
   useEffect(() => {
     if (manager === "Master" || manager === "Manager") {
@@ -264,81 +238,40 @@ try {
       label: "Sr no",
     },
     {
-      key: "userid",
-      label: "UserId",
+      key: "merchentId",
+      label: "Merchant Id",
     },
     {
-      key: "seller_name",
-      label: "Seller Name",
+      key: "amount",
+      label: "Coins",
     },
     {
-      key: "countryCode",
-      label: "Country Code",
-    },
-    {
-      key: "status",
-      label: "Status",
-      renderCell: (rowData: UserData) => (
-        <span
-          className={`${
-            rowData?.is_active ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {rowData?.is_active ? "Active" : "InActive"}
-        </span>
+      key: "createdAt",
+      label: "Created At",
+      renderCell: (rowData: any) => (
+        <p className="text-nowrap">{formatTime(rowData?.createdAt)}</p>
       ),
     },
     {
-      key: "is_active",
-      label: "Recharge",
-      renderCell: (rowData: UserData) => (
-        <div className="flex items-center ml-4 gap-2">
-          <Diamond
-            onClick={() => addCoinsRecharge(rowData)}
-            className="cursor-pointer text-yellow-600"
-          />
-          {/* <div onClick={() => handleEditModal(rowData)}>
-            <Edit className="cursor-pointer text-gray-600" />
-          </div>
-          <div onClick={() => handleDeleteModal(rowData?.userId)}>
-            <Delete className="cursor-pointer text-red-600" />
-          </div> */}
-        </div>
-      ),
-    },
-    {
-      key: "is_active",
-      label: "Action",
-      renderCell: (rowData: UserData) => (
-        <div className="flex gap-2">
-          <div onClick={() => handleEditModal(rowData)}>
-            <Edit className="cursor-pointer text-gray-600" />
-          </div>
-          <div onClick={() => handleDeleteModal(rowData?.userId)}>
-            <Delete className="cursor-pointer text-red-600" />
-          </div>
-        </div>
+      key: "updatedAt",
+      label: "Updated At",
+      renderCell: (rowData: any) => (
+        <p className="text-nowrap">{formatTime(rowData?.updatedAt)}</p>
       ),
     },
   ];
 
   return (
-    <div className="mt-24 p-4">
+    <div className="mt-24 p-4  mx-auto">
       <TableComponent
         onAdd={handleOnAdd}
         isLoading={isLoading}
         data={userData}
         headers={headerData}
-        addButtonLabel="Add Coin Seller"
-        isAdd
-        isFilter={isFilter}
-        filterAction={fetchData}
-        title="View Coin Sellers"
-        setCountrySelect={setCountrySelect}
-        setCountryCode={setCountryCode}
-        setPayload={setPayload}
+        isAdd={false}
+        title="View Merhcant Recharge History"
       />
-      <ModalComponent
+      {/* <ModalComponent
         onAction={handleDeleteAdmin}
         isOpen={openDeleteModal}
         setIsOpen={setIsOpenDeleteModal}
@@ -452,51 +385,9 @@ try {
           setOpenEditManagerModal={setOpenEditManagerModal}
           formData={editFormDetails}
         />
-      </ModalComponent>
-      <ModalComponent
-        loading={isModalLoading}
-        onAction={handleAddCoinsRecharge}
-        isOpen={addRechargeModal}
-        setIsOpen={setAddRechargeModal}
-        size="2xl"
-        title="Add Recharge"
-      >
-        <div className="p-8">
-          <div className="grid grid-cols-1 gap-6">
-            <Input
-              id="seller_id"
-              placeholder="Enter Seller Id"
-              label="Seller Id"
-              variant="default"
-              disabled
-              value={sellerId}
-              onChange={(e) => setSellerId(e.target.value)}
-              modal
-            />
-            <Input
-              id="merhcant_id"
-              placeholder="Enter Merhcant"
-              label="Merchant Id"
-              variant="default"
-              value={merhcantId}
-              onChange={(e) => setMerchantId(e.target.value)}
-              modal
-            />
-
-            <Input
-              id="coins"
-              placeholder="Enter Coins"
-              label="Coins"
-              variant="default"
-              value={coins}
-              onChange={(e) => setCoins(e.target.value)}
-              modal
-            />
-          </div>
-        </div>
-      </ModalComponent>
+      </ModalComponent> */}
     </div>
   );
 };
 
-export default withAuth(ViewSubAdmin);
+export default withAuth(RechargeHistory);
