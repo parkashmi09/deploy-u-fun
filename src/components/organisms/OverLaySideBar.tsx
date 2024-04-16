@@ -202,13 +202,28 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
 
         {isMerchant && (
           <SidebarExpand show={showMerchant}>
-            <SidebarMenu
+          <div onClick={() => setShowSidebar(false)}>
+          <SidebarMenu
               name="View Merchant"
               variant="expand"
               href="/merchant/view-merchant"
             />
+          </div>
           </SidebarExpand>
         )}
+
+{(isAdmin || isManager) && (
+          <SidebarExpand show={showMerchant}>
+         <div onClick={() => setShowSidebar(false)}>
+         <SidebarMenu
+              name="Merchant Recharge History"
+              variant="expand"
+              href="/merchant/recharge-history"
+            />
+         </div>
+          </SidebarExpand>
+        )}
+
 
         {(isAdmin || isManager) && (
           <SidebarMenu
