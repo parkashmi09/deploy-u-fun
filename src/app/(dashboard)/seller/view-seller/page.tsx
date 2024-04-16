@@ -16,12 +16,13 @@ import { PlusIcon } from "@/assets/icons";
 import axios from "axios";
 import EditAdmin from "@/components/EditAdmin";
 import { Avatar } from "@nextui-org/react";
+import EditCoinSeller from "@/components/EditCoinSeller/page";
 
 interface UserData {
   userId: string;
   is_active: boolean;
   images?: string[];
-  name: string;
+  seller_name: string;
   email: string;
   mobile: string;
   countryCode: string;
@@ -69,8 +70,8 @@ const ViewSubAdmin = () => {
   });
   const [photo, setPhoto] = useState<File | null>(null);
 
-  const [agency, setAgency] = useState<string>("");
-  const [imageFormdata, setImageFormData] = useState()
+  const [adharFront, setAdharFront] = useState<any>(null);
+  const [adharBack, setAdharBack] = useState<any>(null);
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -110,7 +111,7 @@ const ViewSubAdmin = () => {
     setIsLoading(true);
     try {
       const data = await axios.post(
-        "https://fun2fun.live/admin/bd/getByRole",
+        "https://fun2fun.live/admin/coinSeller/getByRole",
         payload
       );
       console.log("data response", data);
@@ -118,7 +119,7 @@ const ViewSubAdmin = () => {
         (user: UserData, index: number) => ({
           ...user,
           "sr.no": index + 1,
-          name: user.name || "-",
+          name: user.seller_name || "-",
           mobile: user.mobile || "-",
           status: user.is_active ? "Active" : "Inactive",
           userid: user.userId || "-",
@@ -137,35 +138,24 @@ const ViewSubAdmin = () => {
   };
 
   const handleAddCountryModal = async () => {
-    
-    debugger
+    debugger;
     try {
-        const formData = new FormData();
-        formData.append("username", username);
-        formData.append("userId", userid);
-        formData.append("password", password);
-        formData.append("agency", agency);
-        formData.append(
-          "countryCode",
-          manager === "Country Admin" ? useCountryCode : selectedCountry?.value
-        );
-        formData.append(
-          "createdBy",
-          JSON.stringify({
-            role: manager.toLowerCase(),
-            userId: managerId,
-          })
-        );
-
-
-    
-    await new Promise((resolve)=>setTimeout(resolve, 1000));
-    console.log("dataToSend", Object.fromEntries(formData));
-    const payload= Object.fromEntries(formData);
+      const formData = new FormData();
+      formData.set("seller_name", username);
+      formData.set("userId", userid);
+      formData.set("password", password);
+      formData.append("images", adharFront);
+      formData.append("images", adharBack);
+      formData.set(
+        "countryCode",
+        manager === "Country Admin" ? useCountryCode : selectedCountry?.value
+      );
+      formData.set("createdByuserId", managerId);
+      formData.set("createdByrole", manager.toLowerCase());
 
       const response = await axios.post(
-        "https://fun2fun.live/admin/make/bd",
-        payload,
+        "https://fun2fun.live/admin/coinSeller/add",
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -202,13 +192,9 @@ const ViewSubAdmin = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/remove/official`;
+      const url = `https://fun2fun.live/admin/coinSeller/delete/${userid}`;
       const response = await fetch(url, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: userid }),
       });
       if (response.ok) {
         console.log("User deleted successfully");
@@ -245,8 +231,8 @@ const ViewSubAdmin = () => {
       label: "UserId",
     },
     {
-      key: "username",
-      label: "UserName",
+      key: "seller_name",
+      label: "Seller Name",
     },
     {
       key: "countryCode",
@@ -288,11 +274,11 @@ const ViewSubAdmin = () => {
         isLoading={isLoading}
         data={userData}
         headers={headerData}
-        addButtonLabel="Add Sub Admin"
+        addButtonLabel="Add Coin Seller"
         isAdd
         isFilter={isFilter}
         filterAction={fetchData}
-        title="View Sub Admins"
+        title="View Coin Sellers"
         setCountrySelect={setCountrySelect}
         setCountryCode={setCountryCode}
         setPayload={setPayload}
@@ -322,28 +308,11 @@ const ViewSubAdmin = () => {
         title="Add"
       >
         <div className="p-8">
-          {photo ? (
-            <div className="mb-8 flex justify-center">
-              <Image
-                src={URL.createObjectURL(photo)}
-                alt="Uploaded Image"
-                width={150}
-                height={150}
-              />
-            </div>
-          ) : (
-            <div className="flex justify-center items-center w-full">
-              <Avatar className="h-24 w-24" />
-            </div>
-          )}
-          <div className="mb-4 flex justify-center">
-            <input type="file" accept="image/*" onChange={handlePhotoUpload} />
-          </div>
           <div className="grid grid-cols-1 gap-6">
             <Input
               id="username"
               placeholder="Enter User Name"
-              label="User Name"
+              label="Seller Name"
               variant="default"
               value={username}
               onChange={(e) => setUserName(e.target.value)}
@@ -383,12 +352,38 @@ const ViewSubAdmin = () => {
               modal
             />
 
-            
+            <Input
+              id="adhar_front"
+              placeholder=""
+              label="Adhar Front"
+              type="file"
+              accept="image/*"
+              defaultValue={adharFront} // Change value to defaultValue
+              onChange={(e) => {
+                if (e.target.files) {
+                  setAdharFront(e.target.files[0]);
+                }
+              }}
+              modal
+            />
+            <Input
+              id="adhar_back"
+              placeholder=""
+              label="Adhar Back"
+              type="file"
+              accept="image/*"
+              defaultValue={adharBack} // Change value to defaultValue
+              onChange={(e) => {
+                if (e.target.files) {
+                  setAdharBack(e.target.files[0]);
+                }
+              }}
+              modal
+            />
           </div>
-
         </div>
       </ModalComponent>
-      {/* <ModalComponent
+      <ModalComponent
         loading={isModalLoading}
         onAction={() => {}}
         isOpen={openEditManagerModal}
@@ -397,12 +392,12 @@ const ViewSubAdmin = () => {
         hideButtons
         title="Edit"
       >
-        <EditAdmin
+        <EditCoinSeller
           fetchData={fetchData}
           setOpenEditManagerModal={setOpenEditManagerModal}
           formData={editFormDetails}
         />
-      </ModalComponent> */}
+      </ModalComponent>
     </div>
   );
 };

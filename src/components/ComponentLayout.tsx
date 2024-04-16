@@ -13,9 +13,11 @@ export default function ComponentLayout() {
       </div>
 
 
-    <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+ <div className="">
+ <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+ </div>
       {showSidebar && (
-        <div className="h-screen">
+        <div className="min-h-screen overflow-scroll ">
           <OverLaySideBar
             showSidebar={showSidebar}
             setShowSidebar={setShowSidebar}

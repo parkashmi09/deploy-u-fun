@@ -16,6 +16,7 @@ import { PlusIcon } from "@/assets/icons";
 import axios from "axios";
 import EditAdmin from "@/components/EditAdmin";
 import { Avatar } from "@nextui-org/react";
+import EditSubAdmin from "@/components/EditSubAdmin";
 
 interface UserData {
   userId: string;
@@ -142,16 +143,12 @@ const ViewSubAdmin = () => {
         "countryCode",
         manager === "Country Admin" ? useCountryCode : selectedCountry?.value
       );
-      const createdByValue = `{role: ${manager.toLowerCase()}, userId: ${managerId}}`;
-      formData.set("createdBy", createdByValue);
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("dataToSend", Object.fromEntries(formData));
-      const payload = Object.fromEntries(formData);
+      formData.set("createdByuserId", managerId);
+      formData.set("createdByrole",manager.toLowerCase());
 
       const response = await axios.post(
         "https://fun2fun.live/admin/make/bd",
-        payload,
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -188,13 +185,9 @@ const ViewSubAdmin = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/remove/official`;
+      const url = `https://fun2fun.live/admin/remove/bd/${userid}`;
       const response = await fetch(url, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: userid }),
       });
       if (response.ok) {
         console.log("User deleted successfully");
@@ -401,7 +394,7 @@ const ViewSubAdmin = () => {
         hideButtons
         title="Edit"
       >
-        <EditAdmin
+        <EditSubAdmin
           fetchData={fetchData}
           setOpenEditManagerModal={setOpenEditManagerModal}
           formData={editFormDetails}

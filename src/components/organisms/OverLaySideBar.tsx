@@ -5,7 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Link from "next/link";
 import Image from "next/image";
-import { Close, Flag } from "@mui/icons-material";
+import { AdminPanelSettings, Close, Flag, GifTwoTone } from "@mui/icons-material";
 import { SidebarMenu } from "../moleculs";
 import { HouseSimpleIcon, ReceiptIcon, UsersIcon } from "@/assets/icons";
 
@@ -50,6 +50,8 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   const [role, setRole] = useState<string>("");
   const [showSubAdmin, setShowSubAdmin] = React.useState(false);
   const [showMerchant, setShowMerchant] = React.useState(false);
+  const [showAdmin, setShowAdmin] = React.useState(false);
+  const [coinSeller, setCoinSeller] = React.useState(false);
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -69,7 +71,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   };
 
   const DrawerList = (
-    <div className="bg-black h-screen w-72 z-50">
+    <div className="bg-black h-screen  min-h-screen overflow-scroll w-72 z-50">
       <div className="flex items-center justify-between px-2 py-4 ">
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -143,43 +145,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             </div>
           </SidebarExpand>
         )}
-
-        {/* {role !== "Admin" && (
-          <SidebarExpand show={showUsersMenu}>
-            <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
-              <SidebarMenu
-                name="Add Official  Users"
-                variant="expand"
-                href="/users/add-official-users"
-              />
-            </div>
-
-            <div onClick={() => setShowSidebar(false)}>
-              <SidebarMenu
-                name="View  Users"
-                variant="expand"
-                href="/users/view-users"
-              />
-            </div>
-
-            <div className="w-[80%]"  onClick={() => setShowSidebar(false)}>
-              <SidebarMenu
-                name="Top  Users"
-                variant="expand"
-                href="/users/top-users"
-              />
-            </div>
-
-            <div onClick={() => setShowSidebar(false)}>
-              <SidebarMenu
-                name="Push Notification"
-                variant="expand"
-                href="/users/push-notifications"
-              />
-            </div>
-          </SidebarExpand>
-        )} */}
-        {(isManager || isAdmin) && (
+        {isAdmin && (
           <SidebarMenu
             active={showManager}
             onClick={() => setShowManager(!showManager)}
@@ -188,6 +154,17 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             variant="sub-menu"
           />
         )}
+        {isAdmin && (
+          <SidebarExpand show={showManager}>
+            <div onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="View Manager"
+                variant="expand"
+                href="/manager/view-manager"
+              />
+            </div>
+          </SidebarExpand>
+        )}
 
         {(isAdmin || isManager) && (
           <SidebarMenu
@@ -208,7 +185,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             />
           </SidebarExpand>
         )}
-         {(isMerchant) && (
+        {isMerchant && (
           <SidebarMenu
             active={showMerchant}
             onClick={() => setShowMerchant(!showMerchant)}
@@ -218,7 +195,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         )}
 
-        {(isMerchant) && (
+        {isMerchant && (
           <SidebarExpand show={showMerchant}>
             <SidebarMenu
               name="View Merchant"
@@ -227,6 +204,103 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             />
           </SidebarExpand>
         )}
+
+{(isAdmin || isManager) && (
+          <SidebarMenu
+            active={showCountryAdmin}
+            onClick={() => setShowCountryAdmin(!showCountryAdmin)}
+            icon={<Flag />}
+            name="Country Admin"
+            variant="sub-menu"
+          />
+        )}
+
+        {(isAdmin || isManager) && (
+          <SidebarExpand show={showCountryAdmin}>
+         <div onClick={()=>setShowSidebar(false)}>
+         <SidebarMenu
+              name="View Country Admin"
+              variant="expand"
+              href="/country-admin/view-country-admin"
+            />
+         </div>
+          </SidebarExpand>
+        )}
+
+{(isCountryAdmin || isAdmin || isManager) && (
+          <SidebarMenu
+            active={showAdmin}
+            onClick={() => setShowAdmin(!showAdmin)}
+            icon={<AdminPanelSettings />}
+            name="Admin"
+            variant="sub-menu"
+          />
+        )}
+
+        {(isCountryAdmin || isAdmin || isManager) && (
+          <SidebarExpand show={showAdmin}>
+           <div onClick={()=>setShowSidebar(false)}>
+           <SidebarMenu
+              name="View Admin"
+              variant="expand"
+              href="/admin/view-admin"
+            />
+           </div>
+          </SidebarExpand>
+        )}
+
+
+        {(isCountryAdmin || isAdmin || isManager || isSubAdmin) && (
+          <SidebarMenu
+            active={showSubAdmin}
+            onClick={() => setShowSubAdmin(!showSubAdmin)}
+            icon={<UsersIcon />}
+            name="Sub Admin"
+            variant="sub-menu"
+          />
+        )}
+
+
+{(isCountryAdmin || isAdmin || isManager || isSubAdmin) && (
+          <SidebarExpand show={showSubAdmin}>
+          <div onClick={()=>setShowSidebar(false)}>
+          <SidebarMenu
+              name="View Sub Admin"
+              variant="expand"
+              href="/sub-admin/view-subadmin"
+            />
+          </div>
+          </SidebarExpand>
+        )}
+
+{(isCountryAdmin ||
+          isAdmin ||
+          isManager ||
+          isSubAdmin ||
+          isMerchant) && (
+          <SidebarMenu
+            active={coinSeller}
+            onClick={() => setCoinSeller(!coinSeller)}
+            icon={<GifTwoTone/>}
+            name="Coins Seller"
+            variant="sub-menu"
+          />
+        )}
+
+        {(isCountryAdmin ||
+          isAdmin ||
+          isManager ||
+          isSubAdmin ||
+          isMerchant) && (
+          <SidebarExpand show={coinSeller}>
+            <SidebarMenu
+              name="Seller View"
+              variant="expand"
+              href="/seller/view-seller"
+            />
+          </SidebarExpand>
+        )}
+
       </nav>
     </div>
   );
