@@ -11,10 +11,10 @@ import { Add, Delete, Edit } from "@mui/icons-material";
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
-import EditManager, { EditFormData } from "@/components/EditManager";
+
 import { PlusIcon } from "@/assets/icons";
 import axios from "axios";
-import EditAdmin from "@/components/EditAdmin";
+import EditAdmin, { EditFormData } from "@/components/EditAdmin";
 import { Avatar } from "@nextui-org/react";
 import EditCoinSeller from "@/components/EditCoinSeller/page";
 
@@ -52,7 +52,7 @@ const RechargeHistory = () => {
     return storedManager !== null ? storedManager : "";
   });
   const [editFormDetails, setEditFormDetails] = useState<
-    EditFormData | undefined
+    EditFormData| undefined
   >(undefined);
   const [managerId, setManagerId] = useState<string>(() => {
     const storedManager = localStorage.getItem("userId");
