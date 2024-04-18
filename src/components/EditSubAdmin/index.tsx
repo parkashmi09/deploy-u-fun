@@ -1,8 +1,9 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Select from 'react-select';
-import { Input } from '../atomics';
+import { Alerts, Input } from '../atomics';
 import { countriesOptions } from '@/utils/country';
 import axios from 'axios';
+import { ToastObj } from '@/app/(auth)/login/page';
 
 export interface EditFormData {
   username: string;
@@ -37,6 +38,12 @@ export default function EditSubAdmin(props:EditSubAdminProps) {
   const [editFormData, setEditFormData] = useState<EditFormData>(initialFormState);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [adharFront, setAdharFront] = useState<any>(null)
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
   useEffect(() => {
     if (props.formData) {
       setEditFormData(props.formData);
@@ -75,6 +82,25 @@ const handleEdit = async () => {
       );
       if (response.status >= 200 && response.status < 300) {
         const data = response.data;
+        console.log("edit response", data)
+        if(data?.status ===1){
+          setOpenToast(true);
+       setToastObj({
+        title:"Edit Country Admin Creation",
+         desc:data?.message,
+         variant:"success"
+  
+       })
+        }
+       else if(data?.status ===0 || data?.status ==='' ){
+          setOpenToast(true);
+          setToastObj({
+           title:"Edit Country Admin",
+            desc:data?.error,
+            variant:"error"
+   
+          })
+        }
         console.log("Country added successfully:", data);
         setEditFormData(initialFormState);
         setAdharFront(null);
@@ -132,23 +158,6 @@ const handleEdit = async () => {
         onChange={(e) => handleInputChange(e, 'userId')}
         modal
       />
-
-<div className="w-full">
-        <label className="text-white text-body-base font-semibold mb-6">
-          Country
-        </label>
-        <Select
-          placeholder="Select Country"
-          value={props?.formData?.selectedCountry}
-          onChange={(selectedOption) => {
-            setEditFormData(prevState => ({
-              ...prevState,
-              selectedCountry: selectedOption as { label: string; value: string }
-            }));
-          }}
-          options={countriesOptions}
-        />
-      </div>
 
 
       <Input
@@ -214,6 +223,14 @@ const handleEdit = async () => {
               </div>
             </div>
           </div>
+          <Alerts
+        //@ts-ignore
+        variant={toastObj?.variant}
+        open={openToast}
+        setOpen={setOpenToast}
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 }

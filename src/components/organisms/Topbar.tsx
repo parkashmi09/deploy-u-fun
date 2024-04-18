@@ -18,7 +18,7 @@ import {
 } from "@/assets/icons";
 import Link from "next/link";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import axios from "axios";
 
 interface TopBarProps {
@@ -44,19 +44,19 @@ const Topbar: React.FC<TopBarProps> = ({ showSidebar, setShowSidebar }) => {
   }, []);
 
   const fetchCoins = async () => {
-   try {
-    const res = await axios.get(
-      `https://fun2fun.live/merchent/getById/`
-    );
-    console.log(res.data);
-   } catch (error) {
-    console.log(error);
-   }
+    try {
+      const res = await axios.get(`https://fun2fun.live/merchent/getById/`);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  useEffect(()=>{
-    fetchCoins()
-  },[])
+  useEffect(() => {
+    if(role==='Merchant'){
+    fetchCoins();
+    }
+  }, []);
   return (
     <header
       className={`fixed top-0 left-0 flex w-full z-50 items-center justify-between
@@ -222,10 +222,14 @@ const Topbar: React.FC<TopBarProps> = ({ showSidebar, setShowSidebar }) => {
             </section>
 
             <CaretDownIcon className="h-6 w-6 text-netral-50" />
-            <div className="flex gap-2 items-center border shadow-md border-netral-50 rounded p-2">
-              <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
-              <p className="font-semibold text-white text-nowrap text-[14px]">0</p>
-            </div>
+            {role === "Merchant" && (
+              <div className="flex gap-2 items-center border shadow-md border-netral-50 rounded p-2">
+                <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
+                <p className="font-semibold text-white text-nowrap text-[14px]">
+                  0
+                </p>
+              </div>
+            )}
           </Menu.Button>
 
           <Transition

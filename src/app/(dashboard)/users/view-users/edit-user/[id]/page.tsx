@@ -397,7 +397,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   return (
     <>
-      <div className="relative mt-16 h-[calc(100vh_-_80px)] p-6">
+      <div className="relative mt-24 h-[calc(100vh_-_80px)] p-6">
 
         <div className="space-y-6">
           <h1 className="text-heading-sm font-semibold">Edit</h1>

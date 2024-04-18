@@ -4,15 +4,15 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
-import { Button, Input } from "@/components/atomics";
+import { Alerts, Button, Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
-import { EditFormData } from "@/components/EditManager";
 import axios from "axios";
-import EditAdmin from "@/components/EditAdmin";
+import EditAdmin, { EditFormData } from "@/components/EditAdmin";
 import TableComponent from "@/components/Ui/table";
+import { ToastObj } from "@/app/(auth)/login/page";
 
 interface UserData {
   userId: string;
@@ -53,6 +53,12 @@ const ViewAdmin = () => {
   const [editFormDetails, setEditFormDetails] = useState<
     EditFormData | undefined
   >(undefined);
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
   const [managerId, setManagerId] = useState<string>(() => {
     const storedManager = localStorage.getItem("userId");
     return storedManager !== null ? storedManager : "";
@@ -141,7 +147,6 @@ const ViewAdmin = () => {
   console.log("use country code", useCountryCode)
 
   const handleAddCountryModal = async () => {
-    debugger
     try {
       setIsModalLoading(true);
       const response = await fetch(`https://fun2fun.live/admin/make/official`, {
@@ -160,10 +165,27 @@ const ViewAdmin = () => {
           },
         }),
       });
-      fetchData();
       if (response.ok) {
         const data = await response.json();
-        console.log("Country added successfully:", data);
+        console.log("response data",data);
+        if(data?.status ===1){
+          setOpenToast(true);
+           setToastObj({
+            title:"Admin Creation",
+             desc:data?.message,
+             variant:"success"
+    
+           })
+            }
+            if(data?.status ===0 || data?.status ==='' || data?.data=="" ){
+              setOpenToast(true);
+              setToastObj({
+               title:"Admin Creation",
+                desc:data?.error,
+                variant:"error"
+       
+              })
+            }
         setUserName("");
         setUserId("");
         selectedCountry({});
@@ -209,6 +231,27 @@ const ViewAdmin = () => {
         body: JSON.stringify({ userId: userid }),
       });
       if (response.ok) {
+
+        const data = await response.json();
+        console.log("response data dele",data);
+        if(data?.status ===1){
+          setOpenToast(true);
+           setToastObj({
+            title:"Admin Delete",
+             desc:data?.message,
+             variant:"success"
+    
+           })
+            }
+            if(data?.status ===0 || data?.status ==='' || data?.data=="" ){
+              setOpenToast(true);
+              setToastObj({
+               title:"Admin Delete",
+                desc:data?.error,
+                variant:"error"
+       
+              })
+            }
         console.log("User deleted successfully");
         toast.success("Data deleted");
         setIsOpenDeleteModal(false);
@@ -340,7 +383,7 @@ const ViewAdmin = () => {
         isOpen={openAddCountryAdminModal}
         setIsOpen={setOpenAddCountryAdminModal}
         size="2xl"
-        title="Add"
+        title="Add Official"
       >
         <div className="px-8 py-4 grid grid-cols-1 gap-x-5 gap-y-8">
           <Input
@@ -402,6 +445,14 @@ const ViewAdmin = () => {
           formData={editFormDetails}
         />
       </ModalComponent>
+      <Alerts
+//@ts-ignore
+        variant={toastObj?.variant!}
+        open={openToast}
+        setOpen={setOpenToast}  
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 };

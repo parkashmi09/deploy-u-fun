@@ -16,6 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
 import { useRouter } from "next/navigation";
+import { Alerts } from "@/components/atomics";
 
 const roles = [
   "Master",
@@ -32,8 +33,20 @@ export interface SimpleDialogProps {
   onClose: (value: string) => void;
 }
 
+export interface ToastObj{
+    desc?: string;
+    variant?: string;
+    title?: string;
+}
+
 const LoginForm = () => {
   const [open, setOpen] = React.useState(true);
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(null);
   const [formData, setFormData] = React.useState({
     username: "",
@@ -81,8 +94,26 @@ const LoginForm = () => {
       });
       const data = await res.json();
       console.log(data, "data");
+      if(data?.status === 0) {
+        console.log("in error", data)
+        setOpenToast(true)
+        setToastObj({
+          desc:data?.message,
+          title:"Error While Login",
+          variant:"error"
+
+        })
+        setIsLoading(false)
+      }
       if (data?.status === 1) {
         setIsLoading(false);
+        // setOpenToast(true);
+        // setToastObj({
+        //   desc:data?.message,
+        //   title:"Success",
+        //   variant:"success"
+
+        // })
         localStorage &&
           localStorage.setItem(`token`, data?.data?.token);
         localStorage && localStorage.setItem(`username`, data?.data?.username);
@@ -234,6 +265,15 @@ const LoginForm = () => {
           </List>
         </Dialog>
       )}
+
+<Alerts
+//@ts-ignore
+        variant={toastObj?.variant!}
+        open={openToast}
+        setOpen={setOpenToast}  
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </Fragment>
   );
 };

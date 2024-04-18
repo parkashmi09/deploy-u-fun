@@ -6,16 +6,16 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
-import { Button, Input } from "@/components/atomics";
+import { Alerts, Button, Input } from "@/components/atomics";
 import { Delete, Diamond, Edit } from "@mui/icons-material";
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
-import EditManager, { EditFormData } from "@/components/EditManager";
 import { PlusIcon } from "@/assets/icons";
 import axios from "axios";
-import EditAdmin from "@/components/EditAdmin";
+import EditAdmin, { EditFormData } from "@/components/EditAdmin";
 import EditMerchant from "@/components/EditMerchant";
+import { ToastObj } from "@/app/(auth)/login/page";
 
 interface UserData {
   userId: string;
@@ -74,6 +74,12 @@ const ViewAdmin = () => {
 
   const [merchentId, setMerchentId] = useState<string>("");
   const [diamonds, setDiamonds] = useState<string>("");
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
 
   const filteredOptions = [
     {
@@ -147,7 +153,7 @@ const ViewAdmin = () => {
 
   console.log("use country code", useCountryCode)
 
-  const handleAddCountryModal = async () => {
+  const handleAddMerchent = async () => {
     try {
       setIsModalLoading(true);
       const response = await fetch(`https://fun2fun.live/admin/make/merchent`, {
@@ -166,16 +172,34 @@ const ViewAdmin = () => {
           },
         }),
       });
-      fetchData();
       if (response.ok) {
         const data = await response.json();
+
+        if(data?.status ===1){
+
+          setOpenToast(true);
+         setToastObj({
+          title:"Merchant Creation",
+           desc:data?.message,
+           variant:"success"
+    
+         })
+            fetchData();
+          }
+          else if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"Merchant Creation",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
         console.log("Country added successfully:", data);
         setUserName("");
         setUserId("");
         selectedCountry({});
         setPassword("");
-
-        fetchData();
       } else {
         console.error("Failed to add manager:", response.statusText);
         setUserName("");
@@ -183,6 +207,8 @@ const ViewAdmin = () => {
         setSelectedCountry({ label: "", value: "" });
         setPassword("");
       }
+
+
     } catch (error) {
       fetchData();
       console.error("Error adding manager:", error);
@@ -215,6 +241,28 @@ const ViewAdmin = () => {
         body: JSON.stringify({ userId: userid }),
       });
       if (response.ok) {
+        const data = await response.json();
+
+        if(data?.status ===1){
+
+          setOpenToast(true);
+         setToastObj({
+          title:"Delete",
+           desc:data?.message,
+           variant:"success"
+    
+         })
+            fetchData();
+          }
+          if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"Merchant Creation",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
         console.log("User deleted successfully");
         toast.success("Data deleted");
         setIsOpenDeleteModal(false);
@@ -388,7 +436,7 @@ const ViewAdmin = () => {
       </ModalComponent>
       <ModalComponent
         loading={isModalLoading}
-        onAction={handleAddCountryModal}
+        onAction={handleAddMerchent}
         isOpen={openAddCountryAdminModal}
         setIsOpen={setOpenAddCountryAdminModal}
         size="2xl"
@@ -486,6 +534,14 @@ const ViewAdmin = () => {
           </div>
         </div>
       </ModalComponent>
+      <Alerts
+//@ts-ignore
+        variant={toastObj?.variant!}
+        open={openToast}
+        setOpen={setOpenToast}  
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 };

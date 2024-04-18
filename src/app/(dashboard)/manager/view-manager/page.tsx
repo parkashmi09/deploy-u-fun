@@ -8,8 +8,9 @@ import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
 import { Alerts, Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
-import EditManager from "@/components/EditManager";
 import withAuth from "@/components/WithAuth";
+import axios from "axios";
+import { ToastObj } from "@/app/(auth)/login/page";
 
 interface UserData {
   userId: string;
@@ -95,6 +96,12 @@ const ViewManager = () => {
   const [country, setCountry] = useState<string>("");
   const [openAlertsSuccess, setOpenAlertsSuccess] = useState<boolean>(false);
   const [managerId, setManagerId] = useState<string>("");
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
   const handleDeleteModal = (id: string) => {
     setIsOpenDeleteModal(true);
   };
@@ -138,38 +145,36 @@ const ViewManager = () => {
 
   const handleActive = async (checked: boolean, id: string) => {
     try {
-      const response = await fetch("https://fun2fun.live/admin/manager/ban", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const response = await axios.post("https://fun2fun.live/admin/manager/ban", 
+       {
           userId: id,
           is_active: checked,
-        }),
-      });
+        })
+
+        console.log("response", response);
+
+        if(response?.data?.status===200){
+          console.log("done, ", response)
+        }
+        const updatedData=response?.data?.data
   
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
   
-      const updatedData = await response.json();
   
       // Find the index of the user in the existing userData array
-      const index = userData.findIndex((user: any) => user.userId === updatedData.data.userId);
+      const index = userData.findIndex((user: any) => user.userId === updatedData.userId);
   
       if (index !== -1) {
         setUserData((prevUserData: any) => {
           const newData = [...prevUserData];
           newData[index] = {
             ...newData[index], // Keep existing properties
-            is_active: updatedData?.data?.is_active, // Update is_active
-            status: updatedData?.data?.is_active ? "Active" : "Inactive", // Update status
+            is_active: updatedData?.is_active, // Update is_active
+            status: updatedData?.is_active ? "Active" : "Inactive", // Update status
           };
           return newData;
         });
       } else {
-        console.error(`User with userId ${updatedData.data.userId} not found in userData array.`);
+        console.error(`User with userId ${updatedData.userId} not found in userData array.`);
       }
     } catch (error) {
       console.error("Error toggling user ban status:", error);
@@ -239,12 +244,32 @@ const ViewManager = () => {
           // countrycode: country,
         }),
       });
+
+      console.log("resposnene", response)
       if (response.ok) {
         // Request was successful
         const data = await response.json();
         console.log("Manager added successfully:", data);
-        setOpenAlertsSuccess(true);
-        fetchData();
+
+        if(data?.status ===1){
+      setOpenToast(true);
+       setToastObj({
+        title:"Manager Creation",
+         desc:data?.message,
+         variant:"success"
+
+       })
+        }
+        if(data?.status ===0 || data?.status ==='' ){
+          setOpenToast(true);
+          setToastObj({
+           title:"Manager Creation",
+            desc:data?.error,
+            variant:"error"
+   
+          })
+        }
+    
         // Optionally, perform any actions after successful addition
       } else {
         // Request failed
@@ -300,6 +325,7 @@ const ViewManager = () => {
         isOpen={openAddManagerModal}
         setIsOpen={setOpenAddManagerModal}
         size="2xl"
+        title="Add Manager"
       >
         <div className="px-8 py-4 grid grid-cols-1 gap-x-5 gap-y-8">
           <Input
@@ -309,6 +335,7 @@ const ViewManager = () => {
             variant="default"
             value={username}
             onChange={(e) => setUserName(e.target.value)}
+            modal
           />
 
           <Input
@@ -318,6 +345,7 @@ const ViewManager = () => {
             variant="default"
             value={userid}
             onChange={(e) => setUserId(e.target.value)}
+            modal
           />
           <Input
             id="password"
@@ -326,6 +354,7 @@ const ViewManager = () => {
             variant="default"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            modal
           />
         </div>
       </ModalComponent>
@@ -341,14 +370,14 @@ const ViewManager = () => {
       </ModalComponent>
    
 
-      <Alerts
-       variant='success'
-       open={openAlertsSuccess}
-       setOpen={setOpenAlertsSuccess}  
-       title='Edit'
-       desc='Data is Edited Successfully!'
-      
-      
+    
+<Alerts
+//@ts-ignore
+        variant={toastObj?.variant!}
+        open={openToast}
+        setOpen={setOpenToast}  
+        title={toastObj?.title}
+        desc={toastObj?.desc}
       />
     </div>
   );

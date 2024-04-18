@@ -1,7 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Select from 'react-select';
-import { Input } from '../atomics';
+import { Alerts, Input } from '../atomics';
 import { countriesOptions } from '@/utils/country';
+import { ToastObj } from '@/app/(auth)/login/page';
 
 export interface EditFormData {
   username: string;
@@ -36,6 +37,12 @@ export default function EditAdmin(props: EditManagerProps) {
   const [editFormData, setEditFormData] = useState<EditFormData>(initialFormState);
   console.log("edit for madata", editFormData)
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
 console.log(props, "props")
   useEffect(() => {
 
@@ -71,6 +78,25 @@ const handleEdit =async()=> {
     });
     if (response.ok) {
       const data = await response.json();
+      if(data?.status ===1){
+        setOpenToast(true);
+     setToastObj({
+      title:"Edit Country Admin Creation",
+       desc:data?.message,
+       variant:"success"
+
+     })
+      }
+     else if(data?.status ===0 || data?.status ==='' ){
+        setOpenToast(true);
+        setToastObj({
+         title:"Edit Country Admin",
+          desc:data?.error,
+          variant:"error"
+ 
+        })
+      }
+      
       console.log('Country added successfully:', data);
       setEditFormData(initialFormState)
       props.fetchData()
@@ -177,6 +203,14 @@ const handleEdit =async()=> {
               </div>
             </div>
           </div>
+          <Alerts
+        //@ts-ignore
+        variant={toastObj?.variant}
+        open={openToast}
+        setOpen={setOpenToast}
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 }

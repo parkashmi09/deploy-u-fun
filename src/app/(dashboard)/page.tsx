@@ -1,11 +1,14 @@
 'use client'
 import withAuth from "@/components/WithAuth";
-const Home=() =>{
-  return (
-    // <main className="flex min-h-screen flex-col items-center justify-between p-24">
 
-    <main className="flex min-h-screen">hello</main>
+const Home = () => {
+  return (
+    <main className="bg-white text-netral-25 min-h-screen flex justify-center items-center">
+      <div className="text-center">
+        <h1 className="text-8xl font-bold mb-0 animate-bounce">coming soon<span className="text-gray-400">.</span></h1>
+      </div>
+    </main>
   );
 }
 
-export default withAuth(Home)
+export default withAuth(Home);

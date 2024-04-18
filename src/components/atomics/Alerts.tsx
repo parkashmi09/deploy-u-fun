@@ -4,11 +4,11 @@ import * as Toast from '@radix-ui/react-toast'
 import { TrashIcon, XIcon } from '@/assets/icons'
 
 interface Alerts {
-  desc: string
-  open: any
-  setOpen: any
-  title: string
-  variant: 'success' | 'info' | 'warning' | 'error'
+  desc?: string
+  open?: any
+  setOpen?: any
+  title?: string
+  variant?: 'success' | 'info' | 'warning' | 'error'
 }
 
 export default function Alerts({
@@ -20,11 +20,11 @@ export default function Alerts({
 }:Alerts) {
   setTimeout(() => {
     setOpen && setOpen(false)
-  }, 4000)
+  }, 10000)
   return (
     <Toast.Provider swipeDirection='right'>
       <Toast.Root
-        className='Alerts fixed right-6 top-24 z-[999] w-96 overflow-hidden rounded-lg-10 bg-white p-7 shadow-alerts data-[swipe=cancel]:translate-x-0 data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[state=closed]:animate-hide data-[state=open]:animate-slideIn data-[swipe=end]:animate-swipeOut data-[swipe=cancel]:transition-[transform_200ms_ease-out]'
+        className='Alerts fixed right-6  top-24 z-[9999] w-80 md:w-96 overflow-hidden rounded-lg-10 bg-white p-4 md:p-7 shadow-alerts data-[swipe=cancel]:translate-x-0 data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[state=closed]:animate-hide data-[state=open]:animate-slideIn data-[swipe=end]:animate-swipeOut data-[swipe=cancel]:transition-[transform_200ms_ease-out]'
         open={open}
         onOpenChange={setOpen}
       >

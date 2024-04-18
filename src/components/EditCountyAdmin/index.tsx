@@ -1,7 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Select from 'react-select';
-import { Input } from '../atomics';
+import { Alerts, Input } from '../atomics';
 import { countriesOptions } from '@/utils/country';
+import { ToastObj } from '@/app/(auth)/login/page';
 
 export interface EditFormData {
   username: string;
@@ -14,9 +15,9 @@ export interface EditFormData {
   }
 }
 
-interface EditManagerProps {
+interface EditCountryAdminProps {
   formData: EditFormData | undefined;
-  setOpenEditManagerModal: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenEditCountryAdminModal: React.Dispatch<React.SetStateAction<boolean>>
   fetchData: () => Promise<void>
  
 }
@@ -32,10 +33,16 @@ const initialFormState={
   }
 }
 
-export default function EditManager(props: EditManagerProps) {
+export default function EditCountryAdmin(props: EditCountryAdminProps) {
   const [editFormData, setEditFormData] = useState<EditFormData>(initialFormState);
   console.log("edit for madata", editFormData)
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
 console.log(props, "props")
   useEffect(() => {
 
@@ -71,6 +78,26 @@ const handleEdit =async()=> {
     });
     if (response.ok) {
       const data = await response.json();
+      console.log("Manager added successfully:", data);
+
+      if(data?.status ===1){
+        setOpenToast(true);
+     setToastObj({
+      title:"Edit Country Admin Creation",
+       desc:data?.message,
+       variant:"success"
+
+     })
+      }
+     else if(data?.status ===0 || data?.status ==='' ){
+        setOpenToast(true);
+        setToastObj({
+         title:"Edit Country Admin",
+          desc:data?.error,
+          variant:"error"
+ 
+        })
+      }
       console.log('Country added successfully:', data);
       setEditFormData(initialFormState)
       props.fetchData()
@@ -82,7 +109,7 @@ const handleEdit =async()=> {
     console.error('Error adding manager:', error);
   } finally {
     setIsLoading(false);
-    props.setOpenEditManagerModal(false)
+    props.setOpenEditCountryAdminModal(false)
     setEditFormData(initialFormState)
   }
 }
@@ -141,7 +168,7 @@ const handleEdit =async()=> {
             <div className="w-full flex justify-end pr-2">
               <div className="flex gap-4 py-4">
                 <button
-                  onClick={() => props.setOpenEditManagerModal(false)}
+                  onClick={() => props.setOpenEditCountryAdminModal(false)}
                   className="px-4 py-2 hover:bg-[#f31260]/[0.2]  rounded-md text-[#f31260]"
                 >
                   Cancel
@@ -177,6 +204,14 @@ const handleEdit =async()=> {
               </div>
             </div>
           </div>
+          <Alerts
+        //@ts-ignore
+        variant={toastObj?.variant}
+        open={openToast}
+        setOpen={setOpenToast}
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 }

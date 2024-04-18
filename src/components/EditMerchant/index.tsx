@@ -1,7 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import Select from 'react-select';
-import { Input } from '../atomics';
+import { Alerts, Input } from '../atomics';
 import { countriesOptions } from '@/utils/country';
+import { ToastObj } from '@/app/(auth)/login/page';
 
 export interface EditFormData {
   username: string;
@@ -36,6 +37,12 @@ export default function EditMerchant(props: EditMerhcants) {
   const [editFormData, setEditFormData] = useState<EditFormData>(initialFormState);
   console.log("edit for madata", editFormData)
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
 console.log(props, "props")
   useEffect(() => {
 
@@ -71,9 +78,29 @@ const handleEdit =async()=> {
     });
     if (response.ok) {
       const data = await response.json();
+      console.log("Manager added successfully:", data);
+
+      if(data?.status ===1){
+        setOpenToast(true);
+     setToastObj({
+      title:"Manager Creation",
+       desc:data?.message,
+       variant:"success"
+
+     })
+      }
+     else if(data?.status ===0 || data?.status ==='' ){
+        setOpenToast(true);
+        setToastObj({
+         title:"Manager Creation",
+          desc:data?.error,
+          variant:"error"
+ 
+        })
+      }
       console.log('Country added successfully:', data);
       setEditFormData(initialFormState)
-      props.fetchData()
+   
     } else {
       console.error('Failed to add manager:', response.statusText);
       setEditFormData(initialFormState)
@@ -82,6 +109,7 @@ const handleEdit =async()=> {
     console.error('Error adding manager:', error);
   } finally {
     setIsLoading(false);
+    props.fetchData()
     props.setOpenEditManagerModal(false)
     setEditFormData(initialFormState)
   }
@@ -177,6 +205,14 @@ const handleEdit =async()=> {
               </div>
             </div>
           </div>
+          <Alerts
+        //@ts-ignore
+        variant={toastObj?.variant}
+        open={openToast}
+        setOpen={setOpenToast}
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 }

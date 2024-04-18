@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
-import { Button, Input } from "@/components/atomics";
+import { Alerts, Button, Input } from "@/components/atomics";
 import {
   Add,
   AddBoxOutlined,
@@ -17,12 +17,10 @@ import {
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
-import EditManager, { EditFormData } from "@/components/EditManager";
-import { PlusIcon } from "@/assets/icons";
 import axios from "axios";
-import EditAdmin from "@/components/EditAdmin";
-import { Avatar } from "@nextui-org/react";
 import EditCoinSeller from "@/components/EditCoinSeller/page";
+import { EditFormData } from "@/components/EditAdmin";
+import { ToastObj } from "@/app/(auth)/login/page";
 
 interface UserData {
   userId: string;
@@ -79,7 +77,12 @@ const ViewSubAdmin = () => {
 
   const [adharFront, setAdharFront] = useState<any>(null);
   const [adharBack, setAdharBack] = useState<any>(null);
-
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
   const [sellerId, setSellerId] = useState<string>("");
   const [coins, setCoins] = useState<string>();
   const [merhcantId, setMerchantId] = useState<string>(() => {
@@ -151,8 +154,7 @@ const ViewSubAdmin = () => {
     setOpenAddCountryAdminModal(true);
   };
 
-  const handleAddCountryModal = async () => {
-    debugger;
+  const handleAddcoinSeller = async () => {
     try {
       const formData = new FormData();
       formData.set("seller_name", username);
@@ -176,10 +178,28 @@ const ViewSubAdmin = () => {
           },
         }
       );
-
-      if (response.status >= 200 && response.status < 300) {
         const data = response.data;
-        console.log("Country added successfully:", data);
+
+        if(data?.status ===1){
+
+          setOpenToast(true);
+         setToastObj({
+          title:"Coin Seller Creation",
+           desc:data?.message,
+           variant:"success"
+    
+         })
+            fetchData();
+          }
+          else if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"Coin Seller Creation",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
         setUserName("");
         setUserId("");
         setSelectedCountry(null);
@@ -187,10 +207,7 @@ const ViewSubAdmin = () => {
         setOpenAddCountryAdminModal(false);
         fetchData();
         toast.success("Country added successfully");
-      } else {
-        console.error("Failed to add country:", response.statusText);
-        toast.error("Failed to add country");
-      }
+
     } catch (error) {
       console.error("Error adding country:", error);
       toast.error("Error adding country");
@@ -211,6 +228,27 @@ const ViewSubAdmin = () => {
         method: "DELETE",
       });
       if (response.ok) {
+const data=await response.json();
+        if(data?.status ===1){
+
+          setOpenToast(true);
+         setToastObj({
+          title:"Coin Seller Creation",
+           desc:data?.message,
+           variant:"success"
+    
+         })
+            fetchData();
+          }
+          else if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"Coin Seller Creation",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
         console.log("User deleted successfully");
         toast.success("Data deleted");
         setIsOpenDeleteModal(false);
@@ -289,7 +327,7 @@ try {
       ),
     },
     {
-      key: "is_active",
+      key: "",
       label: "Recharge",
       renderCell: (rowData: UserData) => (
         <div className="flex items-center ml-4 gap-2">
@@ -356,14 +394,14 @@ try {
       </ModalComponent>
       <ModalComponent
         loading={isModalLoading}
-        onAction={handleAddCountryModal}
+        onAction={handleAddcoinSeller}
         isOpen={openAddCountryAdminModal}
         setIsOpen={setOpenAddCountryAdminModal}
         size="2xl"
         title="Add"
       >
         <div className="p-8">
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1  md:grid-cols-2 gap-6">
             <Input
               id="username"
               placeholder="Enter User Name"
@@ -389,6 +427,7 @@ try {
                 </label>
                 <Select
                   placeholder="Select Country"
+                  className="mt-2"
                   value={selectedCountry}
                   onChange={(selectedOptions) =>
                     setSelectedCountry(selectedOptions)
@@ -495,6 +534,14 @@ try {
           </div>
         </div>
       </ModalComponent>
+      <Alerts
+//@ts-ignore
+        variant={toastObj?.variant!}
+        open={openToast}
+        setOpen={setOpenToast}  
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 };

@@ -16,7 +16,7 @@ import { NijaLogo } from "@/assets/brands";
 import Image from "next/image";
 import { AdminPanelSettings, Flag, GifTwoTone } from "@mui/icons-material";
 import { Transition } from "@headlessui/react";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 interface SideBarProps {
   showSidebar: boolean;
@@ -71,16 +71,41 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const isSubAdmin = role === "Admin";
   const isMerchant = role === "Merchant";
 
+
+  const handleShow=()=> {
+    if(coinSeller){
+      if (coinSeller) {
+        setShowMerchant(false);
+        setShowAdmin(false);
+        setShowCountryAdmin(false);
+        setShowManager(false);
+        setShowUsersMenu(false);
+        setShowSubAdmin(false);
+      }
+      else if(showMerchant){
+        setCoinSeller(false);
+        setShowAdmin(false);
+        setShowCountryAdmin(false);
+        setShowManager(false);
+        setShowUsersMenu(false);
+        setShowSubAdmin(false);
+      }
+    }
+  }
+
+
+
+
   return (
     <aside
       id="sidebar"
-      className="hidden fixed md:flex Sidebar  h-screen mt-12 w-64 overflow-scroll bg-black px-6 pt-8 shadow-sm 2xl:w-80 2xl:pt-10"
+      className="hidden fixed md:flex Sidebar  h-screen mt-12 w-64  bg-black px-6 pt-8 shadow-sm 2xl:w-80 2xl:pt-10"
       style={{
         scrollbarWidth: "none",
         msOverflowStyle: "none",
       }}
     >
-      <nav className="mt-10 pb-56 flex w-full flex-col items-start gap-3">
+      <nav className="mt-10 pb-56 flex w-full h-[700px] overflow-y-scroll overflow-x-hidden scrollbar-hide flex-col items-start gap-3">
         <SidebarMenu
           icon={<HouseSimpleIcon />}
           name="HOME"

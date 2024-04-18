@@ -6,17 +6,17 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
 import { Menu, Transition } from "@headlessui/react";
-import { Button, Input } from "@/components/atomics";
+import { Alerts, Button, Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
-import EditManager, { EditFormData } from "@/components/EditManager";
 import { PlusIcon } from "@/assets/icons";
 import axios from "axios";
-import EditAdmin from "@/components/EditAdmin";
+import EditAdmin, { EditFormData } from "@/components/EditAdmin";
 import { Avatar } from "@nextui-org/react";
 import EditSubAdmin from "@/components/EditSubAdmin";
+import { ToastObj } from "@/app/(auth)/login/page";
 
 interface UserData {
   userId: string;
@@ -68,6 +68,12 @@ const ViewSubAdmin = () => {
     role: localStorage.getItem("role")?.toLowerCase(),
     userId: localStorage.getItem("userId"),
   });
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
 
   const [adharFront, setAdharFront] = useState<any>(null);
   const [adharBack, setAdharBack] = useState<any>(null);
@@ -158,6 +164,27 @@ const ViewSubAdmin = () => {
 
       if (response.status >= 200 && response.status < 300) {
         const data = response.data;
+
+        if(data?.status ===1){
+
+          setOpenToast(true);
+         setToastObj({
+          title:"Sub Admin Creation",
+           desc:data?.message,
+           variant:"success"
+    
+         })
+            fetchData();
+          }
+          else if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"Sub Admin Creation",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
         console.log("Country added successfully:", data);
         setUserName("");
         setUserId("");
@@ -190,6 +217,28 @@ const ViewSubAdmin = () => {
         method: "DELETE",
       });
       if (response.ok) {
+        const data= await response?.json()
+
+        if(data.status ===1){
+
+          setOpenToast(true);
+         setToastObj({
+          title:"Sub Admin Deletion",
+           desc:data.message,
+           variant:"success"
+    
+         })
+            fetchData();
+          }
+          else if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"Sub Admin Deletion",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
         console.log("User deleted successfully");
         toast.success("Data deleted");
         setIsOpenDeleteModal(false);
@@ -400,6 +449,14 @@ const ViewSubAdmin = () => {
           formData={editFormDetails}
         />
       </ModalComponent>
+      <Alerts
+//@ts-ignore
+        variant={toastObj?.variant!}
+        open={openToast}
+        setOpen={setOpenToast}  
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 };

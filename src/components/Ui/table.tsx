@@ -239,7 +239,7 @@ export default function TableComponent ({
                       data?.map((item, rowIndex) => (
                         <tr key={rowIndex}>
                           {headers.map((header) => (
-                            <td key={header.key} className="px-4 py-4 ">
+                            <td key={header.key} className="px-4 py-4 text-nowrap">
                               {header.renderCell
                                 ? renderCell(item, header)
                                 : item[header.key]}

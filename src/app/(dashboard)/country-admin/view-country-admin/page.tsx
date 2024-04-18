@@ -3,13 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
-import { Button, Input } from "@/components/atomics";
+import { Alerts, Button, Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
-import EditManager, { EditFormData } from "@/components/EditManager";
 import TableComponent from "@/components/Ui/table";
+import { ToastObj } from "@/app/(auth)/login/page";
+import { EditFormData } from "@/components/EditAdmin";
+import EditCountryAdmin from "@/components/EditCountyAdmin";
 
 
 interface UserData {
@@ -40,7 +42,7 @@ const ViewUser = () => {
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
 
   const [editFormDetails, setEditFormDetails] = useState<
-    EditFormData | undefined
+    EditFormData| undefined
   >(undefined);
   const [managerId, setManagerId] = useState<string>(() => {
     const storedManager = localStorage.getItem("userId");
@@ -53,6 +55,12 @@ const ViewUser = () => {
   })
 
   const [isFilter, setIsFilter]= useState<boolean>(false);
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
 
   const [countryCode, setCountryCode]= useState<string>("")
   const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
@@ -165,9 +173,30 @@ const ViewUser = () => {
           }),
         }
       );
-      fetchData();
       if (response.ok) {
         const data = await response.json();
+        console.log("Manager added successfully:", data);
+
+        if(data?.status ===1){
+      setOpenToast(true);
+       setToastObj({
+        title:"Country Admin Creation",
+         desc:data?.message,
+         variant:"success"
+
+       })
+       fetchData()
+        }
+        if(data?.status ===0 || data?.status ==='' ){
+          setOpenToast(true);
+          setToastObj({
+           title:"Country Admin Creation",
+            desc:data?.error,
+            variant:"error"
+   
+          })
+        }
+    
         console.log("Country added successfully:", data);
         setUserName("");
         setUserId("");
@@ -212,8 +241,25 @@ const ViewUser = () => {
         body: JSON.stringify({ userId: userid }),
       });
       if (response.ok) {
-        console.log("User deleted successfully");
-        toast.success("Data deleted");
+        const data = await response.json();
+        if(data?.status ===1){
+          setOpenToast(true);
+           setToastObj({
+            title:"Country Admin Remove",
+             desc:data?.message,
+             variant:"success"
+    
+           })
+            }
+            if(data?.status ===0 || data?.status ==='' ){
+              setOpenToast(true);
+              setToastObj({
+               title:"Country Admin Remove",
+                desc:data?.error,
+                variant:"error"
+       
+              })
+            }
         setIsOpenDeleteModal(false);
         fetchData();
       } else {
@@ -429,12 +475,21 @@ const ViewUser = () => {
         hideButtons
         title="Edit"
       >
-        <EditManager
+        <EditCountryAdmin
           fetchData={fetchData}
-          setOpenEditManagerModal={setOpenEditManagerModal}
+          setOpenEditCountryAdminModal={setOpenEditManagerModal}
           formData={editFormDetails}
         />
       </ModalComponent>
+          
+<Alerts
+//@ts-ignore
+        variant={toastObj?.variant!}
+        open={openToast}
+        setOpen={setOpenToast}  
+        title={toastObj?.title}
+        desc={toastObj?.desc}
+      />
     </div>
   );
 };
