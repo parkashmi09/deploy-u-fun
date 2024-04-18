@@ -21,6 +21,9 @@ interface TableProps {
   setCountrySelect?: React.Dispatch<React.SetStateAction<boolean>>
   setCountryCode?:React.Dispatch<React.SetStateAction<string>>
   setPayload?: React.Dispatch<any>
+  totalPages?: number; // Define totalPages as a prop
+  currentPage?: number; // Define currentPage as a prop
+  handlePageChange: (event: any, page: number) => void
 }
 
 interface Header {
@@ -41,7 +44,9 @@ export default function TableComponent ({
   filterAction,
   setCountrySelect,
   setCountryCode,
-  setPayload
+  setPayload,
+  totalPages, handlePageChange,
+  currentPage
 }:TableProps){
   const convertToCSV = () => {
     if (!data) return;
@@ -223,7 +228,7 @@ export default function TableComponent ({
                           colSpan={headers.length}
                           className="px-4 py-4  text-center"
                         >
-                          <div className="relative">
+                          <div className="relative h-screen">
                             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                               <ButtonLoader />
                             </div>
@@ -257,9 +262,14 @@ export default function TableComponent ({
                     color: "#000",
                   },
                 }}
-                count={10}
                 color="primary"
                 size={isMobile ? "small":"large"}
+
+                count={totalPages} // Total number of pages
+                page={currentPage} // Current active page
+                onChange={handlePageChange} // Function to handle page change
+                variant="outlined" // Or "outlined" or "text"
+        
               />
                 </div>
         </section>

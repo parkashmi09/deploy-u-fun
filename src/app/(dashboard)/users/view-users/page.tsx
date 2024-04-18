@@ -56,29 +56,31 @@ const ViewUser = () => {
   const [openDeleteModal, setIsOpenDeleteModal]=useState<boolean>(false);
   const [openAlertsSuccess, setOpenAlertsSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const handleDeleteModal=(id:string)=> {
     setIsOpenDeleteModal(true)
   }
   useEffect(() => {
     
     fetchData();
-  }, []);
+  }, [currentPage]);
 
 
 
   const fetchData = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`https://fun2fun.live/user/getall/limitedData?page=${currentPage}&limit=6`);
+      const response = await fetch(`https://fun2fun.live/user/getall/limitedData?page=${currentPage}&limit=${10}`);
       const data = await response?.json();
       // Calculate total pages based on data count
 
-      console.log("data is", data?.data?.length)
-      setTotalPages(Math.ceil(data?.data?.length / 6));
-      const modifiedData = data?.data?.map((user: UserData, index: number) => ({
+      console.log("data is", data?.data?.totalUsers    )
+      setTotalPages(Math.ceil(data?.data?.totalUsers / 10));
+      console.log("datatattatta",data?.data?.data)
+      const startSerialNumber = (currentPage - 1) * 10 + 1;
+      const modifiedData = data?.data?.data?.map((user: UserData, index: number) => ({
         ...user,
-        "sr.no": index + 1,
+        "sr.no": startSerialNumber + index,
         name: user.name || "-",
         mobile: user.mobile || "-",
         status: user.is_active_userId == true ? 'Active' : 'Inactive',
@@ -133,8 +135,12 @@ const ViewUser = () => {
     }
   };
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (event: any, page: number) => {
+
+    console.log("current", page)
+    // Update currentPage state
     setCurrentPage(page);
+    // You can also perform any other necessary actions here, like fetching data for the new page
   };
   
 
@@ -339,6 +345,10 @@ const ViewUser = () => {
   return (
   <div className="mt-20 p-4 h-auto">
     <TableComponent 
+        totalPages={totalPages}
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
+
  
     isLoading={isLoading} 
     
