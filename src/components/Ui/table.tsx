@@ -23,7 +23,7 @@ interface TableProps {
   setPayload?: React.Dispatch<any>
   totalPages?: number; // Define totalPages as a prop
   currentPage?: number; // Define currentPage as a prop
-  handlePageChange: (event: any, page: number) => void
+  handlePageChange?: (event: any, page: number) => void
 }
 
 interface Header {

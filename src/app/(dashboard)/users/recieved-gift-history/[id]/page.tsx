@@ -37,8 +37,8 @@ const Page=({ params }: { params: { id: string } })=> {
 
   return (
     <>
-      <section className="relative rounded-lg-10 bg-white mt-20 p-4">
-        <nav className="mb-8 flex items-center justify-between">
+      <section className="rounded-lg-10 items-center bg-white mt-24 py-12 px-4 mr-12">
+        <nav className="flex items-center h-full">
           <Title size="lg" variant="default">
             Received Gifts
           </Title>
@@ -51,7 +51,8 @@ const Page=({ params }: { params: { id: string } })=> {
         </div>
       ) : (
         <div className="p-4">
-          <div className="mb-6 overflow-x-auto overflow-y-auto" style={{ maxHeight: "calc(100vh - 140px)" }}>
+          {data.length===0? ( <div className="text-center h-screen flex justify-center items-center text-gray-500 py-4">No Data Available</div>):(
+            <div className="mb-6 overflow-x-auto overflow-y-auto" style={{ maxHeight: "calc(100vh - 140px)" }}>
             <table className="w-full table-auto">
               <thead className="bg-netral-15 text-body-sm font-semibold uppercase">
                 <tr>
@@ -144,6 +145,9 @@ const Page=({ params }: { params: { id: string } })=> {
               </tbody>
             </table>
           </div>
+          )
+          
+        }
         </div>
       )}
     </>

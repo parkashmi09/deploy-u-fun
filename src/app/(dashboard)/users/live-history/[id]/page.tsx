@@ -33,10 +33,10 @@ export default function Page({ params }: { params: { id: string } }) {
 
     return (
         <>
-          <section className="relative rounded-lg-10 bg-white p-6">
-        <nav className="mb-8 flex items-center justify-between">
+         <section className="rounded-lg-10 items-center bg-white mt-24 py-12 px-4 mr-12">
+        <nav className="flex items-center h-full">
           <Title size="lg" variant="default">
-           Live History
+            Live History
           </Title>
         </nav>
       </section>
@@ -46,7 +46,9 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             ) : (
                 <div className="p-4">
-                    <div className='mb-6 overflow-x-auto'>
+                  {
+                    data.length===0? <div className="text-center h-screen flex justify-center items-center text-gray-500 py-4">No Data Available</div>:(
+                        <div className='mb-6 overflow-x-auto'>
                         <table className='w-full table-auto'>
                             <thead className='bg-netral-15 text-body-sm font-semibold uppercase'>
                                 <tr>
@@ -157,6 +159,8 @@ export default function Page({ params }: { params: { id: string } }) {
                             </tbody>
                         </table>
                     </div>
+                    )
+                  }
                 </div>
             )}
         </>
