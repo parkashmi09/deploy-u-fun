@@ -31,17 +31,16 @@ const Topbar: React.FC<TopBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [username, setUserName] = useState<string>("");
   const [wallet, setWallet] = useState<any>();
 
-  const [userid, setUserId] = useState<string>(() => {
-    const storedManager = localStorage.getItem("userId")!;
-    return storedManager !== null ? storedManager : "";
-  });
+  const [userid, setUserId] = useState<any>("")
 
   useEffect(() => {
     const roleValue = localStorage.getItem("role");
     const name = localStorage.getItem("username");
+    const storedManager = localStorage.getItem("userId")!;
     if (roleValue !== null && name !== null) {
       setRole(roleValue);
       setUserName(name);
+      setUserId(storedManager)
     }
   }, []);
 

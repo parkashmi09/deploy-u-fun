@@ -60,16 +60,14 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [coinSeller, setCoinSeller] = React.useState(false);
   const [role, setRole] = useState<string>("");
   const [wallet, setWallet] = React.useState<any>();
-  const [userid, setUserId] = useState<string>(() => {
-    const storedManager = localStorage.getItem("userId")!;
-    return storedManager !== null ? storedManager : "";
-  });
-
+  const [userid, setUserId] = useState<any>("")
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
+    const storedManager = localStorage.getItem("userId")!;
     if (value !== null) {
       setRole(value);
+      setUserId(storedManager)
     }
   }, []);
 
