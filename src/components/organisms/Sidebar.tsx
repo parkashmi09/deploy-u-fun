@@ -15,8 +15,10 @@ import { SidebarMenu } from "@/components/moleculs";
 import { NijaLogo } from "@/assets/brands";
 import Image from "next/image";
 import { AdminPanelSettings, Flag, GifTwoTone } from "@mui/icons-material";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Transition } from "@headlessui/react";
 import React, { useEffect, useLayoutEffect, useState } from "react";
+import axios from "axios";
 
 interface SideBarProps {
   showSidebar: boolean;
@@ -57,6 +59,12 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [showMerchant, setShowMerchant] = React.useState(false);
   const [coinSeller, setCoinSeller] = React.useState(false);
   const [role, setRole] = useState<string>("");
+  const [wallet, setWallet] = React.useState<any>();
+  const [userid, setUserId] = useState<string>(() => {
+    const storedManager = localStorage.getItem("userId")!;
+    return storedManager !== null ? storedManager : "";
+  });
+
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -64,6 +72,24 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
       setRole(value);
     }
   }, []);
+
+  const fetchCoins = async () => {
+    try {
+      const res = await axios.get(`https://fun2fun.live/admin/merchent/getById/${userid}`);
+      console.log(res.data);
+      if(res?.data){
+        setWallet(res?.data?.data?.wallet);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if(role==='Merchant'){
+    fetchCoins();
+    }
+  }, [role, userid]);
 
   const isManager = role === "Manager";
   const isCountryAdmin = role === "Country Admin";
@@ -105,7 +131,8 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
         msOverflowStyle: "none",
       }}
     >
-      <nav className="mt-10 pb-56 flex w-full h-[700px] overflow-y-scroll overflow-x-hidden scrollbar-hide flex-col items-start gap-3">
+    <div className="flex flex-col gap-24 h-full mb-24">
+    <nav className="mt-10 pb-56 flex w-full h-[700px] overflow-y-scroll overflow-x-hidden scrollbar-hide flex-col items-start gap-3">
         <SidebarMenu
           icon={<HouseSimpleIcon />}
           name="HOME"
@@ -263,8 +290,6 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
 
         {(isCountryAdmin ||
           isAdmin ||
-          isManager ||
-          isSubAdmin ||
           isMerchant) && (
           <SidebarMenu
             active={coinSeller}
@@ -316,6 +341,17 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           </SidebarExpand>
         )}
       </nav>
+      <div className="">
+   {role === "Merchant" && (
+              <div className="flex gap-2 items-center border ml-4 w-[80px] shadow-md border-netral-50 rounded p-2">
+                <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
+                <p className="font-semibold text-white text-nowrap text-[14px]">
+                  {wallet}
+                </p>
+              </div>
+            )}
+   </div>
+    </div>
     </aside>
   );
 };

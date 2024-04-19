@@ -5,6 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Link from "next/link";
 import Image from "next/image";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {
   AdminPanelSettings,
   Close,
@@ -13,6 +14,7 @@ import {
 } from "@mui/icons-material";
 import { SidebarMenu } from "../moleculs";
 import { HouseSimpleIcon, ReceiptIcon, UsersIcon } from "@/assets/icons";
+import axios from "axios";
 
 interface SideBarProps {
   showSidebar: boolean;
@@ -57,6 +59,12 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   const [showMerchant, setShowMerchant] = React.useState(false);
   const [showAdmin, setShowAdmin] = React.useState(false);
   const [coinSeller, setCoinSeller] = React.useState(false);
+  const [wallet, setWallet] = React.useState<any>();
+  const [userid, setUserId] = useState<string>(() => {
+    const storedManager = localStorage.getItem("userId")!;
+    return storedManager !== null ? storedManager : "";
+  });
+
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -74,6 +82,23 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   const toggleDrawer = (open: boolean) => () => {
     setShowSidebar(open);
   };
+  const fetchCoins = async () => {
+    try {
+      const res = await axios.get(`https://fun2fun.live/admin/merchent/getById/${userid}`);
+      console.log(res.data);
+      if(res?.data){
+        setWallet(res?.data?.data?.wallet);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if(role==='Merchant'){
+    fetchCoins();
+    }
+  }, [role, userid]);
 
   const DrawerList = (
     <div className="bg-black h-screen  min-h-screen overflow-scroll w-72 z-50">
@@ -94,7 +119,8 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           <Close className="text-white" />
         </div>
       </div>
-      <nav className="mt-10 flex px-2 w-full flex-col items-start gap-3">
+     <div className="flex flex-col gap-24 h-full mb-24">
+     <nav className="mt-10 flex px-2 w-full flex-col items-start gap-3">
         <div className="w-full" onClick={() => setShowSidebar(false)}>
           <SidebarMenu
             icon={<HouseSimpleIcon />}
@@ -293,8 +319,8 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
 
         {(isCountryAdmin ||
           isAdmin ||
-          isManager ||
-          isSubAdmin ||
+          
+         
           isMerchant) && (
           <SidebarMenu
             active={coinSeller}
@@ -350,6 +376,17 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           </SidebarExpand>
         )}
       </nav>
+   <div className="">
+   {role === "Merchant" && (
+              <div className="flex gap-2 items-center border ml-4 w-[80px] shadow-md border-netral-50 rounded p-2">
+                <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
+                <p className="font-semibold text-white text-nowrap text-[14px]">
+                  {wallet}
+                </p>
+              </div>
+            )}
+   </div>
+     </div>
     </div>
   );
 

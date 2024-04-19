@@ -29,10 +29,12 @@ interface TopBarProps {
 const Topbar: React.FC<TopBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [role, setRole] = useState<string>("");
   const [username, setUserName] = useState<string>("");
-  // const [userid, setUserId] = useState<string>(() => {
-  //   const storedManager = localStorage.getItem("userId")!;
-  //   return storedManager !== null ? storedManager : "";
-  // });
+  const [wallet, setWallet] = useState<any>();
+
+  const [userid, setUserId] = useState<string>(() => {
+    const storedManager = localStorage.getItem("userId")!;
+    return storedManager !== null ? storedManager : "";
+  });
 
   useEffect(() => {
     const roleValue = localStorage.getItem("role");
@@ -45,8 +47,11 @@ const Topbar: React.FC<TopBarProps> = ({ showSidebar, setShowSidebar }) => {
 
   const fetchCoins = async () => {
     try {
-      const res = await axios.get(`https://fun2fun.live/merchent/getById/`);
+      const res = await axios.get(`https://fun2fun.live/admin/merchent/getById/${userid}`);
       console.log(res.data);
+      if(res?.data){
+        setWallet(res?.data?.data?.wallet);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +61,7 @@ const Topbar: React.FC<TopBarProps> = ({ showSidebar, setShowSidebar }) => {
     if(role==='Merchant'){
     fetchCoins();
     }
-  }, []);
+  }, [role, userid]);
   return (
     <header
       className={`fixed top-0 left-0 flex w-full z-50 items-center justify-between
@@ -226,7 +231,7 @@ const Topbar: React.FC<TopBarProps> = ({ showSidebar, setShowSidebar }) => {
               <div className="flex gap-2 items-center border shadow-md border-netral-50 rounded p-2">
                 <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
                 <p className="font-semibold text-white text-nowrap text-[14px]">
-                  0
+                  {wallet}
                 </p>
               </div>
             )}
