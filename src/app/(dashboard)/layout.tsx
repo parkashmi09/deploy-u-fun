@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </Head>
       <body className=" h-screen UI-Ecommerce flex">
         <ComponentLayout />
-        <main className="bg-netral-20/50 w-full md:pl-[300px] 2xl:pl-[350px] pl-0 h-fit overflow-scroll scrollbar-hide">
+        <main className=" w-full md:pl-[300px] 2xl:pl-[350px] pl-0 h-screen scrollbar-hide">
           {children}
         </main>
       </body>

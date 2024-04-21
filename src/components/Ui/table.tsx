@@ -112,7 +112,7 @@ export default function TableComponent ({
   
   return (
     <>
-      <div className="h-screen py-8 mb-12">
+      <div className="py-8 mb-12 h-screen">
    {
     data?.length===0 && isAdd &&(   <div className="flex gap-2 items-center justify-end w-full">
     <Button

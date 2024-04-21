@@ -20,7 +20,7 @@ export default function Alerts({
 }:Alerts) {
   setTimeout(() => {
     setOpen && setOpen(false)
-  }, 10000)
+  }, 5000)
   return (
     <Toast.Provider swipeDirection='right'>
       <Toast.Root

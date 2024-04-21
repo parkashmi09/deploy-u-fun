@@ -19,6 +19,9 @@ interface EditMerhcants {
   formData: EditFormData | undefined;
   setOpenEditManagerModal: React.Dispatch<React.SetStateAction<boolean>>
   fetchData: () => Promise<void>
+  setOpenToast?: React.Dispatch<React.SetStateAction<boolean>>
+  setToast?: React.Dispatch<React.SetStateAction<ToastObj>>
+  openToast: boolean
  
 }
 
@@ -35,14 +38,10 @@ const initialFormState={
 
 export default function EditMerchant(props: EditMerhcants) {
   const [editFormData, setEditFormData] = useState<EditFormData>(initialFormState);
+  const {setOpenToast, setToast, openToast} =props;
   console.log("edit for madata", editFormData)
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [toastObj, setToastObj] = React.useState<ToastObj>({
-    desc:"",
-    variant:"",
-    title:""
-  })
-  const [openToast, setOpenToast] = React.useState(false);
+
 console.log(props, "props")
   useEffect(() => {
 
@@ -81,18 +80,18 @@ const handleEdit =async()=> {
       console.log("Manager added successfully:", data);
 
       if(data?.status ===1){
-        setOpenToast(true);
-     setToastObj({
-      title:"Manager Creation",
+    setOpenToast && setOpenToast(true);
+     setToast && setToast({
+      title:"Manager Edit",
        desc:data?.message,
        variant:"success"
 
      })
       }
      else if(data?.status ===0 || data?.status ==='' ){
-        setOpenToast(true);
-        setToastObj({
-         title:"Manager Creation",
+       setOpenToast && setOpenToast(true);
+       setToast && setToast({
+         title:"Manager Edit",
           desc:data?.error,
           variant:"error"
  
@@ -109,6 +108,9 @@ const handleEdit =async()=> {
     console.error('Error adding manager:', error);
   } finally {
     setIsLoading(false);
+    setTimeout(()=> {
+      props.fetchData()
+    },2000)
     props.fetchData()
     props.setOpenEditManagerModal(false)
     setEditFormData(initialFormState)
@@ -205,14 +207,7 @@ const handleEdit =async()=> {
               </div>
             </div>
           </div>
-          <Alerts
-        //@ts-ignore
-        variant={toastObj?.variant}
-        open={openToast}
-        setOpen={setOpenToast}
-        title={toastObj?.title}
-        desc={toastObj?.desc}
-      />
+
     </div>
   );
 }

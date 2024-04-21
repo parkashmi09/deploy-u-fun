@@ -500,6 +500,9 @@ const ViewAdmin = () => {
           fetchData={fetchData}
           setOpenEditManagerModal={setOpenEditManagerModal}
           formData={editFormDetails}
+          setOpenToast={setOpenToast}
+          setToast={setToastObj}
+          openToast={openToast}
         />
       </ModalComponent>
       <ModalComponent

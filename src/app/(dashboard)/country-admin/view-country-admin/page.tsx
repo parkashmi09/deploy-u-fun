@@ -479,6 +479,8 @@ const ViewUser = () => {
           fetchData={fetchData}
           setOpenEditCountryAdminModal={setOpenEditManagerModal}
           formData={editFormDetails}
+          setOpenToast={setOpenToast}
+          setToast={setToastObj}
         />
       </ModalComponent>
           

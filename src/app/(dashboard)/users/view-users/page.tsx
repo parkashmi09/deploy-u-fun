@@ -343,7 +343,7 @@ const ViewUser = () => {
   }
 
   return (
-  <div className="mt-20 p-4 h-auto">
+  <div className="mt-20 p-4 h-auto ">
     <TableComponent 
         totalPages={totalPages}
         currentPage={currentPage}

@@ -8,9 +8,11 @@ import Image from "next/image";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {
   AdminPanelSettings,
+  Build,
   Close,
   Flag,
   GifTwoTone,
+  HotelSharp,
 } from "@mui/icons-material";
 import { SidebarMenu } from "../moleculs";
 import { HouseSimpleIcon, ReceiptIcon, UsersIcon } from "@/assets/icons";
@@ -61,6 +63,8 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   const [coinSeller, setCoinSeller] = React.useState(false);
   const [wallet, setWallet] = React.useState<any>();
   const [userid, setUserId] = useState<any>("")
+  const [agency, setAgency] = React.useState(false);
+  const [host, setHost] = useState<any>(false)
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -373,6 +377,81 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             </div>
           </SidebarExpand>
         )}
+
+
+          <SidebarMenu
+            active={agency}
+            onClick={() => setAgency(!agency)}
+            icon={<Build/>}
+            name="Agency"
+            variant="sub-menu"
+          />
+    
+
+            <SidebarExpand show={agency}>
+            <div onClick={() => setShowSidebar(false)}>
+          <SidebarMenu
+              name="View Agency"
+              variant="expand"
+              href="/agency/view-agency"
+            />
+          </div>
+          </SidebarExpand>  
+      
+     
+          <SidebarExpand show={agency}>
+          <div onClick={() => setShowSidebar(false)}>
+         <SidebarMenu
+              name="Add Agency"
+              variant="expand"
+              href="/agency/add-agency"
+            />
+         </div>
+          </SidebarExpand>
+
+          <SidebarMenu
+            active={host}
+            onClick={() => setHost(!host)}
+            icon={<HotelSharp/>}
+            name="Host"
+            variant="sub-menu"
+          />
+       
+
+
+            <SidebarExpand show={host}>
+            <div onClick={() => setShowSidebar(false)}>
+          <SidebarMenu
+              name="Pending Host"
+              variant="expand"
+              href="/host/pending-host"
+            />
+          </div>
+          </SidebarExpand>  
+     
+      
+            <SidebarExpand show={host}>
+            <div onClick={() => setShowSidebar(false)}>
+           <SidebarMenu
+              name="Approved Host"
+              variant="expand"
+              href="/host/approved-host"
+            />
+           </div>
+          </SidebarExpand>  
+  
+           
+            <SidebarExpand show={host}>
+          <div onClick={() => setShowSidebar(false)}>
+          <SidebarMenu
+              name="Rejected Host"
+              variant="expand"
+              href="/host/rejected-host"
+            />
+          </div>
+          </SidebarExpand>  
+    
+       
       </nav>
    <div className="">
    {role === "Merchant" && (

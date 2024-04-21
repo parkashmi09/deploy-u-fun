@@ -32,7 +32,7 @@ const SidebarMenu: React.FC<SidebarMenu> = ({
       {variant === "default" && (
         <Link
           href={`${href}`}
-          className={`relative flex w-full  items-center justify-between gap-3${
+          className={`relative flex w-full md:w-[225px]  items-center justify-between gap-3${
             exact
               ? href === currentActive
                 ? "bg-netral-20 w-[190px]  text-netral-25"

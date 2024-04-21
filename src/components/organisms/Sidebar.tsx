@@ -14,7 +14,7 @@ import {
 import { SidebarMenu } from "@/components/moleculs";
 import { NijaLogo } from "@/assets/brands";
 import Image from "next/image";
-import { AdminPanelSettings, Flag, GifTwoTone } from "@mui/icons-material";
+import { AdminPanelSettings, Build, Flag, GifTwoTone, HotelSharp } from "@mui/icons-material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Transition } from "@headlessui/react";
 import React, { useEffect, useLayoutEffect, useState } from "react";
@@ -58,9 +58,11 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [showSubAdmin, setShowSubAdmin] = React.useState(false);
   const [showMerchant, setShowMerchant] = React.useState(false);
   const [coinSeller, setCoinSeller] = React.useState(false);
+  const [agency, setAgency] = React.useState(false);
   const [role, setRole] = useState<string>("");
   const [wallet, setWallet] = React.useState<any>();
   const [userid, setUserId] = useState<any>("")
+  const [host, setHost] = useState<any>(false)
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -130,7 +132,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
       }}
     >
     <div className="flex flex-col gap-24 h-full mb-24">
-    <nav className="mt-10 pb-56 flex w-full h-[700px] overflow-y-scroll overflow-x-hidden scrollbar-hide flex-col items-start gap-3">
+    <nav className="mt-12  pb-56 flex w-full h-[1000px] overflow-y-scroll overflow-x-hidden scrollbar-hide flex-col items-start gap-3">
         <SidebarMenu
           icon={<HouseSimpleIcon />}
           name="HOME"
@@ -338,6 +340,80 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           </SidebarExpand>
         )}
+
+
+          <SidebarMenu
+            active={agency}
+            onClick={() => setAgency(!agency)}
+            icon={<Build/>}
+            name="Agency"
+            variant="sub-menu"
+          />
+    
+
+
+            <SidebarExpand show={agency}>
+            <SidebarMenu
+              name="View Agency"
+              variant="expand"
+              href="/agency/view-agency"
+            />
+          </SidebarExpand>  
+       
+      
+          <SidebarExpand show={agency}>
+            <SidebarMenu
+              name="Add Agency"
+              variant="expand"
+              href="/agency/add-agency"
+            />
+          </SidebarExpand>
+      
+
+
+          <SidebarMenu
+            active={host}
+            onClick={() => setHost(!host)}
+            icon={<HotelSharp/>}
+            name="Host"
+            variant="sub-menu"
+          />
+       
+
+
+            <SidebarExpand show={host}>
+            <SidebarMenu
+              name="Pending Host"
+              variant="expand"
+              href="/host/pending-host"
+            />
+          </SidebarExpand>  
+     
+      
+            <SidebarExpand show={host}>
+            <SidebarMenu
+              name="Approved Host"
+              variant="expand"
+              href="/host/approved-host"
+            />
+          </SidebarExpand>  
+  
+           
+            <SidebarExpand show={host}>
+            <SidebarMenu
+              name="Rejected Host"
+              variant="expand"
+              href="/host/rejected-host"
+            />
+          </SidebarExpand>  
+    
+
+        
+        
+        
+
+        
+
       </nav>
       <div className="">
    {role === "Merchant" && (
