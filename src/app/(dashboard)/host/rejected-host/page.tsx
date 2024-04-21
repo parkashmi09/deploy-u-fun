@@ -317,7 +317,7 @@ const ViewAgency = () => {
       label: "Status",
       renderCell: (rowData: UserData) => (
        
-          <p className="text-[14px] text-yellow-600 font-semibold">{rowData?.status}</p>
+          <p className="text-[14px] text-red-600 font-semibold">{rowData?.status}</p>
       )
     },
   ];

@@ -167,7 +167,7 @@ const ViewAgency = () => {
       setOpenToast(true);
     
        setToastObj({
-        title:"",
+        title:"Host",
          desc:data?.message,
          variant:"success"
 
@@ -177,7 +177,7 @@ const ViewAgency = () => {
         if(data?.status ===0 || data?.status ==='' ){
           setOpenToast(true);
           setToastObj({
-           title:"Country Admin Remove",
+           title:"Host",
             desc:data?.error,
             variant:"error"
    
@@ -208,7 +208,7 @@ const ViewAgency = () => {
       setOpenToast(true);
     
        setToastObj({
-        title:"",
+        title:"Host",
          desc:data?.message,
          variant:"success"
 
@@ -218,7 +218,7 @@ const ViewAgency = () => {
         if(data?.status ===0 || data?.status ==='' ){
           setOpenToast(true);
           setToastObj({
-           title:"Country Admin Remove",
+           title:"Host",
             desc:data?.error,
             variant:"error"
    
