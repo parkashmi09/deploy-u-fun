@@ -288,8 +288,8 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           </SidebarExpand>
         )}
 
-        {(isCountryAdmin ||
-          isAdmin ||
+        {(
+          isAdmin || isManager||
           isMerchant) && (
           <SidebarMenu
             active={coinSeller}
@@ -300,10 +300,9 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           />
         )}
 
-        {(isCountryAdmin ||
+        {(
           isAdmin ||
           isManager ||
-          isSubAdmin ||
           isMerchant) && (
             <SidebarExpand show={coinSeller}>
             <SidebarMenu

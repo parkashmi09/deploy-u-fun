@@ -133,7 +133,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         </div>
         {/* Users */}
-        {role !== "Manager" && role !== "Admin" && (
+        {isAdmin && (
           <SidebarMenu
             active={showUsersMenu}
             onClick={() => setShowUsersMenu(!showUsersMenu)}
@@ -218,28 +218,6 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             />
           </SidebarExpand>
         )}
-        {isMerchant && (
-          <SidebarMenu
-            active={showMerchant}
-            onClick={() => setShowMerchant(!showMerchant)}
-            icon={<UsersIcon />}
-            name="Merchant"
-            variant="sub-menu"
-          />
-        )}
-
-        {isMerchant && (
-          <SidebarExpand show={showMerchant}>
-          <div onClick={() => setShowSidebar(false)}>
-          <SidebarMenu
-              name="View Merchant"
-              variant="expand"
-              href="/merchant/view-merchant"
-            />
-          </div>
-          </SidebarExpand>
-        )}
-
 {(isAdmin || isManager) && (
           <SidebarExpand show={showMerchant}>
          <div onClick={() => setShowSidebar(false)}>
@@ -319,11 +297,11 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           </SidebarExpand>
         )}
 
-        {(isCountryAdmin ||
-          isAdmin ||
+        {(
+          isAdmin || isManager || isMerchant
           
          
-          isMerchant) && (
+          ) && (
           <SidebarMenu
             active={coinSeller}
             onClick={() => setCoinSeller(!coinSeller)}
@@ -333,11 +311,10 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         )}
 
-        {(isCountryAdmin ||
+        {(
           isAdmin ||
-          isManager ||
-          isSubAdmin ||
-          isMerchant) && (
+          isManager || isMerchant
+       ) && (
           <SidebarExpand show={coinSeller}>
             <SidebarMenu
               name="Seller View"
