@@ -435,8 +435,8 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
               <div className="flex gap-2 items-center border justify-center ml-4 px-4 shadow-md border-netral-50 rounded p-2">
                 <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
                 <p className="font-semibold text-white text-nowrap text-[14px]">
-                  {/* {wallet} */}
-                  88888888
+                  {wallet}
+                  {/* 88888888 */}
                 </p>
               </div>
             )}
