@@ -430,12 +430,13 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
     
        
       </nav>
-   <div className="">
+   <div className="w-[50%]">
    {role === "Merchant" && (
-              <div className="flex gap-2 items-center border ml-4 w-[80px] shadow-md border-netral-50 rounded p-2">
+              <div className="flex gap-2 items-center border justify-center ml-4 px-4 shadow-md border-netral-50 rounded p-2">
                 <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
                 <p className="font-semibold text-white text-nowrap text-[14px]">
-                  {wallet}
+                  {/* {wallet} */}
+                  88888888
                 </p>
               </div>
             )}

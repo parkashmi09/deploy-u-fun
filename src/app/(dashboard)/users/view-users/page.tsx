@@ -10,6 +10,7 @@ import { Alerts } from "@/components/atomics";
 import { redirect } from "next/navigation";
 import withAuth from "@/components/WithAuth";
 import PaginationComponent from "@/components/Ui/Pagination";
+import { ToastObj } from "@/app/(auth)/login/page";
 
 interface UserData {
   userId: string;
@@ -57,6 +58,12 @@ const ViewUser = () => {
   const [openAlertsSuccess, setOpenAlertsSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [toastObj, setToastObj] = React.useState<ToastObj>({
+    desc:"",
+    variant:"",
+    title:""
+  })
+  const [openToast, setOpenToast] = React.useState(false);
   const handleDeleteModal=(id:string)=> {
     setIsOpenDeleteModal(true)
   }
@@ -110,6 +117,7 @@ const ViewUser = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+   
   
       const updatedData = await response.json();
   
@@ -130,6 +138,30 @@ const ViewUser = () => {
       } else {
         console.error(`User with _id ${updatedData?.data?._id} not found in userData array.`);
       }
+
+      if (response) {
+        const data = await response.json();
+
+        if(data?.status ===1){
+
+          setOpenToast(true);
+         setToastObj({
+          title:"User Status",
+           desc:data?.message,
+           variant:"success"
+    
+         })
+          }
+          else if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"User Status",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
+        }
     } catch (error) {
       console.error("Error toggling user Live ban:", error);
     }
@@ -368,11 +400,12 @@ const ViewUser = () => {
         </div>
       </ModalComponent>
       <Alerts
-        variant='success'
-        open={openAlertsSuccess}
-        setOpen={setOpenAlertsSuccess}  
-        title='Edit'
-        desc='Data is Edited Successfully!'
+//@ts-ignore
+        variant={toastObj?.variant!}
+        open={openToast}
+        setOpen={setOpenToast}  
+        title={toastObj?.title}
+        desc={toastObj?.desc}
       />
     </div>
   );
