@@ -247,7 +247,7 @@ const ViewUser = () => {
   const renderImageCell = (rowData: UserData) => {
     return (
        
-          <div style={{ display: "flex", alignItems: "center" }} className="h-24 w-24 object-contain">
+          <div style={{ display: "flex", alignItems: "center" }} className="h-[4rem] w-[4rem] object-contain">
             <Image
               src={rowData?.images?.[0]!}
               alt="User"
