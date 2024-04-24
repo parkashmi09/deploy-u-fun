@@ -63,6 +63,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [wallet, setWallet] = React.useState<any>();
   const [userid, setUserId] = useState<any>("")
   const [host, setHost] = useState<any>(false)
+  const [showBanner, setShowBanner] =React.useState(false);
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -93,8 +94,8 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
 
   const isManager = role === "Manager";
   const isCountryAdmin = role === "Country Admin";
-  const isAdmin = role === "Master";
-  const isSubAdmin = role === "Admin";
+  const isMasterAdmin = role === "Master";
+  const isAdmin = role === "Admin";
   const isMerchant = role === "Merchant";
 
 
@@ -141,7 +142,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           exact
         />
         {/* Users */}
-        {isAdmin && (
+        {isMasterAdmin && (
           <SidebarMenu
             active={showUsersMenu}
             onClick={() => setShowUsersMenu(!showUsersMenu)}
@@ -151,7 +152,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           />
         )}
 
-        {isAdmin && (
+        {isMasterAdmin && (
           <SidebarExpand show={showUsersMenu}>
             <SidebarMenu
               name="Add Official Users"
@@ -179,7 +180,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           </SidebarExpand>
         )}
 
-        {(isAdmin) && (
+        {(isMasterAdmin) && (
           <SidebarMenu
             active={showManager}
             onClick={() => setShowManager(!showManager)}
@@ -189,7 +190,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           />
         )}
 
-        {( isAdmin) && (
+        {( isMasterAdmin) && (
           <SidebarExpand show={showManager}>
             <SidebarMenu
               name="View Manager"
@@ -199,7 +200,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           </SidebarExpand>
         )}
 
-        {(isAdmin || isManager) && (
+        {(isMasterAdmin || isManager) && (
           <SidebarMenu
             active={showMerchant}
             onClick={() => setShowMerchant(!showMerchant)}
@@ -209,7 +210,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           />
         )}
 
-        {(isAdmin || isManager) && (
+        {(isMasterAdmin || isManager) && (
           <SidebarExpand show={showMerchant}>
             <SidebarMenu
               name="View Merchant"
@@ -218,7 +219,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           </SidebarExpand>
         )}
-          {(isAdmin || isManager) && (
+          {(isMasterAdmin || isManager) && (
           <SidebarExpand show={showMerchant}>
             <SidebarMenu
               name="Merchant Recharge History"
@@ -228,7 +229,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           </SidebarExpand>
         )}
 
-        {(isAdmin || isManager) && (
+        {(isMasterAdmin || isManager) && (
           <SidebarMenu
             active={showCountryAdmin}
             onClick={() => setShowCountryAdmin(!showCountryAdmin)}
@@ -238,7 +239,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           />
         )}
 
-        {(isCountryAdmin || isAdmin || isManager) && (
+        {(isCountryAdmin || isMasterAdmin || isManager) && (
           <SidebarExpand show={showCountryAdmin}>
             <SidebarMenu
               name="View Country Admin"
@@ -247,8 +248,19 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           </SidebarExpand>
         )}
+          {(isCountryAdmin || isMasterAdmin || isManager) && (
+          <SidebarExpand show={showCountryAdmin}>
+            <SidebarMenu
+              name="View Banner"
+              variant="expand"
+              href="/banner/view-banner"
+            />
+          </SidebarExpand>
+        )}
+       
 
-        {(isCountryAdmin || isAdmin || isManager) && (
+
+        {(isCountryAdmin || isMasterAdmin || isManager) && (
           <SidebarMenu
             active={showAdmin}
             onClick={() => setShowAdmin(!showAdmin)}
@@ -258,7 +270,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           />
         )}
 
-        {(isCountryAdmin || isAdmin || isManager) && (
+        {(isCountryAdmin || isMasterAdmin || isManager) && (
           <SidebarExpand show={showAdmin}>
             <SidebarMenu
               name="View Admin"
@@ -267,8 +279,36 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           </SidebarExpand>
         )}
+           {(isCountryAdmin) && (
+          <SidebarExpand show={showAdmin}>
+            <SidebarMenu
+              name="View Banner"
+              variant="expand"
+              href="/banner/view-banner"
+            />
+          </SidebarExpand>
+        )}
+        {/* {(isCountryAdmin || isMasterAdmin || isManager) && (
+          <SidebarMenu
+            active={showBanner}
+            onClick={() => setShowBanner(!showBanner)}
+            icon={<AdminPanelSettings />}
+            name="Banner"
+            variant="sub-menu"
+          />
+        )}
 
-        {(isCountryAdmin || isAdmin || isManager || isSubAdmin) && (
+        {(isCountryAdmin || isMasterAdmin || isManager) && (
+          <SidebarExpand show={showBanner}>
+            <SidebarMenu
+               name="View Banner"
+              variant="expand"
+              href="/banner/view-banner"
+            />
+          </SidebarExpand>
+        )} */}
+
+        {(isCountryAdmin || isMasterAdmin || isManager || isAdmin) && (
           <SidebarMenu
             active={showSubAdmin}
             onClick={() => setShowSubAdmin(!showSubAdmin)}
@@ -278,7 +318,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           />
         )}
 
-        {(isCountryAdmin || isAdmin || isManager || isSubAdmin) && (
+        {(isCountryAdmin || isMasterAdmin || isManager || isAdmin) && (
           <SidebarExpand show={showSubAdmin}>
             <SidebarMenu
               name="View Sub Admin"
@@ -287,9 +327,18 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           </SidebarExpand>
         )}
+        {(isAdmin) && (
+          <SidebarExpand show={showSubAdmin}>
+            <SidebarMenu
+              name="View Banner"
+              variant="expand"
+              href="/banner/view-banner"
+            />
+          </SidebarExpand>
+        )}
 
         {(
-          isAdmin || isManager||
+          isMasterAdmin || isManager||
           isMerchant) && (
           <SidebarMenu
             active={coinSeller}
@@ -301,7 +350,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
         )}
 
         {(
-          isAdmin ||
+          isMasterAdmin ||
           isManager ||
           isMerchant) && (
             <SidebarExpand show={coinSeller}>
@@ -314,9 +363,9 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
         )}
 
 {(isCountryAdmin ||
-          isAdmin ||
+          isMasterAdmin ||
           isManager ||
-          isSubAdmin ||
+          isAdmin ||
           isMerchant) && (
           <SidebarExpand show={coinSeller}>
             <SidebarMenu
@@ -327,9 +376,9 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
           </SidebarExpand>
         )}
         {(isCountryAdmin ||
-          isAdmin ||
+          isMasterAdmin ||
           isManager ||
-          isSubAdmin ||
+          isAdmin ||
           isMerchant) && (
           <SidebarExpand show={coinSeller}>
             <SidebarMenu

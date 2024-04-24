@@ -85,6 +85,12 @@ input:checked + .slider:before {
     border-radius: 34px;
 }
 
+.truncate-props {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
 .slider.round:before {
     border-radius: 50%;
 }

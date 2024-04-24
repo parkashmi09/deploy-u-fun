@@ -3,16 +3,19 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import ModalComponent from "../../../../components/Modal";
-import { Menu, Transition } from "@headlessui/react";
 import { Alerts, Button, Input } from "@/components/atomics";
 import { Delete, Edit } from "@mui/icons-material";
 import withAuth from "@/components/WithAuth";
 import { countriesOptions } from "@/utils/country";
 import Select from "react-select";
-import axios from "axios";
-import EditAdmin, { EditFormData } from "@/components/EditAdmin";
 import TableComponent from "@/components/Ui/table";
 import { ToastObj } from "@/app/(auth)/login/page";
+import { EditFormData } from "@/components/EditAdmin";
+import EditCountryAdmin from "@/components/EditCountyAdmin";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+
 
 interface UserData {
   userId: string;
@@ -22,16 +25,16 @@ interface UserData {
   email: string;
   mobile: string;
   countryCode: string;
-  _id?: string;
 }
 
-const ViewAdmin = () => {
+const ViewUser = () => {
   const [userData, setUserData] = useState<UserData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
+  const [countrySelect, setCountrySelect]=useState<boolean>(false)
+
   const [openDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
-  const [countrySelect, setCountrySelect] = useState<boolean>(false);
   const [openAddCountryAdminModal, setOpenAddCountryAdminModal] =
     useState<boolean>(false);
   const [openEditManagerModal, setOpenEditManagerModal] =
@@ -40,39 +43,47 @@ const ViewAdmin = () => {
   const [userid, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
-  const [countryCode, setCountryCode] = useState<string>("");
-  const [countryFieldOption, setIsCountryFieldOptions] =
-    useState<boolean>(true);
+  const [link,setLink] = useState<any>(null);
+  const [image, setImage] = useState<any>(null);
 
-    const [useCountryCode, setUseCountryCode] = useState(() => {
-      const storedManager = localStorage.getItem("countryCode");
-      return storedManager !== null ? storedManager : "";
-    });
-    
 
   const [editFormDetails, setEditFormDetails] = useState<
-    EditFormData | undefined
+    EditFormData| undefined
   >(undefined);
+  const [managerId, setManagerId] = useState<string>(() => {
+    const storedManager = localStorage.getItem("userId");
+    return storedManager !== null ? storedManager : "";
+  });
+
+  const [payload, setPayload] = useState<any>({
+    role: localStorage.getItem("role")?.toLowerCase(),
+    userId: localStorage.getItem("userId"),
+  })
+
+  const [isFilter, setIsFilter]= useState<boolean>(false);
   const [toastObj, setToastObj] = React.useState<ToastObj>({
     desc:"",
     variant:"",
     title:""
   })
   const [openToast, setOpenToast] = React.useState(false);
-  const [managerId, setManagerId] = useState<string>(() => {
-    const storedManager = localStorage.getItem("userId");
+  
+
+  const [countryCode, setCountryCode]= useState<string>(() => {
+    const storedManager = localStorage.getItem("countryCode");
     return storedManager !== null ? storedManager : "";
-  });
+  })
   const [isModalLoading, setIsModalLoading] = useState<boolean>(false);
-  const [manager, setManager] = useState<string>(() => {
-    const storedManager = localStorage.getItem("role");
-    return storedManager !== null ? storedManager : "";
-  });
-  const [isFilter, setIsFilter] = useState<boolean>();
-  const [payload, setPayload] = useState<any>({
-    role: localStorage.getItem("role")?.toLowerCase(),
-    userId: localStorage.getItem("userId"),
-  });
+  const [manager, setManager] = useState<string>('');
+
+  console.log("roles are", manager)
+
+
+  useEffect(()=>{
+
+    const storedManager = localStorage.getItem("role") ||'';
+    setManager(storedManager)
+  },[])
 
   const filteredOptions = [
     {
@@ -85,11 +96,12 @@ const ViewAdmin = () => {
     },
   ];
 
+
   const [selectedCountryByValue, setSelectCountryByValue] = useState<any>(
     filteredOptions[0] || {}
   );
 
-  const handleDeleteModal = (id: any) => {
+  const handleDeleteModal = (id: string) => {
     setIsOpenDeleteModal(true);
     setUserId(id);
   };
@@ -98,13 +110,9 @@ const ViewAdmin = () => {
     fetchData();
   }, [payload]);
 
-  useEffect(() => {
-    if (manager === "Country Admin") {
-      setIsCountryFieldOptions(false);
-    }
-  }, [manager]);
-
   const handleEditModal = (data: any) => {
+    console.log("data", data);
+    console.log("id", data);
     setEditFormDetails({
       userId: "",
       username: "",
@@ -117,21 +125,33 @@ const ViewAdmin = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await axios.post(
-        "https://fun2fun.live/admin/official/getByRole",
-        payload
+      const response = await fetch(
+        "https://fun2fun.live/admin/banner/getall",
+        // {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(payload), // Assuming payload is defined somewhere in your code
+        // }
       );
-      console.log("data response", data);
-      const modifiedData = data?.data?.data?.map(
-        (user: UserData, index: number) => ({
-          ...user,
-          "sr.no": index + 1,
-          name: user.name || "-",
-          mobile: user.mobile || "-",
-          status: user.is_active ? "Active" : "Inactive",
-          userid: user.userId || "-",
-        })
-      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+  
+      const data = await response.json();
+      console.log("data", data);
+  
+      const modifiedData = data?.data?.map((user: UserData, index: number) => ({
+        ...user,
+        "sr.no": index + 1,
+        name: user.name || "-",
+        mobile: user.mobile || "-",
+        status: user.is_active ? "Active" : "Inactive",
+        userid: user.userId || "-",
+      }));
+  
       setUserData([...modifiedData]);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -139,90 +159,112 @@ const ViewAdmin = () => {
       setIsLoading(false);
     }
   };
+  
 
   const handleOnAdd = () => {
     setOpenAddCountryAdminModal(true);
   };
 
-  console.log("use country code", useCountryCode)
-
   const handleAddCountryModal = async () => {
+
+    const formData = new FormData();
+    formData.set("link", link);
+    formData.append("images", image);
+    formData.set(
+      "countryCode",
+      manager === "Manager" || manager === "Master" || manager === "Merchant"
+        ? selectedCountry?.value
+        : countryCode
+    );
+    
     try {
       setIsModalLoading(true);
-      const response = await fetch(`https://fun2fun.live/admin/make/official`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          userId: userid,
-          password: password,
-            
-          createdBy: {
-            role: manager.toLowerCase(),
-            userId: managerId,
+      const response = await axios.post(
+        `https://fun2fun.live/admin/banner/add`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log("response data",data);
+        }
+      );
+      if (response) {
+        const data = await response.data
+        console.log("Manager added successfully:", data);
+
         if(data?.status ===1){
+      setOpenToast(true);
+       setToastObj({
+        title:"Banner",
+         desc:data?.message,
+         variant:"success"
+
+       })
+       fetchData()
+        }
+        if(data?.status ===0 || data?.status ==='' ){
           setOpenToast(true);
-           setToastObj({
-            title:"Admin Creation",
-             desc:data?.message,
-             variant:"success"
+          setToastObj({
+           title:"",
+            desc:data?.error,
+            variant:"error"
+   
+          })
+        }
     
-           })
-            }
-            if(data?.status ===0 || data?.status ==='' || data?.data=="" ){
-              setOpenToast(true);
-              setToastObj({
-               title:"Admin Creation",
-                desc:data?.error,
-                variant:"error"
-       
-              })
-            }
+        console.log("Country added successfully:", data);
         setUserName("");
         setUserId("");
         selectedCountry({});
-        setPassword("");
+        setPassword("")
 
         fetchData();
       } else {
-        console.error("Failed to add manager:", response.statusText);
+        // console.error("Failed to add manager:", response.statusText);
         setUserName("");
         setUserId("");
-        setSelectedCountry({ label: "", value: "" });
-        setPassword("");
+        setSelectedCountry({label:"", value:""});
+        setPassword("")
       }
     } catch (error) {
-      fetchData();
       console.error("Error adding manager:", error);
       setUserName("");
       setUserId("");
-      setSelectedCountry({ label: "", value: "" });
-      setPassword("");
-    } finally {
+      setSelectedCountry({label:"", value:""});
+      setPassword("")
       fetchData();
+    } finally {
       setIsModalLoading(false);
       setOpenAddCountryAdminModal(false);
       setUserName("");
       setUserId("");
-      setSelectedCountry({ label: "", value: "" });
-      setPassword("");
+      setSelectedCountry({label:"", value:""});
+      setPassword("")
+      fetchData();
     }
   };
 
-  const handleDeleteAdmin = async () => {
+  const renderImageCell = (rowData: UserData) => {
+    return (
+       
+          <div style={{ display: "flex", alignItems: "center" }} className="h-24 w-24 object-contain">
+            <Image
+              src={rowData?.images?.[0]!}
+              alt="User"
+              width={50}
+              height={50}
+              style={{ marginRight: "5px" }}
+            />
+      
+      </div>
+    );
+  };
+  
 
-    console.log("user id", userid)
+  const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/remove/official`;
+      const url = `https://fun2fun.live/admin/remove/country-admin`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -231,29 +273,25 @@ const ViewAdmin = () => {
         body: JSON.stringify({ userId: userid }),
       });
       if (response.ok) {
-
         const data = await response.json();
-        console.log("response data dele",data);
         if(data?.status ===1){
           setOpenToast(true);
            setToastObj({
-            title:"Admin Delete",
+            title:"Country Admin Remove",
              desc:data?.message,
              variant:"success"
     
            })
             }
-            if(data?.status ===0 || data?.status ==='' || data?.data=="" ){
+            if(data?.status ===0 || data?.status ==='' ){
               setOpenToast(true);
               setToastObj({
-               title:"Admin Delete",
+               title:"Country Admin Remove",
                 desc:data?.error,
                 variant:"error"
        
               })
             }
-        console.log("User deleted successfully");
-        toast.success("Data deleted");
         setIsOpenDeleteModal(false);
         fetchData();
       } else {
@@ -267,13 +305,16 @@ const ViewAdmin = () => {
       setIsModalLoading(false);
     }
   };
-  useEffect(() => {
-    if (manager === "Master" || manager === "Manager") {
-      setIsFilter(true);
-    } else {
-      setIsFilter(false);
+
+  useEffect(()=>{
+    if(manager==="Master" || manager==="Manager") {
+      setIsFilter(true)
     }
-  }, [manager]);
+    else{
+      setIsFilter(false)
+    }
+  },[manager])
+
 
   const headerData = [
     {
@@ -281,44 +322,24 @@ const ViewAdmin = () => {
       label: "Sr no",
     },
     {
-      key: "userid",
-      label: "UserId",
-    },
-    {
-      key: "username",
-      label: "UserName",
-    },
+        key: "images",
+        label: "Image",
+        renderCell: renderImageCell,
+      },
     {
       key: "countryCode",
       label: "Country Code",
     },
     {
-      key: "status",
-      label: "Status",
-      renderCell: (rowData: UserData) => (
-        <span
-          className={`${
-            rowData?.is_active ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {rowData?.is_active ? "Active" : "InActive"}
-        </span>
-      ),
-    },
-    {
-      key: "is_active",
-      label: "Action",
-      renderCell: (rowData: UserData) => (
-        <div className="flex gap-2">
-          <div onClick={() => handleEditModal(rowData)}>
-            <Edit className="cursor-pointer text-gray-600" />
+        key: "link",
+        label: "Links",
+        renderCell:(data:any)=>(
+            <div className="w-[100px] truncate">
+            <Link className="text-blue-400" href={data.link}>Go To Link</Link>
           </div>
-          <div onClick={() => handleDeleteModal(rowData?.userId)}>
-            <Delete className="cursor-pointer text-red-600" />
-          </div>
-        </div>
-      ),
-    },
+        
+        )
+      },
   ];
 
   return (
@@ -352,11 +373,9 @@ const ViewAdmin = () => {
         isLoading={isLoading}
         data={userData}
         headers={headerData}
-        addButtonLabel="Add  Admin"
+        addButtonLabel="Add Banner"
         isAdd
-        isFilter={isFilter}
-        filterAction={fetchData}
-        title="View Admins"
+        title="View Banner"
         setCountrySelect={setCountrySelect}
         setCountryCode={setCountryCode}
         setPayload={setPayload}
@@ -383,51 +402,52 @@ const ViewAdmin = () => {
         isOpen={openAddCountryAdminModal}
         setIsOpen={setOpenAddCountryAdminModal}
         size="2xl"
-        title="Add Official"
+        title="Add Banner"
       >
         <div className="px-8 py-4 grid grid-cols-1 gap-x-5 gap-y-8">
-          <Input
-            id="username"
-            placeholder="Enter User Name"
-            label="User Name"
-            variant="default"
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
-            modal
-          />
-          <Input
-            id="userid"
-            placeholder="Enter User Id"
-            label="Enter User Id"
-            variant="default"
-            value={userid}
-            onChange={(e) => setUserId(e.target.value)}
-            modal
-          />
-          {countryFieldOption && (
+     {
+        (manager==='Manager'|| manager==='Master'|| manager==='Merchant')
+           &&(
             <div className="w-full">
-              <label className="text-white text-body-base font-semibold mb-6">
-                Country
-              </label>
-              <Select
-                placeholder="Select Country"
-                value={selectedCountry} // Selected values should match one of the options exactly
-                onChange={(selectedOptions) => {
-                  setSelectedCountry(selectedOptions);
-                }}
-                options={countriesOptions}
-              />
-            </div>
-          )}
+            <label className="text-white text-body-base font-semibold mb-6">
+              Country
+            </label>
+            <Select
+              placeholder="Select Country"
+              value={selectedCountry} // Selected values should match one of the options exactly
+              onChange={(selectedOptions) => {
+                setSelectedCountry(selectedOptions);
+              }}
+              options={countriesOptions}
+            />
+          </div>
+)}
           <Input
-            id="password"
-            placeholder=""
-            label="Password"
-            variant="default"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            modal
-          />
+              id="link"
+              placeholder=""
+              label="Link"
+              defaultValue={link} // Change value to defaultValue
+              onChange={(e) => {
+                if (e.target.value) {
+                  setLink(e.target.value);
+                }
+              }}
+              modal
+            />
+            <Input
+              id="iamge"
+              placeholder=""
+              label="Image"
+              type="file"
+              accept="image/*"
+              defaultValue={image} // Change value to defaultValue
+              onChange={(e) => {
+                if (e.target.files) {
+                  setImage(e.target.files[0]);
+                }
+              }}
+              modal
+            />
         </div>
       </ModalComponent>
       <ModalComponent
@@ -439,13 +459,16 @@ const ViewAdmin = () => {
         hideButtons
         title="Edit"
       >
-        <EditAdmin
+        <EditCountryAdmin
           fetchData={fetchData}
-          setOpenEditManagerModal={setOpenEditManagerModal}
+          setOpenEditCountryAdminModal={setOpenEditManagerModal}
           formData={editFormDetails}
+          setOpenToast={setOpenToast}
+          setToast={setToastObj}
         />
       </ModalComponent>
-      <Alerts
+          
+<Alerts
 //@ts-ignore
         variant={toastObj?.variant!}
         open={openToast}
@@ -457,4 +480,4 @@ const ViewAdmin = () => {
   );
 };
 
-export default withAuth(ViewAdmin);
+export default withAuth(ViewUser);

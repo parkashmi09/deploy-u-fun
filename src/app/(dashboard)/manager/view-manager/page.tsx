@@ -23,64 +23,7 @@ interface UserData {
 
 
 
-const renderImageCell = (rowData: UserData) => {
-  return rowData.images?.map((image: string, index: number) => (
-    <div key={index} style={{ display: "flex", alignItems: "center" }}>
-      {image && (
-        <Image
-          src={image}
-          alt="User"
-          width={50}
-          height={50}
-          style={{ marginRight: "5px" }}
-        />
-      )}
-    </div>
-  ));
-};
 
-// const headerData = [
-//   {
-//     key: "sr.no",
-//     label: "Sr no",
-//   },
-//   {
-//     key: "images",
-//     label: "Image",
-//     renderCell: renderImageCell,
-//   },
-//   {
-//     key: "name",
-//     label: "Username",
-//   },
-//   {
-//     key: "userid",
-//     label: "User Id",
-//   },
-//   {
-//     key: "mobile",
-//     label: "Phone",
-//   },
-//   {
-//     key: "diamonds",
-//     label: "Diamonds",
-//   },
-//   {
-//     key: "status",
-//     label: "Status",
-//     renderCell: (rowData: UserData) => (
-//       <span className={`${rowData?.status === "Active" ? "text-green-500" : "text-red-500"}`}>
-//         {rowData?.status}
-//       </span>
-//     ),
-//   },
-
-//   {
-//     key: "action",
-//     label: "Action",
-//     renderCell: (_, index : any) => renderActionCell(index),
-//   }
-// ];
 
 const ViewManager = () => {
   const [userData, setUserData] = useState<any>(null);
@@ -96,6 +39,8 @@ const ViewManager = () => {
   const [country, setCountry] = useState<string>("");
   const [openAlertsSuccess, setOpenAlertsSuccess] = useState<boolean>(false);
   const [managerId, setManagerId] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [toastObj, setToastObj] = React.useState<ToastObj>({
     desc:"",
     variant:"",
@@ -125,23 +70,30 @@ const ViewManager = () => {
     try {
       const response = await fetch(`https://fun2fun.live/admin/manager/getall`);
       const data = await response?.json();
-      console.log("data is", data);
-      const modifiedData = data?.data?.map((user: UserData, index: number) => ({
+      console.log("data is", data?.data?.data    )
+      setTotalPages(Math.ceil(data?.data?.totalUsers / 10));
+      const startSerialNumber = (currentPage - 1) * 10 + 1;
+      const modifiedData =data?.data?.data?.map((user: UserData, index: number) => ({
         ...user,
-        "sr.no": index + 1,
+        "sr.no": startSerialNumber + index,
         name: user.name || "-",
         mobile: user.mobile || "-",
         status: user.is_active == true ? "Active" : "Inactive",
         userid: user.userId || "-",
       }));
 
-      setUserData([...modifiedData]);
+      setUserData(modifiedData);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    
+    fetchData();
+  }, [currentPage]);
 
   const handleActive = async (checked: boolean, id: string) => {
     try {
@@ -294,6 +246,14 @@ const ViewManager = () => {
     setUserData(filteredData); // Update userData state with filtered results
   };
 
+  const handlePageChange = (event: any, page: number) => {
+
+    console.log("current", page)
+    // Update currentPage state
+    setCurrentPage(page);
+    // You can also perform any other necessary actions here, like fetching data for the new page
+  };
+
 
   return (
     <div className="mt-24 p-6">
@@ -305,6 +265,9 @@ const ViewManager = () => {
         headers={headerData}
         title="View Managers"
         addButtonLabel="Add Manager"
+        totalPages={totalPages}
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
       />
       <ModalComponent
         onAction={() => {}}

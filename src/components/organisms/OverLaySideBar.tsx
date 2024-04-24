@@ -77,9 +77,10 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
 
   const isManager = role === "Manager";
   const isCountryAdmin = role === "Country Admin";
-  const isAdmin = role === "Master";
-  const isSubAdmin = role === "Admin";
+  const isMasterAdmin = role === "Master";
+  const isAdmin = role === "Admin";
   const isMerchant = role === "Merchant";
+  const isSubAdmin= role ==='	Sub Admin'
 
   const toggleDrawer = (open: boolean) => () => {
     setShowSidebar(open);
@@ -133,7 +134,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         </div>
         {/* Users */}
-        {isAdmin && (
+        {isMasterAdmin && (
           <SidebarMenu
             active={showUsersMenu}
             onClick={() => setShowUsersMenu(!showUsersMenu)}
@@ -143,7 +144,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         )}
 
-        {isAdmin && (
+        {isMasterAdmin && (
           <SidebarExpand show={showUsersMenu}>
             <div className="w-[80%]" onClick={() => setShowSidebar(false)}>
               <SidebarMenu
@@ -178,7 +179,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             </div>
           </SidebarExpand>
         )}
-        {isAdmin && (
+        {isMasterAdmin && (
           <SidebarMenu
             active={showManager}
             onClick={() => setShowManager(!showManager)}
@@ -187,7 +188,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             variant="sub-menu"
           />
         )}
-        {isAdmin && (
+        {isMasterAdmin && (
           <SidebarExpand show={showManager}>
             <div onClick={() => setShowSidebar(false)}>
               <SidebarMenu
@@ -199,7 +200,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           </SidebarExpand>
         )}
 
-        {(isAdmin || isManager) && (
+        {(isMasterAdmin || isManager) && (
           <SidebarMenu
             active={showMerchant}
             onClick={() => setShowMerchant(!showMerchant)}
@@ -209,7 +210,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         )}
 
-        {(isAdmin || isManager) && (
+        {(isMasterAdmin || isManager) && (
           <SidebarExpand show={showMerchant}>
             <SidebarMenu
               name="View Merchant"
@@ -218,7 +219,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             />
           </SidebarExpand>
         )}
-{(isAdmin || isManager) && (
+{(isMasterAdmin || isManager) && (
           <SidebarExpand show={showMerchant}>
          <div onClick={() => setShowSidebar(false)}>
          <SidebarMenu
@@ -231,7 +232,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
         )}
 
 
-        {(isAdmin || isManager) && (
+        {(isMasterAdmin || isManager) && (
           <SidebarMenu
             active={showCountryAdmin}
             onClick={() => setShowCountryAdmin(!showCountryAdmin)}
@@ -241,7 +242,27 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         )}
 
-        {(isAdmin || isManager) && (
+        {(isMasterAdmin || isManager) && (
+          <SidebarExpand show={showCountryAdmin}>
+            <div onClick={() => setShowSidebar(false)}>
+              <SidebarMenu
+                name="View Country Admin"
+                variant="expand"
+                href="/country-admin/view-country-admin"
+              />
+            </div>
+          </SidebarExpand>
+        )}
+          {(isCountryAdmin || isMasterAdmin || isManager) && (
+          <SidebarExpand show={showCountryAdmin}>
+            <SidebarMenu
+              name="View Banner"
+              variant="expand"
+              href="/banner/view-banner"
+            />
+          </SidebarExpand>
+        )}
+          {(isMasterAdmin || isManager) && (
           <SidebarExpand show={showCountryAdmin}>
             <div onClick={() => setShowSidebar(false)}>
               <SidebarMenu
@@ -253,7 +274,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           </SidebarExpand>
         )}
 
-        {(isCountryAdmin || isAdmin || isManager) && (
+        {(isCountryAdmin || isMasterAdmin || isManager) && (
           <SidebarMenu
             active={showAdmin}
             onClick={() => setShowAdmin(!showAdmin)}
@@ -263,7 +284,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         )}
 
-        {(isCountryAdmin || isAdmin || isManager) && (
+        {(isCountryAdmin || isMasterAdmin || isManager) && (
           <SidebarExpand show={showAdmin}>
             <div onClick={() => setShowSidebar(false)}>
               <SidebarMenu
@@ -274,8 +295,17 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             </div>
           </SidebarExpand>
         )}
+        {(isCountryAdmin || isMasterAdmin || isManager) && (
+          <SidebarExpand show={showAdmin}>
+            <SidebarMenu
+              name="View Banner"
+              variant="expand"
+              href="/banner/view-banner"
+            />
+          </SidebarExpand>
+        )}
 
-        {(isCountryAdmin || isAdmin || isManager || isSubAdmin) && (
+        {(isCountryAdmin || isMasterAdmin || isManager || isAdmin) && (
           <SidebarMenu
             active={showSubAdmin}
             onClick={() => setShowSubAdmin(!showSubAdmin)}
@@ -285,7 +315,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           />
         )}
 
-        {(isCountryAdmin || isAdmin || isManager || isSubAdmin) && (
+        {(isCountryAdmin || isMasterAdmin || isManager || isAdmin) && (
           <SidebarExpand show={showSubAdmin}>
             <div onClick={() => setShowSidebar(false)}>
               <SidebarMenu
@@ -296,9 +326,18 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             </div>
           </SidebarExpand>
         )}
+           {(isAdmin) && (
+          <SidebarExpand show={showSubAdmin}>
+            <SidebarMenu
+              name="View Banner"
+              variant="expand"
+              href="/banner/view-banner"
+            />
+          </SidebarExpand>
+        )}
 
         {(
-          isAdmin || isManager || isMerchant
+          isMasterAdmin || isManager || isMerchant
           
          
           ) && (
@@ -312,7 +351,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
         )}
 
         {(
-          isAdmin ||
+          isMasterAdmin ||
           isManager || isMerchant
        ) && (
           <SidebarExpand show={coinSeller}>
@@ -325,9 +364,9 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
         )}
 
         {(isCountryAdmin ||
-          isAdmin ||
+          isMasterAdmin ||
           isManager ||
-          isSubAdmin ||
+          isAdmin ||
           isMerchant) && (
           <SidebarExpand show={coinSeller}>
             <div onClick={() => setShowSidebar(false)}>
@@ -340,9 +379,9 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
           </SidebarExpand>
         )}
         {(isCountryAdmin ||
-          isAdmin ||
+          isMasterAdmin ||
           isManager ||
-          isSubAdmin ||
+          isAdmin ||
           isMerchant) && (
           <SidebarExpand show={coinSeller}>
             <div onClick={() => setShowSidebar(false)}>
