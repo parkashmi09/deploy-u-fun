@@ -68,7 +68,7 @@ const ViewManager = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://fun2fun.live/admin/manager/getall`);
+      const response = await fetch(`https://fun2fun.live/admin/manager/getall?page=${currentPage}&limit=${10}`);
       const data = await response?.json();
       console.log("data is", data?.data?.data    )
       setTotalPages(Math.ceil(data?.data?.totalUsers / 10));
