@@ -140,6 +140,7 @@ const ViewSubAdmin = () => {
           mobile: user.mobile || "-",
           status: user.is_active ? "Active" : "Inactive",
           userid: user.userId || "-",
+          countryCode: user.countryCode || "-",
         })
       );
       setUserData([...modifiedData]);
@@ -436,16 +437,7 @@ try {
                 />
               </div>
             )}
-            {/* <Input
-              id="password"
-              placeholder=""
-              label="Password"
-              variant="default"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              modal
-            /> */}
-
+      
             <Input
               id="adhar_front"
               placeholder=""

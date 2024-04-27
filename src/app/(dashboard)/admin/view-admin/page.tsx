@@ -44,20 +44,19 @@ const ViewAdmin = () => {
   const [countryFieldOption, setIsCountryFieldOptions] =
     useState<boolean>(true);
 
-    const [useCountryCode, setUseCountryCode] = useState(() => {
-      const storedManager = localStorage.getItem("countryCode");
-      return storedManager !== null ? storedManager : "";
-    });
-    
+  const [useCountryCode, setUseCountryCode] = useState(() => {
+    const storedManager = localStorage.getItem("countryCode");
+    return storedManager !== null ? storedManager : "";
+  });
 
   const [editFormDetails, setEditFormDetails] = useState<
     EditFormData | undefined
   >(undefined);
   const [toastObj, setToastObj] = React.useState<ToastObj>({
-    desc:"",
-    variant:"",
-    title:""
-  })
+    desc: "",
+    variant: "",
+    title: "",
+  });
   const [openToast, setOpenToast] = React.useState(false);
   const [managerId, setManagerId] = useState<string>(() => {
     const storedManager = localStorage.getItem("userId");
@@ -130,6 +129,7 @@ const ViewAdmin = () => {
           mobile: user.mobile || "-",
           status: user.is_active ? "Active" : "Inactive",
           userid: user.userId || "-",
+          countryCode: user.countryCode || "-",
         })
       );
       setUserData([...modifiedData]);
@@ -144,7 +144,7 @@ const ViewAdmin = () => {
     setOpenAddCountryAdminModal(true);
   };
 
-  console.log("use country code", useCountryCode)
+  console.log("use country code", useCountryCode);
 
   const handleAddCountryModal = async () => {
     try {
@@ -158,7 +158,7 @@ const ViewAdmin = () => {
           username: username,
           userId: userid,
           password: password,
-            
+
           createdBy: {
             role: manager.toLowerCase(),
             userId: managerId,
@@ -167,25 +167,23 @@ const ViewAdmin = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("response data",data);
-        if(data?.status ===1){
+        console.log("response data", data);
+        if (data?.status === 1) {
           setOpenToast(true);
-           setToastObj({
-            title:"Admin Creation",
-             desc:data?.message,
-             variant:"success"
-    
-           })
-            }
-            if(data?.status ===0 || data?.status ==='' || data?.data=="" ){
-              setOpenToast(true);
-              setToastObj({
-               title:"Admin Creation",
-                desc:data?.error,
-                variant:"error"
-       
-              })
-            }
+          setToastObj({
+            title: "Admin Creation",
+            desc: data?.message,
+            variant: "success",
+          });
+        }
+        if (data?.status === 0 || data?.status === "" || data?.data == "") {
+          setOpenToast(true);
+          setToastObj({
+            title: "Admin Creation",
+            desc: data?.error,
+            variant: "error",
+          });
+        }
         setUserName("");
         setUserId("");
         selectedCountry({});
@@ -218,8 +216,7 @@ const ViewAdmin = () => {
   };
 
   const handleDeleteAdmin = async () => {
-
-    console.log("user id", userid)
+    console.log("user id", userid);
     try {
       setIsModalLoading(true);
       const url = `https://fun2fun.live/admin/remove/official`;
@@ -231,27 +228,24 @@ const ViewAdmin = () => {
         body: JSON.stringify({ userId: userid }),
       });
       if (response.ok) {
-
         const data = await response.json();
-        console.log("response data dele",data);
-        if(data?.status ===1){
+        console.log("response data dele", data);
+        if (data?.status === 1) {
           setOpenToast(true);
-           setToastObj({
-            title:"Admin Delete",
-             desc:data?.message,
-             variant:"success"
-    
-           })
-            }
-            if(data?.status ===0 || data?.status ==='' || data?.data=="" ){
-              setOpenToast(true);
-              setToastObj({
-               title:"Admin Delete",
-                desc:data?.error,
-                variant:"error"
-       
-              })
-            }
+          setToastObj({
+            title: "Admin Delete",
+            desc: data?.message,
+            variant: "success",
+          });
+        }
+        if (data?.status === 0 || data?.status === "" || data?.data == "") {
+          setOpenToast(true);
+          setToastObj({
+            title: "Admin Delete",
+            desc: data?.error,
+            variant: "error",
+          });
+        }
         console.log("User deleted successfully");
         toast.success("Data deleted");
         setIsOpenDeleteModal(false);
@@ -323,29 +317,7 @@ const ViewAdmin = () => {
 
   return (
     <div className="mt-24 p-4">
-      {/* <div className="w-full">
-            <label className="text-white text-body-base font-semibold mb-6">Country</label>
-            <Select
-            className='w-[20%]'
-              placeholder="Select Country"
-              value={selectedCountryByValue} // Selected values should match one of the options exactly
-              onChange={(selectedOptions) => {
-              setSelectCountryByValue(selectedOptions);
-              }}
-              options={filteredOptions}
-            />
-            </div> */}
-
-      <div className="flex gap-2 items-center">
-        {/* <Button
-          size="sm"
-          variant="default-bg"
-          className="bg-netral-25"
-          onClick={getAllDetails}
-        >
-          Get All Countries
-        </Button> */}
-      </div>
+      <div className="flex gap-2 items-center"></div>
 
       <TableComponent
         onAdd={handleOnAdd}
@@ -446,10 +418,10 @@ const ViewAdmin = () => {
         />
       </ModalComponent>
       <Alerts
-//@ts-ignore
+        //@ts-ignore
         variant={toastObj?.variant!}
         open={openToast}
-        setOpen={setOpenToast}  
+        setOpen={setOpenToast}
         title={toastObj?.title}
         desc={toastObj?.desc}
       />

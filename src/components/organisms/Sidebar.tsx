@@ -14,7 +14,15 @@ import {
 import { SidebarMenu } from "@/components/moleculs";
 import { NijaLogo } from "@/assets/brands";
 import Image from "next/image";
-import { AdminPanelSettings, Build, Flag, GifTwoTone, HotelSharp } from "@mui/icons-material";
+import {
+  AdminPanelSettings,
+  Build,
+  EmojiFlags,
+  Flag,
+  GifTwoTone,
+  HotelSharp,
+  Superscript,
+} from "@mui/icons-material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Transition } from "@headlessui/react";
 import React, { useEffect, useLayoutEffect, useState } from "react";
@@ -61,24 +69,26 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [agency, setAgency] = React.useState(false);
   const [role, setRole] = useState<string>("");
   const [wallet, setWallet] = React.useState<any>();
-  const [userid, setUserId] = useState<any>("")
-  const [host, setHost] = useState<any>(false)
-  const [showBanner, setShowBanner] =React.useState(false);
+  const [userid, setUserId] = useState<any>("");
+  const [host, setHost] = useState<any>(false);
+  const [showBanner, setShowBanner] = React.useState(false);
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
     const storedManager = localStorage.getItem("userId")!;
     if (value !== null) {
       setRole(value);
-      setUserId(storedManager)
+      setUserId(storedManager);
     }
   }, []);
 
   const fetchCoins = async () => {
     try {
-      const res = await axios.get(`https://fun2fun.live/admin/merchent/getById/${userid}`);
+      const res = await axios.get(
+        `https://fun2fun.live/admin/merchent/getById/${userid}`
+      );
       console.log(res.data);
-      if(res?.data){
+      if (res?.data) {
         setWallet(res?.data?.data?.wallet);
       }
     } catch (error) {
@@ -87,8 +97,8 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   };
 
   useEffect(() => {
-    if(role==='Merchant'){
-    fetchCoins();
+    if (role === "Merchant") {
+      fetchCoins();
     }
   }, [role, userid]);
 
@@ -98,9 +108,8 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const isAdmin = role === "Admin";
   const isMerchant = role === "Merchant";
 
-
-  const handleShow=()=> {
-    if(coinSeller){
+  const handleShow = () => {
+    if (coinSeller) {
       if (coinSeller) {
         setShowMerchant(false);
         setShowAdmin(false);
@@ -108,8 +117,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
         setShowManager(false);
         setShowUsersMenu(false);
         setShowSubAdmin(false);
-      }
-      else if(showMerchant){
+      } else if (showMerchant) {
         setCoinSeller(false);
         setShowAdmin(false);
         setShowCountryAdmin(false);
@@ -118,10 +126,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
         setShowSubAdmin(false);
       }
     }
-  }
-
-
-
+  };
 
   return (
     <aside
@@ -132,283 +137,235 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
         msOverflowStyle: "none",
       }}
     >
-    <div className="flex flex-col gap-24 h-full mb-24">
-    <nav className="mt-12  pb-56 flex w-full h-[1000px] overflow-y-scroll overflow-x-hidden scrollbar-hide flex-col items-start gap-3">
-        <SidebarMenu
-          icon={<HouseSimpleIcon />}
-          name="HOME"
-          variant="default"
-          href="/"
-          exact
-        />
-        {/* Users */}
-        {isMasterAdmin && (
+      <div className="flex flex-col gap-24 h-full mb-24">
+        <nav className="mt-12  pb-56 flex w-full h-[1000px] overflow-y-scroll overflow-x-hidden scrollbar-hide flex-col items-start gap-3">
           <SidebarMenu
-            active={showUsersMenu}
-            onClick={() => setShowUsersMenu(!showUsersMenu)}
-            icon={<UsersIcon />}
-            name="Users"
-            variant="sub-menu"
+            icon={<HouseSimpleIcon />}
+            name="HOME"
+            variant="default"
+            href="/"
+            exact
           />
-        )}
-
-        {isMasterAdmin && (
-          <SidebarExpand show={showUsersMenu}>
+          {/* Users */}
+          {isMasterAdmin && (
             <SidebarMenu
-              name="Add Official Users"
-              variant="expand"
-              href="/users/add-official-users"
+              active={showUsersMenu}
+              onClick={() => setShowUsersMenu(!showUsersMenu)}
+              icon={<UsersIcon />}
+              name="Users"
+              variant="sub-menu"
             />
+          )}
 
+          {isMasterAdmin && (
+            <SidebarExpand show={showUsersMenu}>
+              <SidebarMenu
+                name="Add Official Users"
+                variant="expand"
+                href="/users/add-official-users"
+              />
+
+              <SidebarMenu
+                name="View Users"
+                variant="expand"
+                href="/users/view-users"
+              />
+
+              <SidebarMenu
+                name="Top Users"
+                variant="expand"
+                href="/users/top-users"
+              />
+
+              <SidebarMenu
+                name="Push Notification"
+                variant="expand"
+                href="/users/push-notifications"
+              />
+            </SidebarExpand>
+          )}
+
+          {isMasterAdmin && (
             <SidebarMenu
-              name="View Users"
-              variant="expand"
-              href="/users/view-users"
+              active={showManager}
+              onClick={() => setShowManager(!showManager)}
+              icon={<ReceiptIcon />}
+              name="Manager"
+              variant="sub-menu"
             />
+          )}
 
-            <SidebarMenu
-              name="Top Users"
-              variant="expand"
-              href="/users/top-users"
-            />
+          {isMasterAdmin && (
+            <SidebarExpand show={showManager}>
+              <SidebarMenu
+                name="View Manager"
+                variant="expand"
+                href="/manager/view-manager"
+              />
+            </SidebarExpand>
+          )}
 
-            <SidebarMenu
-              name="Push Notification"
-              variant="expand"
-              href="/users/push-notifications"
-            />
-          </SidebarExpand>
-        )}
-
-        {(isMasterAdmin) && (
-          <SidebarMenu
-            active={showManager}
-            onClick={() => setShowManager(!showManager)}
-            icon={<ReceiptIcon />}
-            name="Manager"
-            variant="sub-menu"
-          />
-        )}
-
-        {( isMasterAdmin) && (
-          <SidebarExpand show={showManager}>
-            <SidebarMenu
-              name="View Manager"
-              variant="expand"
-              href="/manager/view-manager"
-            />
-          </SidebarExpand>
-        )}
-
-        {(isMasterAdmin || isManager) && (
-          <SidebarMenu
-            active={showMerchant}
-            onClick={() => setShowMerchant(!showMerchant)}
-            icon={<UsersIcon />}
-            name="Merchant"
-            variant="sub-menu"
-          />
-        )}
-
-        {(isMasterAdmin || isManager) && (
-          <SidebarExpand show={showMerchant}>
-            <SidebarMenu
-              name="View Merchant"
-              variant="expand"
-              href="/merchant/view-merchant"
-            />
-          </SidebarExpand>
-        )}
           {(isMasterAdmin || isManager) && (
-          <SidebarExpand show={showMerchant}>
             <SidebarMenu
-              name="Merchant Recharge History"
-              variant="expand"
-              href="/merchant/recharge-history"
+              active={showMerchant}
+              onClick={() => setShowMerchant(!showMerchant)}
+              icon={<UsersIcon />}
+              name="Merchant"
+              variant="sub-menu"
             />
-          </SidebarExpand>
-        )}
+          )}
 
-        {(isMasterAdmin || isManager) && (
-          <SidebarMenu
-            active={showCountryAdmin}
-            onClick={() => setShowCountryAdmin(!showCountryAdmin)}
-            icon={<Flag />}
-            name="Country Admin"
-            variant="sub-menu"
-          />
-        )}
+          {(isMasterAdmin || isManager) && (
+            <SidebarExpand show={showMerchant}>
+              <SidebarMenu
+                name="View Merchant"
+                variant="expand"
+                href="/merchant/view-merchant"
+              />
+            </SidebarExpand>
+          )}
+          {(isMasterAdmin || isManager) && (
+            <SidebarExpand show={showMerchant}>
+              <SidebarMenu
+                name="Merchant Recharge History"
+                variant="expand"
+                href="/merchant/recharge-history"
+              />
+            </SidebarExpand>
+          )}
 
-        {(isCountryAdmin || isMasterAdmin || isManager) && (
-          <SidebarExpand show={showCountryAdmin}>
+          {(isMasterAdmin || isManager) && (
             <SidebarMenu
-              name="View Country Admin"
-              variant="expand"
-              href="/country-admin/view-country-admin"
+              active={showCountryAdmin}
+              onClick={() => setShowCountryAdmin(!showCountryAdmin)}
+              icon={<Superscript />}
+              name="Country Admin"
+              variant="sub-menu"
             />
-          </SidebarExpand>
-        )}
+          )}
+
           {(isCountryAdmin || isMasterAdmin || isManager) && (
-          <SidebarExpand show={showCountryAdmin}>
+            <SidebarExpand show={showCountryAdmin}>
+              <SidebarMenu
+                name="View Country Admin"
+                variant="expand"
+                href="/country-admin/view-country-admin"
+              />
+            </SidebarExpand>
+          )}
+
+          {(isCountryAdmin || isMasterAdmin || isManager) && (
             <SidebarMenu
-              name="View Banner"
-              variant="expand"
-              href="/banner/view-banner"
+              active={showAdmin}
+              onClick={() => setShowAdmin(!showAdmin)}
+              icon={<AdminPanelSettings />}
+              name="Admin"
+              variant="sub-menu"
             />
-          </SidebarExpand>
-        )}
-       
+          )}
 
+          {(isCountryAdmin || isMasterAdmin || isManager) && (
+            <SidebarExpand show={showAdmin}>
+              <SidebarMenu
+                name="View Admin"
+                variant="expand"
+                href="/admin/view-admin"
+              />
+            </SidebarExpand>
+          )}
 
-        {(isCountryAdmin || isMasterAdmin || isManager) && (
-          <SidebarMenu
-            active={showAdmin}
-            onClick={() => setShowAdmin(!showAdmin)}
-            icon={<AdminPanelSettings />}
-            name="Admin"
-            variant="sub-menu"
-          />
-        )}
-
-        {(isCountryAdmin || isMasterAdmin || isManager) && (
-          <SidebarExpand show={showAdmin}>
+          {(isCountryAdmin || isMasterAdmin || isManager || isAdmin) && (
             <SidebarMenu
-              name="View Admin"
-              variant="expand"
-              href="/admin/view-admin"
+              active={showSubAdmin}
+              onClick={() => setShowSubAdmin(!showSubAdmin)}
+              icon={<UsersIcon />}
+              name="Sub Admin"
+              variant="sub-menu"
             />
-          </SidebarExpand>
-        )}
-           {(isCountryAdmin) && (
-          <SidebarExpand show={showAdmin}>
+          )}
+
+          {(isCountryAdmin || isMasterAdmin || isManager || isAdmin) && (
+            <SidebarExpand show={showSubAdmin}>
+              <SidebarMenu
+                name="View Sub Admin"
+                variant="expand"
+                href="/sub-admin/view-subadmin"
+              />
+            </SidebarExpand>
+          )}
+          {isAdmin && (
+            <SidebarExpand show={showSubAdmin}>
+              <SidebarMenu
+                name="View Banner"
+                variant="expand"
+                href="/banner/view-banner"
+              />
+            </SidebarExpand>
+          )}
+
+          {(isMasterAdmin || isManager || isMerchant) && (
             <SidebarMenu
-              name="View Banner"
-              variant="expand"
-              href="/banner/view-banner"
+              active={coinSeller}
+              onClick={() => setCoinSeller(!coinSeller)}
+              icon={<GifTwoTone />}
+              name="Coins Seller"
+              variant="sub-menu"
             />
-          </SidebarExpand>
-        )}
-        {/* {(isCountryAdmin || isMasterAdmin || isManager) && (
-          <SidebarMenu
-            active={showBanner}
-            onClick={() => setShowBanner(!showBanner)}
-            icon={<AdminPanelSettings />}
-            name="Banner"
-            variant="sub-menu"
-          />
-        )}
+          )}
 
-        {(isCountryAdmin || isMasterAdmin || isManager) && (
-          <SidebarExpand show={showBanner}>
-            <SidebarMenu
-               name="View Banner"
-              variant="expand"
-              href="/banner/view-banner"
-            />
-          </SidebarExpand>
-        )} */}
-
-        {(isCountryAdmin || isMasterAdmin || isManager || isAdmin) && (
-          <SidebarMenu
-            active={showSubAdmin}
-            onClick={() => setShowSubAdmin(!showSubAdmin)}
-            icon={<UsersIcon />}
-            name="Sub Admin"
-            variant="sub-menu"
-          />
-        )}
-
-        {(isCountryAdmin || isMasterAdmin || isManager || isAdmin) && (
-          <SidebarExpand show={showSubAdmin}>
-            <SidebarMenu
-              name="View Sub Admin"
-              variant="expand"
-              href="/sub-admin/view-subadmin"
-            />
-          </SidebarExpand>
-        )}
-        {(isAdmin) && (
-          <SidebarExpand show={showSubAdmin}>
-            <SidebarMenu
-              name="View Banner"
-              variant="expand"
-              href="/banner/view-banner"
-            />
-          </SidebarExpand>
-        )}
-
-        {(
-          isMasterAdmin || isManager||
-          isMerchant) && (
-          <SidebarMenu
-            active={coinSeller}
-            onClick={() => setCoinSeller(!coinSeller)}
-            icon={<GifTwoTone />}
-            name="Coins Seller"
-            variant="sub-menu"
-          />
-        )}
-
-        {(
-          isMasterAdmin ||
-          isManager ||
-          isMerchant) && (
+          {(isMasterAdmin || isManager || isMerchant) && (
             <SidebarExpand show={coinSeller}>
-            <SidebarMenu
-              name="Seller View"
-              variant="expand"
-              href="/seller/view-seller"
-            />
-          </SidebarExpand>  
-        )}
+              <SidebarMenu
+                name="Seller View"
+                variant="expand"
+                href="/seller/view-seller"
+              />
+            </SidebarExpand>
+          )}
 
-{(isCountryAdmin ||
-          isMasterAdmin ||
-          isManager ||
-          isAdmin ||
-          isMerchant) && (
-          <SidebarExpand show={coinSeller}>
-            <SidebarMenu
-              name="Seller Recharge History"
-              variant="expand"
-              href="/seller/coin-seller-recharge-history"
-            />
-          </SidebarExpand>
-        )}
-        {(isCountryAdmin ||
-          isMasterAdmin ||
-          isManager ||
-          isAdmin ||
-          isMerchant) && (
-          <SidebarExpand show={coinSeller}>
-            <SidebarMenu
-              name="My Recharge History"
-              variant="expand"
-              href="/seller/my-recharge-history"
-            />
-          </SidebarExpand>
-        )}
-
+          {(isCountryAdmin ||
+            isMasterAdmin ||
+            isManager ||
+            isAdmin ||
+            isMerchant) && (
+            <SidebarExpand show={coinSeller}>
+              <SidebarMenu
+                name="Seller Recharge History"
+                variant="expand"
+                href="/seller/coin-seller-recharge-history"
+              />
+            </SidebarExpand>
+          )}
+          {(isCountryAdmin ||
+            isMasterAdmin ||
+            isManager ||
+            isAdmin ||
+            isMerchant) && (
+            <SidebarExpand show={coinSeller}>
+              <SidebarMenu
+                name="My Recharge History"
+                variant="expand"
+                href="/seller/my-recharge-history"
+              />
+            </SidebarExpand>
+          )}
 
           <SidebarMenu
             active={agency}
             onClick={() => setAgency(!agency)}
-            icon={<Build/>}
+            icon={<Build />}
             name="Agency"
             variant="sub-menu"
           />
-    
 
-
-            <SidebarExpand show={agency}>
+          <SidebarExpand show={agency}>
             <SidebarMenu
               name="View Agency"
               variant="expand"
               href="/agency/view-agency"
             />
-          </SidebarExpand>  
-       
-      
+          </SidebarExpand>
+
           <SidebarExpand show={agency}>
             <SidebarMenu
               name="Add Agency"
@@ -416,64 +373,69 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
               href="/agency/add-agency"
             />
           </SidebarExpand>
-      
-
 
           <SidebarMenu
             active={host}
             onClick={() => setHost(!host)}
-            icon={<HotelSharp/>}
+            icon={<HotelSharp />}
             name="Host"
             variant="sub-menu"
           />
-       
 
-
-            <SidebarExpand show={host}>
+          <SidebarExpand show={host}>
             <SidebarMenu
               name="Pending Host"
               variant="expand"
               href="/host/pending-host"
             />
-          </SidebarExpand>  
-     
-      
-            <SidebarExpand show={host}>
+          </SidebarExpand>
+
+          <SidebarExpand show={host}>
             <SidebarMenu
               name="Approved Host"
               variant="expand"
               href="/host/approved-host"
             />
-          </SidebarExpand>  
-  
-           
-            <SidebarExpand show={host}>
+          </SidebarExpand>
+
+          <SidebarExpand show={host}>
             <SidebarMenu
               name="Rejected Host"
               variant="expand"
               href="/host/rejected-host"
             />
-          </SidebarExpand>  
-    
+          </SidebarExpand>
+          {(isMasterAdmin || isManager || isCountryAdmin || isMerchant) && (
+          <SidebarMenu
+            active={showBanner}
+            onClick={() => setShowBanner(!showBanner)}
+            icon={<EmojiFlags/>}
+            name="Banner"
+            variant="sub-menu"
+          />
+        )}
 
-        
-        
-        
-
-        
-
-      </nav>
-      <div className="">
-   {role === "Merchant" && (
-              <div className="flex gap-2 items-center border ml-4 w-[80px] shadow-md border-netral-50 rounded p-2">
-                <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
-                <p className="font-semibold text-white text-nowrap text-[14px]">
-                  {wallet}
-                </p>
-              </div>
-            )}
-   </div>
-    </div>
+          {(isMasterAdmin || isManager || isCountryAdmin || isMerchant) && (
+          <SidebarExpand show={showBanner}>
+            <SidebarMenu
+              name="View Banner"
+              variant="expand"
+              href="/banner/view-banner"
+            />
+          </SidebarExpand>
+        )}
+        </nav>
+        <div className="">
+          {role === "Merchant" && (
+            <div className="flex gap-2 items-center border ml-4 w-[80px] shadow-md border-netral-50 rounded p-2">
+              <AccountBalanceWalletIcon className="text-yellow-500 h-6 w-6" />
+              <p className="font-semibold text-white text-nowrap text-[14px]">
+                {wallet}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
     </aside>
   );
 };

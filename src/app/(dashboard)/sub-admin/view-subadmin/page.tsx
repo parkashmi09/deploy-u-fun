@@ -122,6 +122,7 @@ const ViewSubAdmin = () => {
           mobile: user.mobile || "-",
           status: user.is_active ? "Active" : "Inactive",
           userid: user.userId || "-",
+          countryCode:user.countryCode || "-",
         })
       );
       setUserData([...modifiedData]);
@@ -283,15 +284,15 @@ const ViewSubAdmin = () => {
     {
       key: "status",
       label: "Status",
-      renderCell: (rowData: UserData) => (
-        <span
-          className={`${
-            rowData?.is_active ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {rowData?.is_active ? "Active" : "InActive"}
-        </span>
-      ),
+      // renderCell: (rowData: UserData) => (
+      //   <span
+      //     className={`${
+      //       rowData?.is_active ? "text-green-500" : "text-red-500"
+      //     }`}
+      //   >
+      //     {rowData?.is_active ? "Active" : "InActive"}
+      //   </span>
+      // ),
     },
     {
       key: "is_active",

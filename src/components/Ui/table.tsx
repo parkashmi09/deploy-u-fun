@@ -97,7 +97,8 @@ export default function TableComponent ({
 
     if( setPayload && selectedValue==='all'){
       setPayload({
-        role: "all",
+        countryCode:selectedValue,
+        role: localStorage.getItem("role")?.toLowerCase(),
         userId: localStorage.getItem("userId"),
       })
     }
