@@ -267,6 +267,26 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
                 variant="expand"
                 href="/shop/view-frame"
               />
+              <SidebarMenu
+                name="Add Vehicle"
+                variant="expand"
+                href="/shop/add-vehicle"
+              />
+              <SidebarMenu
+                name="View Vehicle"
+                variant="expand"
+                href="/shop/view-vehicle"
+              />
+               <SidebarMenu
+                name="Add Chat Bubble"
+                variant="expand"
+                href="/shop/add-chat-bubble"
+              />
+              <SidebarMenu
+                name="View Chat Bubble"
+                variant="expand"
+                href="/shop/view-chat-bubble"
+              />
 
             </SidebarExpand>
           )}
