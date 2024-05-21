@@ -262,6 +262,11 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
                 variant="expand"
                 href="/shop/add-frame"
               />
+              <SidebarMenu
+                name="View Frame"
+                variant="expand"
+                href="/shop/view-frame"
+              />
 
             </SidebarExpand>
           )}

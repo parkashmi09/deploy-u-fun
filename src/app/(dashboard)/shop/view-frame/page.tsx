@@ -14,7 +14,7 @@ const  Page=()=> {
     
     const fetchData = async () => {
         try {
-            const response = await fetch(`https://fun2fun.live/admin/wallpaper/getall`, {
+            const response = await fetch(`https://fun2fun.live/admin/frame/getall`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const  Page=()=> {
          <section className="rounded-lg-10 items-center bg-white mt-24 py-12 px-4 mr-12">
         <nav className="flex items-center h-full">
           <Title size="lg" variant="default">
-           View Wallpaper
+           View Frame
           </Title>
         </nav>
       </section>

@@ -47,7 +47,7 @@ const Page = () => {
     try {
       // Send form data to API using Axios
       const response = await axios.post(
-        "https://fun2fun.live/admin/wallpaper/add",
+        "https://fun2fun.live/admin/frame/add",
         formData,
         {
           headers: {
@@ -204,9 +204,9 @@ const Page = () => {
             onChange={(e) => setPrice(e.target.value)}
           />
           <Input
-            id={`validity`}
-            placeholder="Validity"
-            label="Validity"
+            id={`level`}
+            placeholder="Level"
+            label="Level"
             type="text"
             value={level}
             onChange={(e) => setLevel(e.target.value)}

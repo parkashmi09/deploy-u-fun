@@ -67,6 +67,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   const [agency, setAgency] = React.useState(false);
   const [host, setHost] = useState<any>(false);
   const [showBanner, setShowBanner] = React.useState(false);
+  const [shop, setShop] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -234,6 +235,44 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
               </div>
             </SidebarExpand>
           )}
+           {isMasterAdmin && (
+            <SidebarMenu
+              active={shop}
+              onClick={() => setShop(!shop)}
+              icon={<UsersIcon />}
+              name="Shop"
+              variant="sub-menu"
+            />
+          )}
+
+          {isMasterAdmin && (
+            <SidebarExpand show={shop}>
+             <div onClick={()=>{setShowSidebar(false)}}>
+             <SidebarMenu
+                name="Add Room Wallpaper"
+                variant="expand"
+                href="/shop/add-room-wallpaper"
+              />
+                <SidebarMenu
+                name="View Room Wallpaper"
+                variant="expand"
+                href="/shop/view-room-wallpaper"
+              />
+              <SidebarMenu
+                name="Add Frame"
+                variant="expand"
+                href="/shop/add-frame"
+              />
+              <SidebarMenu
+                name="View Frame"
+                variant="expand"
+                href="/shop/view-frame"
+              />
+             </div>
+
+            </SidebarExpand>
+          )}
+     
 
           {(isMasterAdmin || isManager) && (
             <SidebarMenu

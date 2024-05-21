@@ -30,7 +30,7 @@ const Page = () => {
   // Function to handle form submission
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
+  
     // Create FormData object
     const formData = new FormData();
     formData.append("wallpaper", logo);
@@ -38,9 +38,7 @@ const Page = () => {
     formData.set("validity", validity);
     formData.set("name", agencyName);
     formData.set("is_official", `${isOfficial}`);
-
-    // Add other form fields and files to formData as needed
-
+  
     try {
       // Send form data to API using Axios
       const response = await axios.post(
@@ -52,13 +50,11 @@ const Page = () => {
           },
         }
       );
-
+  
       // Handle response
       console.log("Response:", response.data);
-      // Redirect or show success message
-
       const data = response.data;
-
+  
       if (data?.status === 1) {
         setOpenToast(true);
         setToastObj({
@@ -67,13 +63,15 @@ const Page = () => {
           variant: "success",
         });
         // Clear form fields
-        // setAgencyName("");
-        // Clear other form fields as needed
+        setAgencyName("");
+        setLogo("");
+        setAdharFront("");
+        setAdharBack("");
+        setAdditionalInputs([{ price: "", validity: "" }]);
         setPrice("");
         setValidity("");
-        setLogo("");
-      }
-      if (data?.status === 0 || data?.status === "") {
+        setIsOfficial(false);
+      } else if (data?.status === 0 || data?.status === "") {
         setOpenToast(true);
         setToastObj({
           title: "Wallpaper",
@@ -86,6 +84,7 @@ const Page = () => {
       // Handle error
     }
   };
+  
 
   // Function to handle file input change
   const handleLogoChange = (e: any) => {
