@@ -72,6 +72,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [userid, setUserId] = useState<any>("");
   const [host, setHost] = useState<any>(false);
   const [showBanner, setShowBanner] = React.useState(false);
+  const [shop, setShop] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -205,7 +206,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             </SidebarExpand>
           )}
 
-          {(isMasterAdmin || isManager) && (
+          {isMasterAdmin && (
             <SidebarMenu
               active={showMerchant}
               onClick={() => setShowMerchant(!showMerchant)}
@@ -215,7 +216,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           )}
 
-          {(isMasterAdmin || isManager) && (
+          {isMasterAdmin && (
             <SidebarExpand show={showMerchant}>
               <SidebarMenu
                 name="View Merchant"
@@ -224,7 +225,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
               />
             </SidebarExpand>
           )}
-          {(isMasterAdmin || isManager) && (
+          {isMasterAdmin && (
             <SidebarExpand show={showMerchant}>
               <SidebarMenu
                 name="Merchant Recharge History"
@@ -233,6 +234,38 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
               />
             </SidebarExpand>
           )}
+
+          {isMasterAdmin && (
+            <SidebarMenu
+              active={shop}
+              onClick={() => setShop(!shop)}
+              icon={<UsersIcon />}
+              name="Shop"
+              variant="sub-menu"
+            />
+          )}
+
+          {isMasterAdmin && (
+            <SidebarExpand show={shop}>
+              <SidebarMenu
+                name="Add Room Wallpaper"
+                variant="expand"
+                href="/shop/add-room-wallpaper"
+              />
+                <SidebarMenu
+                name="View Room Wallpaper"
+                variant="expand"
+                href="/shop/view-room-wallpaper"
+              />
+              <SidebarMenu
+                name="Add Frame"
+                variant="expand"
+                href="/shop/add-frame"
+              />
+
+            </SidebarExpand>
+          )}
+     
 
           {(isMasterAdmin || isManager) && (
             <SidebarMenu
@@ -406,24 +439,24 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             />
           </SidebarExpand>
           {(isMasterAdmin || isManager || isCountryAdmin || isMerchant) && (
-          <SidebarMenu
-            active={showBanner}
-            onClick={() => setShowBanner(!showBanner)}
-            icon={<EmojiFlags/>}
-            name="Banner"
-            variant="sub-menu"
-          />
-        )}
+            <SidebarMenu
+              active={showBanner}
+              onClick={() => setShowBanner(!showBanner)}
+              icon={<EmojiFlags />}
+              name="Banner"
+              variant="sub-menu"
+            />
+          )}
 
           {(isMasterAdmin || isManager || isCountryAdmin || isMerchant) && (
-          <SidebarExpand show={showBanner}>
-            <SidebarMenu
-              name="View Banner"
-              variant="expand"
-              href="/banner/view-banner"
-            />
-          </SidebarExpand>
-        )}
+            <SidebarExpand show={showBanner}>
+              <SidebarMenu
+                name="View Banner"
+                variant="expand"
+                href="/banner/view-banner"
+              />
+            </SidebarExpand>
+          )}
         </nav>
         <div className="">
           {role === "Merchant" && (

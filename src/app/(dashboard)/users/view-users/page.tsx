@@ -67,6 +67,7 @@ const ViewUser = () => {
   const handleDeleteModal=(id:string)=> {
     setIsOpenDeleteModal(true)
   }
+  const [searchQuery, setSearchQuery] = useState<string>('')
   useEffect(() => {
     
     fetchData();
@@ -373,6 +374,8 @@ const ViewUser = () => {
       setUserData(filteredData); // Update userData state with filtered results
     }
   }
+
+
 
   return (
   <div className="mt-20 p-4 h-auto ">

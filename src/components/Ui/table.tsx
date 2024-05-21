@@ -1,9 +1,16 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { Button, Title } from "@/components/atomics";
 import { PencilSimpleIcon, PlusIcon, SortAscendingIcon } from "@/assets/icons";
 import ButtonLoader from "../Loaders/buttonLoader";
-import { FormControl, InputLabel, MenuItem, Pagination, Select, useMediaQuery } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  useMediaQuery,
+} from "@mui/material";
 import { countriesOptions } from "@/utils/country";
 
 interface TableProps {
@@ -16,14 +23,14 @@ interface TableProps {
   isAdd?: boolean;
   onAdd?: () => void;
   addButtonLabel?: string;
-  isFilter?:boolean;
-  filterAction?: (roles?: string) => Promise<void>
-  setCountrySelect?: React.Dispatch<React.SetStateAction<boolean>>
-  setCountryCode?:React.Dispatch<React.SetStateAction<string>>
-  setPayload?: React.Dispatch<any>
+  isFilter?: boolean;
+  filterAction?: (roles?: string) => Promise<void>;
+  setCountrySelect?: React.Dispatch<React.SetStateAction<boolean>>;
+  setCountryCode?: React.Dispatch<React.SetStateAction<string>>;
+  setPayload?: React.Dispatch<any>;
   totalPages?: number; // Define totalPages as a prop
   currentPage?: number; // Define currentPage as a prop
-  handlePageChange?: (event: any, page: number) => void
+  handlePageChange?: (event: any, page: number) => void;
 }
 
 interface Header {
@@ -32,7 +39,7 @@ interface Header {
   renderCell?: (rowData: any) => JSX.Element | null;
 }
 
-export default function TableComponent ({
+export default function TableComponent({
   data,
   headers,
   title,
@@ -40,14 +47,15 @@ export default function TableComponent ({
   isAdd = false,
   onAdd,
   addButtonLabel,
-  isFilter=false,
+  isFilter = false,
   filterAction,
   setCountrySelect,
   setCountryCode,
   setPayload,
-  totalPages, handlePageChange,
-  currentPage
-}:TableProps){
+  totalPages,
+  handlePageChange,
+  currentPage,
+}: TableProps) {
   const convertToCSV = () => {
     if (!data) return;
 
@@ -79,28 +87,27 @@ export default function TableComponent ({
 
   const isMobile = useMediaQuery("(max-width: 568px)");
 
- 
   const [selectedCountry, setSelectedCountry] = useState(""); // State for selected value
 
-  console.log("selected country",selectedCountry)
+  console.log("selected country", selectedCountry);
   const handleChange = (event: any) => {
     const selectedValue = event.target.value as string;
     setSelectedCountry(selectedValue);
     // Check if setCountrySelect exists and is a function before calling it
-    if (setPayload && typeof setPayload === 'function') {
+    if (setPayload && typeof setPayload === "function") {
       setPayload({
-        countryCode:selectedValue,
+        countryCode: selectedValue,
         role: localStorage.getItem("role")?.toLowerCase(),
         userId: localStorage.getItem("userId"),
-      })
+      });
     }
 
-    if( setPayload && selectedValue==='all'){
+    if (setPayload && selectedValue === "all") {
       setPayload({
-        countryCode:selectedValue,
+        countryCode: selectedValue,
         role: localStorage.getItem("role")?.toLowerCase(),
         userId: localStorage.getItem("userId"),
-      })
+      });
     }
     // // Call filterAction if it's provided
     // if (filterAction) {
@@ -109,151 +116,146 @@ export default function TableComponent ({
     // }
   };
 
-
-  
   return (
     <>
       <div className="py-8 mb-12 h-screen">
-   {
-    data?.length===0 && isAdd &&(   <div className="flex gap-2 items-center justify-end w-full">
-    <Button
-     size="sm"
-     variant="default-bg"
-     className="bg-netral-25"
-     onClick={onAdd}
-   >
-     {addButtonLabel}
-     <PlusIcon className="w-4 h-4 stroke-2" />
-   </Button>
-</div>)
-   }
-       {
-        data?.length>0 ? (
+        {data?.length === 0 && isAdd && (
+          <div className="flex gap-2 items-center justify-end w-full">
+            <Button
+              size="sm"
+              variant="default-bg"
+              className="bg-netral-25"
+              onClick={onAdd}
+            >
+              {addButtonLabel}
+              <PlusIcon className="w-4 h-4 stroke-2" />
+            </Button>
+          </div>
+        )}
+        {data?.length > 0 ? (
           <section className="p-6  bg-white rounded-lg">
-          <nav className="mb-8 flex flex-col items-start gap-8 md:flex-row md:items-center justify-between">
-           
-            <div>
-            <Title size="sm" variant="default" className="text-netral-25">
-              {title}
-            </Title>
-            </div>
-          
-            <div className="flex gap-2 items-center">
-              {data?.length > 0 && (
-                <Button className="" size="sm" variant="primary-bg" onClick={convertToCSV}>
-                  Export CSV
-                  <SortAscendingIcon className="w-4 h-4 stroke-2" />
-                </Button>
-              )}
-              {isAdd && (
-             <div className="flex gap-2 items-center">
-                 <Button
-                  size="sm"
-                  variant="default-bg"
-                  className="bg-netral-25"
-                  onClick={onAdd}
-                >
-                  {addButtonLabel}
-                  <PlusIcon className="w-4 h-4 stroke-2" />
-                </Button>
-             </div>
-              )}
-            </div>
-          </nav>
-          <div className="flex flex-col gap-4 sm:flex-row justify-start md:justify-end mb-6 sm:gap-4">
-          {data?.length > 0 && (
-              <input
-                type="text"
-                autoComplete="email"
-                required
-                placeholder="Search Here"
-                className="w-72 px-2 py-2 rounded-md border border-gray-300 shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-netral-25 sm:text-sm"
-              />
+            <nav className="mb-8 flex flex-col items-start gap-8 md:flex-row md:items-center justify-between">
+              <div>
+                <Title size="sm" variant="default" className="text-netral-25">
+                  {title}
+                </Title>
+              </div>
 
-            )}
-          {
-        isFilter &&(
-          <FormControl className="w-72 md:w-44">
-          <InputLabel id="demo-simple-select-label">
-            Filter
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            value={selectedCountry}
-            label="Select Filter"
-            sx={{
-              "&:focus": {
-                borderColor: "#000",
-              },
-            }}
-            inputProps={{
-              className: "!px-2 py-3", // Add your custom class here
-            }}
-            onChange={handleChange} // Handle change event
-          >
-            <MenuItem value="">Select a country</MenuItem>
-            {countriesOptions?.map((option, index) => (
-              <MenuItem key={index} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-              )
-            }
-   
-            
-          </div>
-          <div className="overflow-x-auto">
-                <table
-                  className={`w-full table-auto  ${
-                    isLoading ? "h-[400px]" : ""
-                  }`}
-                >
-                  <thead className="font-semibold text-left bg-netral-15  w-[400px]">
+              <div className="flex gap-2 items-center">
+                {data?.length > 0 && (
+                  <Button
+                    className=""
+                    size="sm"
+                    variant="primary-bg"
+                    onClick={convertToCSV}
+                  >
+                    Export CSV
+                    <SortAscendingIcon className="w-4 h-4 stroke-2" />
+                  </Button>
+                )}
+                {isAdd && (
+                  <div className="flex gap-2 items-center">
+                    <Button
+                      size="sm"
+                      variant="default-bg"
+                      className="bg-netral-25"
+                      onClick={onAdd}
+                    >
+                      {addButtonLabel}
+                      <PlusIcon className="w-4 h-4 stroke-2" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </nav>
+            <div className="flex flex-col gap-4 sm:flex-row justify-start md:justify-end mb-6 sm:gap-4">
+              {data?.length > 0 && (
+                <input
+                  type="text"
+                  autoComplete="email"
+                  required
+                  placeholder="Search Here"
+                  className="w-72 px-2 py-2 rounded-md border border-gray-300 shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-netral-25 sm:text-sm"
+                />
+              )}
+              {isFilter && (
+                <FormControl className="w-72 md:w-44">
+                  <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    value={selectedCountry}
+                    label="Select Filter"
+                    sx={{
+                      "&:focus": {
+                        borderColor: "#000",
+                      },
+                    }}
+                    inputProps={{
+                      className: "!px-2 py-3", // Add your custom class here
+                    }}
+                    onChange={handleChange} // Handle change event
+                  >
+                    <MenuItem value="">Select a country</MenuItem>
+                    {countriesOptions?.map((option, index) => (
+                      <MenuItem key={index} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            </div>
+            <div className="overflow-x-auto">
+              <table
+                className={`w-full table-auto  ${isLoading ? "h-[400px]" : ""}`}
+              >
+                <thead className="font-semibold text-left bg-netral-15  w-[400px]">
+                  <tr>
+                    {headers?.map((header) => (
+                      <th
+                        key={header.key}
+                        className={`px-4 py-3 whitespace-nowrap`}
+                      >
+                        {header.label}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-netral-20">
+                  {isLoading ? (
                     <tr>
-                      {headers?.map((header) => (
-                        <th
-                          key={header.key}
-                          className={`px-4 py-3 whitespace-nowrap`}
-                        >
-                          {header.label}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-netral-20">
-                    {isLoading ? (
-                      <tr >
-                        <td
-                          colSpan={headers.length}
-                          className="px-4 py-4  text-center"
-                        >
-                          <div className="relative h-screen">
-                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                              <ButtonLoader />
-                            </div>
+                      <td
+                        colSpan={headers.length}
+                        className="px-4 py-4  text-center"
+                      >
+                        <div className="relative h-screen">
+                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <ButtonLoader />
                           </div>
-                        </td>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : (
+                    data?.map((item, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {headers.map((header) => (
+                          <td
+                            key={header.key}
+                            className="px-4 py-4 text-nowrap"
+                          >
+                            {header.renderCell
+                              ? renderCell(item, header)
+                              : item[header.key]}
+                          </td>
+                        ))}
                       </tr>
-                    ) : (
-                      data?.map((item, rowIndex) => (
-                        <tr key={rowIndex}>
-                          {headers.map((header) => (
-                            <td key={header.key} className="px-4 py-4 text-nowrap">
-                              {header.renderCell
-                                ? renderCell(item, header)
-                                : item[header.key]}
-                            </td>
-                          ))}
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-          </div>
-          <div className="w-full flex justify-center mt-12 mb-12">
-          <Pagination
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="w-full flex justify-center mt-12 mb-12">
+              <Pagination
                 sx={{
                   "& .Mui-selected": {
                     backgroundColor: "#9acd32 !important", // Set background color for selected button
@@ -264,25 +266,20 @@ export default function TableComponent ({
                   },
                 }}
                 color="primary"
-                size={isMobile ? "small":"large"}
-
+                size={isMobile ? "small" : "large"}
                 count={totalPages} // Total number of pages
                 page={currentPage} // Current active page
                 onChange={handlePageChange} // Function to handle page change
                 variant="outlined" // Or "outlined" or "text"
-        
               />
-                </div>
-        </section>
-        ):
-        <div className="h-full w-full flex items-center justify-center">
-       {
-        isLoading ? (<ButtonLoader/>):<p>No Data Available</p>
-       }
-      </div>
-       }
+            </div>
+          </section>
+        ) : (
+          <div className="h-full w-full flex items-center justify-center">
+            {isLoading ? <ButtonLoader /> : <p>No Data Available</p>}
+          </div>
+        )}
       </div>
     </>
   );
-};
-
+}

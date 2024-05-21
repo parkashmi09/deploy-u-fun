@@ -204,7 +204,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             </SidebarExpand>
           )}
 
-          {(isMasterAdmin || isManager) && (
+          {(isMasterAdmin) && (
             <SidebarMenu
               active={showMerchant}
               onClick={() => setShowMerchant(!showMerchant)}
@@ -214,7 +214,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             />
           )}
 
-          {(isMasterAdmin || isManager) && (
+          {(isMasterAdmin) && (
             <SidebarExpand show={showMerchant}>
               <SidebarMenu
                 name="View Merchant"
@@ -223,7 +223,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
               />
             </SidebarExpand>
           )}
-          {(isMasterAdmin || isManager) && (
+          {(isMasterAdmin) && (
             <SidebarExpand show={showMerchant}>
               <div onClick={() => setShowSidebar(false)}>
                 <SidebarMenu
