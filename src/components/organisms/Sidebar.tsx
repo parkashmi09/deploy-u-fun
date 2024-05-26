@@ -21,6 +21,7 @@ import {
   Flag,
   GifTwoTone,
   HotelSharp,
+  Money,
   Superscript,
 } from "@mui/icons-material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -67,6 +68,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const [showMerchant, setShowMerchant] = React.useState(false);
   const [coinSeller, setCoinSeller] = React.useState(false);
   const [agency, setAgency] = React.useState(false);
+  const [salary, setSalary] = React.useState(false);
   const [role, setRole] = useState<string>("");
   const [wallet, setWallet] = React.useState<any>();
   const [userid, setUserId] = useState<any>("");
@@ -234,6 +236,25 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
               />
             </SidebarExpand>
           )}
+          {isMasterAdmin && (
+            <SidebarMenu
+              active={salary}
+              onClick={() => setSalary(!salary)}
+              icon={<Money/>}
+              name="Salary Managment"
+              variant="sub-menu"
+            />
+          )}
+          {isMasterAdmin && (
+            <SidebarExpand show={salary}>
+              <SidebarMenu
+                name="Indian Payroll"
+                variant="expand"
+                href="/salary/salary-setup"
+              /> 
+            </SidebarExpand>
+          )}
+
 
           {isMasterAdmin && (
             <SidebarMenu
