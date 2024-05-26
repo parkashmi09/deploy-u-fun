@@ -14,6 +14,7 @@ import {
   Flag,
   GifTwoTone,
   HotelSharp,
+  Money,
 } from "@mui/icons-material";
 import { SidebarMenu } from "../moleculs";
 import { HouseSimpleIcon, ReceiptIcon, UsersIcon } from "@/assets/icons";
@@ -68,6 +69,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   const [host, setHost] = useState<any>(false);
   const [showBanner, setShowBanner] = React.useState(false);
   const [shop, setShop] = useState<boolean>(false);
+  const [salary, setSalary] = React.useState(false);
 
   useLayoutEffect(() => {
     const value = localStorage.getItem("role");
@@ -205,7 +207,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             </SidebarExpand>
           )}
 
-          {(isMasterAdmin) && (
+          {isMasterAdmin && (
             <SidebarMenu
               active={showMerchant}
               onClick={() => setShowMerchant(!showMerchant)}
@@ -215,7 +217,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
             />
           )}
 
-          {(isMasterAdmin) && (
+          {isMasterAdmin && (
             <SidebarExpand show={showMerchant}>
               <SidebarMenu
                 name="View Merchant"
@@ -224,7 +226,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
               />
             </SidebarExpand>
           )}
-          {(isMasterAdmin) && (
+          {isMasterAdmin && (
             <SidebarExpand show={showMerchant}>
               <div onClick={() => setShowSidebar(false)}>
                 <SidebarMenu
@@ -235,7 +237,27 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
               </div>
             </SidebarExpand>
           )}
-           {isMasterAdmin && (
+          {isMasterAdmin && (
+            <SidebarMenu
+              active={salary}
+              onClick={() => setSalary(!salary)}
+              icon={<Money />}
+              name="Salary Managment"
+              variant="sub-menu"
+            />
+          )}
+          {isMasterAdmin && (
+            <div onClick={() => setShowSidebar(false)}>
+              <SidebarExpand show={salary}>
+                <SidebarMenu
+                  name="Indian Payroll"
+                  variant="expand"
+                  href="/salary/salary-setup"
+                />
+              </SidebarExpand>
+            </div>
+          )}
+          {isMasterAdmin && (
             <SidebarMenu
               active={shop}
               onClick={() => setShop(!shop)}
@@ -247,52 +269,54 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
 
           {isMasterAdmin && (
             <SidebarExpand show={shop}>
-             <div onClick={()=>{setShowSidebar(false)}}>
-             <SidebarMenu
-                name="Add Room Wallpaper"
-                variant="expand"
-                href="/shop/add-room-wallpaper"
-              />
+              <div
+                onClick={() => {
+                  setShowSidebar(false);
+                }}
+              >
                 <SidebarMenu
-                name="View Room Wallpaper"
-                variant="expand"
-                href="/shop/view-room-wallpaper"
-              />
-              <SidebarMenu
-                name="Add Frame"
-                variant="expand"
-                href="/shop/add-frame"
-              />
-              <SidebarMenu
-                name="View Frame"
-                variant="expand"
-                href="/shop/view-frame"
-              />
-                  <SidebarMenu
-                name="Add Vehicle"
-                variant="expand"
-                href="/shop/add-vehicle"
-              />
-              <SidebarMenu
-                name="View Vehicle"
-                variant="expand"
-                href="/shop/view-vehicle"
-              />
-               <SidebarMenu
-                name="Add Chat Bubble"
-                variant="expand"
-                href="/shop/add-chat-bubble"
-              />
-              <SidebarMenu
-                name="View Chat Bubble"
-                variant="expand"
-                href="/shop/view-chat-bubble"
-              />
-             </div>
-
+                  name="Add Room Wallpaper"
+                  variant="expand"
+                  href="/shop/add-room-wallpaper"
+                />
+                <SidebarMenu
+                  name="View Room Wallpaper"
+                  variant="expand"
+                  href="/shop/view-room-wallpaper"
+                />
+                <SidebarMenu
+                  name="Add Frame"
+                  variant="expand"
+                  href="/shop/add-frame"
+                />
+                <SidebarMenu
+                  name="View Frame"
+                  variant="expand"
+                  href="/shop/view-frame"
+                />
+                <SidebarMenu
+                  name="Add Vehicle"
+                  variant="expand"
+                  href="/shop/add-vehicle"
+                />
+                <SidebarMenu
+                  name="View Vehicle"
+                  variant="expand"
+                  href="/shop/view-vehicle"
+                />
+                <SidebarMenu
+                  name="Add Chat Bubble"
+                  variant="expand"
+                  href="/shop/add-chat-bubble"
+                />
+                <SidebarMenu
+                  name="View Chat Bubble"
+                  variant="expand"
+                  href="/shop/view-chat-bubble"
+                />
+              </div>
             </SidebarExpand>
           )}
-     
 
           {(isMasterAdmin || isManager) && (
             <SidebarMenu
