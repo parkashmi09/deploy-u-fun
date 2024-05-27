@@ -97,12 +97,7 @@ const Page = () => {
             </div>
           ) : (
             <div
-              className="mb-6"
-              style={{
-                maxHeight: "calc(100vh - 140px)",
-                width: "100%",
-                overflowX: "auto",
-              }}
+            className="mb-6 overflow-x-auto"
             >
               <table className="w-full table-auto">
                 <thead className="bg-netral-15 text-body-sm font-semibold uppercase">
