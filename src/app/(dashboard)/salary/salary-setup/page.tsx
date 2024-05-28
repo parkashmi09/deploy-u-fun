@@ -179,7 +179,7 @@ const Page = () => {
                             variant="error-outline"
                             className="bg-netral-25"
                             onClick={() =>
-                              handlePaymentSent(item.id, item.hostSalary)
+                              handlePaymentSent(item.id, item.targetDiamond)
                             }
                           >
                             Send
