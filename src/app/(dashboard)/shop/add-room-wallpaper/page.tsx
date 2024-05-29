@@ -11,9 +11,9 @@ const Page = () => {
   const router = useRouter();
   // State variables for form fields
   const [agencyName, setAgencyName] = useState("");
-  const [logo, setLogo] = useState("");
-  const [adharFront, setAdharFront] = useState("");
-  const [adharBack, setAdharBack] = useState("");
+  const [logo, setLogo] = useState<File | null>(null);
+  const [adharFront, setAdharFront] = useState<File | null>(null);
+  const [adharBack, setAdharBack] = useState<File | null>(null);
   const [additionalInputs, setAdditionalInputs] = useState([
     { price: "", validity: "" },
   ]);
@@ -30,12 +30,15 @@ const Page = () => {
   // Function to handle form submission
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    console.log("additionalinputs", additionalInputs);
   
     // Create FormData object
     const formData = new FormData();
-    formData.append("wallpaper", logo);
-    formData.set("price", price);
-    formData.set("validity", validity);
+    if (logo) {
+      formData.append("images", logo);
+    }
+    formData.set("priceAndvalidity", JSON.stringify(additionalInputs));
     formData.set("name", agencyName);
     formData.set("is_official", `${isOfficial}`);
   
@@ -64,9 +67,9 @@ const Page = () => {
         });
         // Clear form fields
         setAgencyName("");
-        setLogo("");
-        setAdharFront("");
-        setAdharBack("");
+        setLogo(null);
+        setAdharFront(null);
+        setAdharBack(null);
         setAdditionalInputs([{ price: "", validity: "" }]);
         setPrice("");
         setValidity("");
@@ -84,7 +87,6 @@ const Page = () => {
       // Handle error
     }
   };
-  
 
   // Function to handle file input change
   const handleLogoChange = (e: any) => {
@@ -119,8 +121,17 @@ const Page = () => {
     updatedInputs.splice(index, 1);
     setAdditionalInputs(updatedInputs);
   };
+
+  // Function to handle change in additional inputs
+  const handleAdditionalInputChange = (index: number, field: string, value: string) => {
+    const updatedInputs = [...additionalInputs];
+    //@ts-ignore
+    updatedInputs[index][field] = value;
+    setAdditionalInputs(updatedInputs);
+  };
+
   return (
-    <div className="mt-24  p-6">
+    <div className="mt-24 p-6">
       <div className="space-y-6">
         <h1 className="text-heading-sm font-semibold">Add Room Wallpaper</h1>
         <section className="relative space-y-6 rounded-lg-10 bg-white p-6">
@@ -131,7 +142,7 @@ const Page = () => {
         </section>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="px-8 py-4 w-full md:w-[60%] grid grid-cols-1  gap-x-5 gap-y-8">
+        <div className="px-8 py-4 w-full md:w-[60%] grid grid-cols-1 gap-x-5 gap-y-8">
           <Input
             id="name"
             placeholder="Enter  Name"
@@ -148,16 +159,16 @@ const Page = () => {
             accept="*/*"
             onChange={handleLogoChange}
           />
-          {/* <div className=" flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             {additionalInputs.map((input, index) => (
-              <div key={index} className="flex gap-3 items-center w-full">
+              <div key={index} className="flex flex-col md:flex-row gap-3 items-center w-full">
                 <Input
                   id={`price-${index}`}
                   placeholder="Price"
                   label="Price"
                   type="text"
                   value={input.price}
-                  onChange={(e) => {}}
+                  onChange={(e) => handleAdditionalInputChange(index, 'price', e.target.value)}
                 />
                 <Input
                   id={`validity-${index}`}
@@ -165,19 +176,17 @@ const Page = () => {
                   label="Validity"
                   type="text"
                   value={input.validity}
-                  onChange={(e) => {}}
+                  onChange={(e) => handleAdditionalInputChange(index, 'validity', e.target.value)}
                 />
-             {
-                additionalInputs.length!==1 &&(
-                    <button
+                {additionalInputs.length !== 1 && (
+                  <button
                     type="button"
                     onClick={() => handleDeleteButtonClick(index)}
                     className="text-red-500 mt-6"
                   >
                     Delete
                   </button>
-                )
-             }
+                )}
               </div>
             ))}
             <button
@@ -187,10 +196,10 @@ const Page = () => {
             >
               Add
             </button>
-          </div> */}
+          </div>
 
-          <Input
-            id={`price`}
+          {/* <Input
+            id="price"
             placeholder="Price"
             label="Price"
             type="text"
@@ -198,25 +207,24 @@ const Page = () => {
             onChange={(e) => setPrice(e.target.value)}
           />
           <Input
-            id={`validity`}
+            id="validity"
             placeholder="Validity"
             label="Validity"
             type="text"
             value={validity}
             onChange={(e) => setValidity(e.target.value)}
-          />
-            <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            id="isOfficial"
-            checked={isOfficial}
-            onChange={(e) => setIsOfficial(e.target.checked)}
-            className="appearance-none h-6 w-6 border border-netral-25 rounded-md checked:bg-netral-25 checked:border-transparent focus:outline-none focus:border-netral-25"
-          />
-          <label htmlFor="isOfficial">Is Official</label>
+          /> */}
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="isOfficial"
+              checked={isOfficial}
+              onChange={(e) => setIsOfficial(e.target.checked)}
+              className="appearance-none h-6 w-6 border border-netral-25 rounded-md checked:bg-netral-25 checked:border-transparent focus:outline-none focus:border-netral-25"
+            />
+            <label htmlFor="isOfficial">Is Official</label>
+          </div>
         </div>
-        </div>
-      
 
         <button
           className="bg-netral-25 w-[100px] py-2 rounded-md ml-10"

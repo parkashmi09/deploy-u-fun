@@ -12,7 +12,7 @@ interface Input {
   logoSrc?: string
   placeholder: string
   accept?:string;
-  type?: "text" | "password" | "file"
+  type?: "text" | "password" | "file" | "number"
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   variant?:

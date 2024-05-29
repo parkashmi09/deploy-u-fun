@@ -126,9 +126,3 @@ input:checked + .slider:before {
     scrollbar-color: transparent transparent; /*just hides the scrollbar for firefox */
 }
 
-/* JavaScript */
-const data = [{}, {}];
-
-const handleDelete = (index) => {
-    data.filter((item, i) => i !== index);
-}

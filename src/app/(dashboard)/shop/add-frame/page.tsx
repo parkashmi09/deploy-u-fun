@@ -12,9 +12,8 @@ const Page = () => {
   const router = useRouter();
   // State variables for form fields
   const [agencyName, setAgencyName] = useState("");
-  const [logo, setLogo] = useState("");
-  const [adharFront, setAdharFront] = useState("");
-  const [adharBack, setAdharBack] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
+  const [file, setFile] = useState(null);
   const [additionalInputs, setAdditionalInputs] = useState([
     { price: "", validity: "" },
   ]);
@@ -35,14 +34,11 @@ const Page = () => {
 
     // Create FormData object
     const formData = new FormData();
-    formData.append("images", logo);
-    formData.set("price", price);
-    formData.set("level", level);
+    if (thumbnail) formData.append("images", thumbnail);
+    if (file) formData.append("images", file);
+    formData.set("priceAndvalidity", JSON.stringify(additionalInputs));
     formData.set("name", agencyName);
-    formData.set("day", day);
     formData.set("is_official", `${isOfficial}`);
-
-    // Add other form fields and files to formData as needed
 
     try {
       // Send form data to API using Axios
@@ -58,7 +54,6 @@ const Page = () => {
 
       // Handle response
       console.log("Response:", response.data);
-      // Redirect or show success message
 
       const data = response.data;
 
@@ -70,11 +65,10 @@ const Page = () => {
           variant: "success",
         });
         // Clear form fields
-        // setAgencyName("");
-        // Clear other form fields as needed
         setPrice("");
         setLevel("");
-        setLogo("");
+        setThumbnail(null);
+        setFile(null);
       }
       if (data?.status === 0 || data?.status === "") {
         setOpenToast(true);
@@ -91,21 +85,14 @@ const Page = () => {
   };
 
   // Function to handle file input change
-  const handleLogoChange = (e: any) => {
+  const handleThumbnailChange = (e: any) => {
     const file = e.target.files ? e.target.files[0] : null;
-    setLogo(file);
+    setThumbnail(file);
   };
 
-  // Function to handle file input change
-  const handleAdharFrontChange = (e: any) => {
+  const handleFileChange = (e: any) => {
     const file = e.target.files ? e.target.files[0] : null;
-    setAdharFront(file);
-  };
-
-  // Function to handle file input change
-  const handleAdharBackChange = (e: any) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setAdharBack(file);
+    setFile(file);
   };
 
   // Function to add additional input fields
@@ -123,12 +110,13 @@ const Page = () => {
     updatedInputs.splice(index, 1);
     setAdditionalInputs(updatedInputs);
   };
+
   return (
-    <div className="mt-24  p-6">
+    <div className="mt-24 p-6">
       <div className="space-y-6">
-      <Title size="lg" variant="default">
-         Add Frame
-          </Title>
+        <Title size="lg" variant="default">
+          Add Frame
+        </Title>
         <section className="relative space-y-6 rounded-lg-10 bg-white p-6">
           <div className="md:hidden" onClick={() => router.back()}>
             {/* Icon or text for back button */}
@@ -137,24 +125,32 @@ const Page = () => {
         </section>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="px-8 py-4 w-full md:w-[60%] grid grid-cols-1  gap-x-5 gap-y-8">
+        <div className="px-8 py-4 w-full md:w-[60%] grid grid-cols-1 gap-x-5 gap-y-8">
           <Input
             id="name"
-            placeholder="Enter  Name"
+            placeholder="Enter Name"
             label="Name"
             variant="default"
             value={agencyName}
             onChange={(e) => setAgencyName(e.target.value)}
           />
           <Input
-            id="logo"
+            id="thumbnail"
+            placeholder=""
+            label="Thumbnail"
+            type="file"
+            accept="image/*"
+            onChange={handleThumbnailChange}
+          />
+          <Input
+            id="file"
             placeholder=""
             label="File"
             type="file"
             accept="*/*"
-            onChange={handleLogoChange}
+            onChange={handleFileChange}
           />
-          {/* <div className=" flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             {additionalInputs.map((input, index) => (
               <div key={index} className="flex gap-3 items-center w-full">
                 <Input
@@ -163,7 +159,13 @@ const Page = () => {
                   label="Price"
                   type="text"
                   value={input.price}
-                  onChange={(e) => {}}
+                  onChange={(e) =>
+                    setAdditionalInputs((prevInputs) =>
+                      prevInputs.map((item, i) =>
+                        i === index ? { ...item, price: e.target.value } : item
+                      )
+                    )
+                  }
                 />
                 <Input
                   id={`validity-${index}`}
@@ -171,19 +173,23 @@ const Page = () => {
                   label="Validity"
                   type="text"
                   value={input.validity}
-                  onChange={(e) => {}}
+                  onChange={(e) =>
+                    setAdditionalInputs((prevInputs) =>
+                      prevInputs.map((item, i) =>
+                        i === index ? { ...item, validity: e.target.value } : item
+                      )
+                    )
+                  }
                 />
-             {
-                additionalInputs.length!==1 &&(
-                    <button
+                {additionalInputs.length !== 1 && (
+                  <button
                     type="button"
                     onClick={() => handleDeleteButtonClick(index)}
                     className="text-red-500 mt-6"
                   >
                     Delete
                   </button>
-                )
-             }
+                )}
               </div>
             ))}
             <button
@@ -193,44 +199,19 @@ const Page = () => {
             >
               Add
             </button>
-          </div> */}
+          </div>
 
-          <Input
-            id={`price`}
-            placeholder="Price"
-            label="Price"
-            type="text"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          <Input
-            id={`level`}
-            placeholder="Level"
-            label="Level"
-            type="text"
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
-          />
-            <Input
-            id={`day`}
-            placeholder="Day"
-            label="Day"
-            type="text"
-            value={day}
-            onChange={(e) => setDay(e.target.value)}
-          />
-            <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            id="isOfficial"
-            checked={isOfficial}
-            onChange={(e) => setIsOfficial(e.target.checked)}
-            className="appearance-none h-6 w-6 border border-netral-25 rounded-md checked:bg-netral-25 checked:border-transparent focus:outline-none focus:border-netral-25"
-          />
-          <label htmlFor="isOfficial">Is Official</label>
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="isOfficial"
+              checked={isOfficial}
+              onChange={(e) => setIsOfficial(e.target.checked)}
+              className="appearance-none h-6 w-6 border border-netral-25 rounded-md checked:bg-netral-25 checked:border-transparent focus:outline-none focus:border-netral-25"
+            />
+            <label htmlFor="isOfficial">Is Official</label>
+          </div>
         </div>
-        </div>
-      
 
         <button
           className="bg-netral-25 w-[100px] py-2 rounded-md ml-10"
