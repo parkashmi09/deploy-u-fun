@@ -156,8 +156,7 @@ const Page = () => {
                 <Input
                   id={`price-${index}`}
                   placeholder="Price"
-                  label="Price"
-                  type="text"
+                  type="number"
                   value={input.price}
                   onChange={(e) =>
                     setAdditionalInputs((prevInputs) =>
@@ -170,8 +169,7 @@ const Page = () => {
                 <Input
                   id={`validity-${index}`}
                   placeholder="Validity"
-                  label="Validity"
-                  type="text"
+                  type="number"
                   value={input.validity}
                   onChange={(e) =>
                     setAdditionalInputs((prevInputs) =>

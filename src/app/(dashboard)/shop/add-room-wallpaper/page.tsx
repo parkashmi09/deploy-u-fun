@@ -165,16 +165,14 @@ const Page = () => {
                 <Input
                   id={`price-${index}`}
                   placeholder="Price"
-                  label="Price"
-                  type="text"
+                  type="number"
                   value={input.price}
                   onChange={(e) => handleAdditionalInputChange(index, 'price', e.target.value)}
                 />
                 <Input
                   id={`validity-${index}`}
                   placeholder="Validity"
-                  label="Validity"
-                  type="text"
+                  type="number"
                   value={input.validity}
                   onChange={(e) => handleAdditionalInputChange(index, 'validity', e.target.value)}
                 />
