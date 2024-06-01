@@ -240,7 +240,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             <SidebarMenu
               active={salary}
               onClick={() => setSalary(!salary)}
-              icon={<Money/>}
+              icon={<Money />}
               name="Salary Managment"
               variant="sub-menu"
             />
@@ -251,9 +251,22 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
                 name="Indian Payroll"
                 variant="expand"
                 href="/salary/salary-setup"
-              /> 
+              />
             </SidebarExpand>
+
           )}
+
+          {isMasterAdmin && (
+            <SidebarExpand show={salary}>
+              <SidebarMenu
+                name="Global Payroll"
+                variant="expand"
+                href="/salary/global-salary-setup"
+              />
+            </SidebarExpand>
+
+          )}
+
 
 
           {isMasterAdmin && (
@@ -273,7 +286,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
                 variant="expand"
                 href="/shop/add-room-wallpaper"
               />
-                <SidebarMenu
+              <SidebarMenu
                 name="View Room Wallpaper"
                 variant="expand"
                 href="/shop/view-room-wallpaper"
@@ -298,7 +311,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
                 variant="expand"
                 href="/shop/view-vehicle"
               />
-               <SidebarMenu
+              <SidebarMenu
                 name="Add Chat Bubble"
                 variant="expand"
                 href="/shop/add-chat-bubble"
@@ -311,7 +324,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
 
             </SidebarExpand>
           )}
-     
+
 
           {(isMasterAdmin || isManager) && (
             <SidebarMenu
@@ -407,27 +420,27 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
             isManager ||
             isAdmin ||
             isMerchant) && (
-            <SidebarExpand show={coinSeller}>
-              <SidebarMenu
-                name="Seller Recharge History"
-                variant="expand"
-                href="/seller/coin-seller-recharge-history"
-              />
-            </SidebarExpand>
-          )}
+              <SidebarExpand show={coinSeller}>
+                <SidebarMenu
+                  name="Seller Recharge History"
+                  variant="expand"
+                  href="/seller/coin-seller-recharge-history"
+                />
+              </SidebarExpand>
+            )}
           {(isCountryAdmin ||
             isMasterAdmin ||
             isManager ||
             isAdmin ||
             isMerchant) && (
-            <SidebarExpand show={coinSeller}>
-              <SidebarMenu
-                name="My Recharge History"
-                variant="expand"
-                href="/seller/my-recharge-history"
-              />
-            </SidebarExpand>
-          )}
+              <SidebarExpand show={coinSeller}>
+                <SidebarMenu
+                  name="My Recharge History"
+                  variant="expand"
+                  href="/seller/my-recharge-history"
+                />
+              </SidebarExpand>
+            )}
 
           <SidebarMenu
             active={agency}

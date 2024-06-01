@@ -81,7 +81,7 @@ const Page = () => {
       <section className="rounded-lg-10 items-center bg-white mt-24 py-12 px-4 mr-12">
         <nav className="flex items-center h-full">
           <Title size="lg" variant="default">
-            Salary Grid
+            Domestic Salary Grid
           </Title>
         </nav>
       </section>

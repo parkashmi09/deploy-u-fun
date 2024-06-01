@@ -257,6 +257,18 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
               </SidebarExpand>
             </div>
           )}
+              {isMasterAdmin && (
+         <div onClick={() => setShowSidebar(false)}>
+             <SidebarExpand show={salary}>
+              <SidebarMenu
+                name="Global Payroll"
+                variant="expand"
+                href="/salary/global-salary-setup"
+              />
+            </SidebarExpand>
+         </div>
+
+          )}
           {isMasterAdmin && (
             <SidebarMenu
               active={shop}
