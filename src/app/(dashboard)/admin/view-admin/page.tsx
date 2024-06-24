@@ -40,6 +40,7 @@ const ViewAdmin = () => {
   const [userid, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
+  console.log("selcteddd", selectedCountry)
   const [countryCode, setCountryCode] = useState<string>("");
   const [countryFieldOption, setIsCountryFieldOptions] =
     useState<boolean>(true);
@@ -158,7 +159,7 @@ const ViewAdmin = () => {
           username: username,
           userId: userid,
           password: password,
-
+          countryCode:selectedCountry.value,
           createdBy: {
             role: manager.toLowerCase(),
             userId: managerId,
