@@ -36,6 +36,7 @@ const ViewAdmin = () => {
     useState<boolean>(false);
   const [openEditManagerModal, setOpenEditManagerModal] =
     useState<boolean>(false);
+    
   const [username, setUserName] = useState<string>("");
   const [userid, setUserId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
