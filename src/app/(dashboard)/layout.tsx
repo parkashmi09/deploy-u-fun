@@ -19,10 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
       </Head>
       <body className=" h-screen UI-Ecommerce flex">
-        {/* <ComponentLayout />
+        <ComponentLayout />
         <main className=" w-full md:pl-[300px] 2xl:pl-[350px] pl-0 h-screen scrollbar-hide">
           {children}
-        </main> */}
+        </main>
       </body>
     </html>
   );
