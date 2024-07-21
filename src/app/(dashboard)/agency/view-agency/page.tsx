@@ -58,6 +58,7 @@ const ViewAgency = () => {
   const [openAlertsSuccess, setOpenAlertsSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [role, setRole] = useState<string>("");
   const [toastObj, setToastObj] = React.useState<ToastObj>({
     desc:"",
     variant:"",
@@ -68,6 +69,13 @@ const ViewAgency = () => {
     
     fetchData();
   }, [currentPage]);
+
+  useLayoutEffect(() => {
+    const value = localStorage.getItem("role");
+    if (value !== null) {
+      setRole(value);
+    }
+  }, []);
 
 
 
@@ -185,7 +193,27 @@ const ViewAgency = () => {
               role="menuitem"
               tabIndex={-1}
               id="menu-item-5"
-              onClick={() => router.push(`/agency/edit-agency/${data?._id}`)}
+              onClick={() =>{
+              
+                if(role==="Manager"){
+                  setOpenToast(true);
+                  setToastObj({
+                    title:"Agency",
+                     desc:"Permission Denied for Edit",
+                     variant:"warning",
+               
+                   })
+                }
+                else{
+             router.push(`/agency/edit-agency/${data?._id}`)
+                }
+             
+
+   
+              }
+                
+              
+              }
             >
               Edit
             </button>
@@ -275,14 +303,26 @@ const ViewAgency = () => {
     }
   }
   const handleDelete = async () => {
-    try {
+
+
+    if(role==="Manager" || role==="Country Admin" || role==="Admin" || role==="Sub Admin"){
+      setOpenToast(true);
+      setToastObj({
+       title:"Agency",
+        desc:"Permission Denied for Remove",
+        variant:"error"
+  
+      })
+    }
+    else{
+         try {
       const res = await axios.delete(
         `https://fun2fun.live/admin/agency/delete`,
         {
           data: {
             userId: userId,
           },
-        }
+        } 
       );
 
 
@@ -311,6 +351,10 @@ const ViewAgency = () => {
     } catch (error) {
       console.error("Error deleting user:", error);
     }
+
+    }
+  
+ 
   };
 
   return (

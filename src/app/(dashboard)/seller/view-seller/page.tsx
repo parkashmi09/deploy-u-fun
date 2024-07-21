@@ -90,6 +90,14 @@ const ViewSubAdmin = () => {
     return storedManager !== null ? storedManager : "";
   });
 
+  const [role, setRole] = useState<string>("");
+  useEffect(() => {
+    const value = localStorage.getItem("role");
+    if (value !== null) {
+      setRole(value);
+    }
+  }, []);
+
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -369,7 +377,7 @@ try {
         data={userData}
         headers={headerData}
         addButtonLabel="Add Coin Seller"
-        isAdd
+        isAdd={role === "Manager" ? false : true}
         isFilter={isFilter}
         filterAction={fetchData}
         title="View Coin Sellers"

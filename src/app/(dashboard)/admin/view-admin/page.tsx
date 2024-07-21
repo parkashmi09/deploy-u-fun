@@ -160,7 +160,7 @@ const ViewAdmin = () => {
           username: username,
           userId: userid,
           password: password,
-          countryCode:selectedCountry.value,
+          countryCode:selectedCountry.value ? selectedCountry?.value : localStorage.getItem('countryCode'),
           createdBy: {
             role: manager.toLowerCase(),
             userId: managerId,

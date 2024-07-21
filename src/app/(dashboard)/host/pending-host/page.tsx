@@ -65,6 +65,14 @@ const ViewAgency = () => {
     title:""
   })
   const [openToast, setOpenToast] = React.useState(false);
+  const [role, setRole] = useState<string>("");
+
+  useEffect(() => {
+    const value = localStorage.getItem("role");
+    if (value !== null) {
+      setRole(value);
+    }
+  }, []);
   useEffect(() => {
     
     fetchData();
@@ -151,86 +159,111 @@ const ViewAgency = () => {
   };
 
   const handleAccept = async(id:any)=> {
-    try {
-      const response= await axios.post(`https://fun2fun.live/admin/host/changeStatus`, 
-        {
-          "id":id,
-          "status":"Approved"
-      }
-    )
-
-    console.log("response",response)
-
-    const data= response.data;
-
-    if(data?.status ===1){
+    if(role==="Manager" || role==="Country Admin" || role==="Admin" || role==="Sub Admin"){
       setOpenToast(true);
-    
-       setToastObj({
-        title:"Host",
-         desc:data?.message,
-         variant:"success"
-
-       })
-       fetchData();
+      setToastObj({
+       title:"Host",
+        desc:"Permission Denied for Accept",
+        variant:"warning"})
+             setIsOpenDeleteModal(false)
+    }
+    else{
+      try {
+        const response= await axios.post(`https://fun2fun.live/admin/host/changeStatus`, 
+          {
+            "id":id,
+            "status":"Approved"
         }
-        if(data?.status ===0 || data?.status ==='' ){
-          setOpenToast(true);
-          setToastObj({
-           title:"Host",
-            desc:data?.error,
-            variant:"error"
-   
-          })
-        }
+      )
   
-    } catch (error) {
-      console.log('error',error)
+      console.log("response",response)
+  
+      const data= response.data;
+  
+      if(data?.status ===1){
+        setOpenToast(true);
+      
+         setToastObj({
+          title:"Host",
+           desc:data?.message,
+           variant:"success"
+  
+         })
+         fetchData();
+          }
+          if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"Host",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
+    
+      } catch (error) {
+        console.log('error',error)
+      }
+      finally{
+        fetchData();
+      }
     }
-    finally{
-      fetchData();
-    }
+  
   }
   const handleReject = async(id:any)=> {
-    try {
-      const response= await axios.post(`https://fun2fun.live/admin/host/changeStatus`, 
-        {
-          "id":id,
-          "status":"Rejected"
-      }
-    )
 
-    console.log("response",response)
-
-    const data= response.data;
-
-    if(data?.status ===1){
+    if(role==="Manager" || role==="Country Admin" || role==="Admin" || role==="Sub Admin"){
       setOpenToast(true);
-    
-       setToastObj({
-        title:"Host",
-         desc:data?.message,
-         variant:"success"
-
-       })
-       fetchData();
+      setToastObj({
+       title:"Host",
+        desc:"Permission Denied for Reject",
+        variant:"warning"})
+             setIsOpenDeleteModal(false)
+    }
+    else{
+      try {
+        const response= await axios.post(`https://fun2fun.live/admin/host/changeStatus`, 
+          {
+            "id":id,
+            "status":"Rejected"
         }
-        if(data?.status ===0 || data?.status ==='' ){
-          setOpenToast(true);
-          setToastObj({
-           title:"Host",
-            desc:data?.error,
-            variant:"error"
-   
-          })
-        }
+      )
   
-    } catch (error) {
-      console.log('error',error)
+      console.log("response",response)
+  
+      const data= response.data;
+  
+      if(data?.status ===1){
+        setOpenToast(true);
+      
+         setToastObj({
+          title:"Host",
+           desc:data?.message,
+           variant:"success"
+  
+         })
+         fetchData();
+          }
+          if(data?.status ===0 || data?.status ==='' ){
+            setOpenToast(true);
+            setToastObj({
+             title:"Host",
+              desc:data?.error,
+              variant:"error"
+     
+            })
+          }
+    
+      } catch (error) {
+        console.log('error',error)
+      }
+      finally{
+        fetchData();
+      }
     }
-    finally{
-      fetchData();
-    }
+
+    
+
   }
   
 

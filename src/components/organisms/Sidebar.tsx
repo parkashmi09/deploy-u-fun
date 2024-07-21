@@ -497,7 +497,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
               href="/host/rejected-host"
             />
           </SidebarExpand>
-          {(isMasterAdmin || isManager || isCountryAdmin || isMerchant) && (
+          {(isMasterAdmin || isManager || isMerchant) && (
             <SidebarMenu
               active={showBanner}
               onClick={() => setShowBanner(!showBanner)}

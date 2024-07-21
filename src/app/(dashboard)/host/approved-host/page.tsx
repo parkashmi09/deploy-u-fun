@@ -53,6 +53,13 @@ const ViewAgency = () => {
     title:""
   })
   const [openToast, setOpenToast] = React.useState(false);
+  const [role, setRole] = useState<string>("");
+  useEffect(() => {
+    const value = localStorage.getItem("role");
+    if (value !== null) {
+      setRole(value);
+    }
+  }, []);
   useEffect(() => {
     
     fetchData();
@@ -139,6 +146,13 @@ const ViewAgency = () => {
   };
 
   const handleAccept = async(id:any)=> {
+    setOpenToast(true);
+    setToastObj({
+     title:"Host",
+      desc:"Permission Denied for Remove",
+      variant:"warning"
+
+    })
     try {
       const response= await axios.post(`https://fun2fun.live/admin/host/changeStatus`, 
         {
@@ -300,7 +314,18 @@ const ViewAgency = () => {
     }
   }
   const handleDeleteUser = async ()=> {
-    try {
+
+    if(role==="Manager" || role==="Country Admin" || role==="Admin" || role==="Sub Admin"){
+      setOpenToast(true);
+      setToastObj({
+       title:"Host",
+        desc:"Permission Denied for Delete",
+        variant:"warning"})
+             setIsOpenDeleteModal(false)
+    }
+
+    else{
+try {
       const response= await axios.delete(`https://fun2fun.live/host/removeByid/${userDeleteId}`)
       console.log("response",response)
       const data= response.data;
@@ -331,6 +356,9 @@ const ViewAgency = () => {
     } catch (error) {
       console.log('error',error)
     }
+    }
+   
+    
   }
 
   return (

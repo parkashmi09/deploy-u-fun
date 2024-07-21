@@ -525,7 +525,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
               />
             </div>
           </SidebarExpand>
-          {(isMasterAdmin || isManager || isCountryAdmin || isMerchant) && (
+          {(isMasterAdmin || isManager || isMerchant) && (
             <SidebarMenu
               active={showBanner}
               onClick={() => setShowBanner(!showBanner)}
