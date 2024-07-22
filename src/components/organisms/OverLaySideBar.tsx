@@ -431,7 +431,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
 
           {(isCountryAdmin ||
             isMasterAdmin ||
-            isManager ||
+            // isManager ||
             isAdmin ||
             isMerchant) && (
             <SidebarExpand show={coinSeller}>

@@ -417,7 +417,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
 
           {(isCountryAdmin ||
             isMasterAdmin ||
-            isManager ||
+            // isManager ||
             isAdmin ||
             isMerchant) && (
               <SidebarExpand show={coinSeller}>

@@ -374,7 +374,7 @@ const ViewUser = () => {
         data={userData}
         headers={headerData}
         addButtonLabel="Add Banner"
-        isAdd
+        isAdd={manager==="Manager" || manager==="Admin"? false:true}
         title="View Banner"
         setCountrySelect={setCountrySelect}
         setCountryCode={setCountryCode}

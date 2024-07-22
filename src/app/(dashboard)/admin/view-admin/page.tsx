@@ -160,63 +160,55 @@ const ViewAdmin = () => {
           username: username,
           userId: userid,
           password: password,
-          countryCode:selectedCountry.value ? selectedCountry?.value : localStorage.getItem('countryCode'),
+          countryCode: selectedCountry?.value ? selectedCountry?.value : localStorage.getItem('countryCode'),
           createdBy: {
             role: manager.toLowerCase(),
             userId: managerId,
           },
         }),
       });
-      if (response.ok) {
-        const data = await response.json();
-        console.log("response data", data);
-        if (data?.status === 1) {
-          setOpenToast(true);
-          setToastObj({
-            title: "Admin Creation",
-            desc: data?.message,
-            variant: "success",
-          });
-        }
-        if (data?.status === 0 || data?.status === "" || data?.data == "") {
-          setOpenToast(true);
-          setToastObj({
-            title: "Admin Creation",
-            desc: data?.error,
-            variant: "error",
-          });
-        }
-        setUserName("");
-        setUserId("");
-        selectedCountry({});
-        setPassword("");
-
-        fetchData();
+      
+      const data = await response.json();
+      
+      if (data?.status === 1) {
+        setOpenToast(true);
+        setToastObj({
+          title: "Admin Creation",
+          desc: data?.message,
+          variant: "success",
+        });
       } else {
-        console.error("Failed to add manager:", response.statusText);
-        setUserName("");
-        setUserId("");
-        setSelectedCountry({ label: "", value: "" });
-        setPassword("");
+        setOpenToast(true);
+        setToastObj({
+          title: "Admin Creation",
+          desc: data?.error || "Failed to add admin",
+          variant: "error",
+        });
       }
-    } catch (error) {
-      fetchData();
-      console.error("Error adding manager:", error);
+      
+      // Clear form fields
       setUserName("");
       setUserId("");
-      setSelectedCountry({ label: "", value: "" });
+      setSelectedCountry(null);
       setPassword("");
-    } finally {
-      fetchData();
-      setIsModalLoading(false);
+      
+      // Close the modal
       setOpenAddCountryAdminModal(false);
-      setUserName("");
-      setUserId("");
-      setSelectedCountry({ label: "", value: "" });
-      setPassword("");
+      
+      // Fetch updated data
+      await fetchData();
+    } catch (error) {
+      console.error("Error adding admin:", error);
+      setOpenToast(true);
+      setToastObj({
+        title: "Admin Creation",
+        desc: "An error occurred while adding the admin",
+        variant: "error",
+      });
+    } finally {
+      setIsModalLoading(false);
     }
   };
-
   const handleDeleteAdmin = async () => {
     console.log("user id", userid);
     try {
