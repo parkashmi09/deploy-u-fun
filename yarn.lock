@@ -428,10 +428,10 @@
   resolved "https://registry.npmjs.org/@next/env/-/env-14.1.0.tgz"
   integrity sha512-Py8zIo+02ht82brwwhTg36iogzFqGLPXlRGKQw5s+qP/kMNc4MAyDeEwBKDijk6zTIbegEgu8Qy7C1LboslQAw==
 
-"@next/swc-darwin-arm64@14.1.0":
+"@next/swc-win32-x64-msvc@14.1.0":
   version "14.1.0"
-  resolved "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.1.0.tgz"
-  integrity sha512-nUDn7TOGcIeyQni6lZHfzNoo9S0euXnu0jhsbMOmMJUBfgsnESdjN97kM7cBqQxZa8L/bM9om/S5/1dzCrW6wQ==
+  resolved "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.1.0.tgz"
+  integrity sha512-9WEbVRRAqJ3YFVqEZIxUqkiO8l1nool1LmNxygr5HWF8AcSYsEpneUDhmjUVJEzO2A04+oPtZdombzzPPkTtgg==
 
 "@nextui-org/accordion@2.0.28":
   version "2.0.28"
@@ -2893,11 +2893,6 @@ framer-motion@^11.0.14, framer-motion@>=4.0.0:
   integrity sha512-mRt7vQGzA7++wTgb+PW1TrlXXgndqR6hCiJ48fXr2X9alte2hPQiAq556HRwDCt0Q5X98MNvcSe4KUa27Gm5Lg==
   dependencies:
     tslib "^2.4.0"
-
-fsevents@~2.3.2:
-  version "2.3.3"
-  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
-  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
   version "1.1.2"
