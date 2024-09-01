@@ -110,7 +110,7 @@ const MerhcantRechargeHistory = () => {
     setIsLoading(true);
     try {
       const data = await axios.post(
-        `https://fun2fun.live/admin/merchent/get/roleByRechargeHistory`,
+        `http://139.59.19.172:3000/admin/merchent/get/roleByRechargeHistory`,
         {
         role: payload.role,
             userId: payload.userId,
@@ -156,7 +156,7 @@ const MerhcantRechargeHistory = () => {
       formData.set("createdByrole", manager.toLowerCase());
 
       const response = await axios.post(
-        "https://fun2fun.live/admin/coinSeller/add",
+        "http://139.59.19.172:3000/admin/coinSeller/add",
         formData,
         {
           headers: {
@@ -194,7 +194,7 @@ const MerhcantRechargeHistory = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/coinSeller/delete/${userid}`;
+      const url = `http://139.59.19.172:3000/admin/coinSeller/delete/${userid}`;
       const response = await fetch(url, {
         method: "DELETE",
       });

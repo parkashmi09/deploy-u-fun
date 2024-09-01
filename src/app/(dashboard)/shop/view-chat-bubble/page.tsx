@@ -15,7 +15,7 @@ const  Page=()=> {
     
     const fetchData = async () => {
         try {
-            const response = await fetch(`https://fun2fun.live/admin/chatBubble/getall`, {
+            const response = await fetch(`http://139.59.19.172:3000/admin/chatBubble/getall`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

@@ -64,7 +64,7 @@ console.log(props, "props")
 const handleEdit =async()=> {
   try {
     setIsLoading(true);
-    const response = await fetch(`https://fun2fun.live/admin/official/update/${editFormData?.id}`, {
+    const response = await fetch(`http://139.59.19.172:3000/admin/official/update/${editFormData?.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

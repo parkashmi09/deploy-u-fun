@@ -38,7 +38,7 @@ const Page = () => {
 
     try {
       // Send form data to API using Axios
-      const response = await axios.post("https://fun2fun.live/admin/agency/add", formData, {
+      const response = await axios.post("http://139.59.19.172:3000/admin/agency/add", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

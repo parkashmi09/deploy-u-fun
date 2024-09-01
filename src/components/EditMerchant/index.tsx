@@ -63,7 +63,7 @@ console.log(props, "props")
 const handleEdit =async()=> {
   try {
     setIsLoading(true);
-    const response = await fetch(`https://fun2fun.live/admin/merchent/update/${editFormData?.id}`, {
+    const response = await fetch(`http://139.59.19.172:3000/admin/merchent/update/${editFormData?.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -75,6 +75,7 @@ const handleEdit =async()=> {
         countryCode:editFormData?.selectedCountry?.value
       })
     });
+    
     if (response.ok) {
       const data = await response.json();
       console.log("Manager added successfully:", data);

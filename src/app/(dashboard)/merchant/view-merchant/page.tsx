@@ -125,7 +125,7 @@ const ViewAdmin = () => {
     setIsLoading(true);
     try {
       const data = await axios.post(
-        "https://fun2fun.live/admin/merchent/getByRole",
+        "http://139.59.19.172:3000/admin/merchent/getByRole",
         payload
       );
       console.log("data response", data);
@@ -156,7 +156,7 @@ const ViewAdmin = () => {
   const handleAddMerchent = async () => {
     try {
       setIsModalLoading(true);
-      const response = await fetch(`https://fun2fun.live/admin/make/merchent`, {
+      const response = await fetch(`http://139.59.19.172:3000/admin/make/merchent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -232,7 +232,7 @@ const ViewAdmin = () => {
     console.log("user id", userid)
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/remove/merchent`;
+      const url = `http://139.59.19.172:3000/admin/remove/merchent`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {
@@ -282,7 +282,7 @@ const ViewAdmin = () => {
 
   const handleAddCoinsRecharge = async() => {
     try {
-      const res=await axios.post("https://fun2fun.live/admin/merchent/recharge",{
+      const res=await axios.post("http://139.59.19.172:3000/admin/merchent/recharge",{
         merchentId :merchentId,
         diamonds:diamonds,
         paymentBy:{

@@ -62,7 +62,7 @@ export default function EditCountryAdmin(props: EditCountryAdminProps) {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `https://fun2fun.live/admin/country-admin/update/${editFormData?.id}`,
+        `http://139.59.19.172:3000/admin/country-admin/update/${editFormData?.id}`,
         {
           method: "PUT",
           headers: {

@@ -42,7 +42,7 @@ const Page = () => {
     // setSendingStatus(true);
     // try {
     //   const response = await fetch(
-    //     `https://fun2fun.live/admin/hostSalary/indian/${amount}`,
+    //     `http://139.59.19.172:3000/admin/hostSalary/indian/${amount}`,
     //     {
     //       method: "POST",
     //       headers: {

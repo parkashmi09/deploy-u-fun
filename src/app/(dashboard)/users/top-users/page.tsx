@@ -26,7 +26,7 @@ const PageComponent: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`https://fun2fun.live/user/topUser`);
+      const response = await fetch(`http://139.59.19.172:3000/user/topUser`);
       const data = await response.json();
       const modifiedData = data.data.map((user: UserData, index: number) => ({
         ...user,
@@ -89,7 +89,7 @@ const PageComponent: React.FC = () => {
   const handleDeleteAction = async () => {
     try {
       const res = await fetch(
-        `https://fun2fun.live/user/topUser/${deleteUserDetails?._id}`,
+        `http://139.59.19.172:3000/user/topUser/${deleteUserDetails?._id}`,
         {
           method: "DELETE",
         }

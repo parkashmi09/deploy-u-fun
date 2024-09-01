@@ -136,7 +136,7 @@ const ViewSubAdmin = () => {
     setIsLoading(true);
     try {
       const data = await axios.post(
-        "https://fun2fun.live/admin/coinSeller/getByRole",
+        "http://139.59.19.172:3000/admin/coinSeller/getByRole",
         payload
       );
       console.log("data response", data);
@@ -179,7 +179,7 @@ const ViewSubAdmin = () => {
       formData.set("createdByrole", manager.toLowerCase());
 
       const response = await axios.post(
-        "https://fun2fun.live/admin/coinSeller/add",
+        "http://139.59.19.172:3000/admin/coinSeller/add",
         formData,
         {
           headers: {
@@ -232,7 +232,7 @@ const ViewSubAdmin = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/coinSeller/delete/${userid}`;
+      const url = `http://139.59.19.172:3000/admin/coinSeller/delete/${userid}`;
       const response = await fetch(url, {
         method: "DELETE",
       });
@@ -276,7 +276,7 @@ const data=await response.json();
 
   const handleAddCoinsRecharge = async() => {
 try {
-  const res=await axios.post("https://fun2fun.live/coinseller/recharge",{
+  const res=await axios.post("http://139.59.19.172:3000/coinseller/recharge",{
     coinSellerId :sellerId,
     amount:coins,
     merchentId:merhcantId

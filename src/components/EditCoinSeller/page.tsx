@@ -73,7 +73,7 @@ export default function EditCoinSeller(props: EditCoinSellerProps) {
       formData.append("images", adharFront);
       formData.set("countryCode", editFormData?.selectedCountry?.value || "");
       const response = await axios.put(
-        `https://fun2fun.live/admin/coinSeller/update/${editFormData?.id}`,
+        `http://139.59.19.172:3000/admin/coinSeller/update/${editFormData?.id}`,
         formData,
         {
           headers: {

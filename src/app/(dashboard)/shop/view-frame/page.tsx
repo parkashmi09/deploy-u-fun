@@ -12,7 +12,7 @@ const Page = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`https://fun2fun.live/admin/frame/getall`, {
+            const response = await fetch(`http://139.59.19.172:3000/admin/frame/getall`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

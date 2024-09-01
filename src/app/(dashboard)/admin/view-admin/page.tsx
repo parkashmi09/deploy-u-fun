@@ -119,7 +119,7 @@ const ViewAdmin = () => {
     setIsLoading(true);
     try {
       const data = await axios.post(
-        "https://fun2fun.live/admin/official/getByRole",
+        "http://139.59.19.172:3000/admin/official/getByRole",
         payload
       );
       console.log("data response", data);
@@ -151,7 +151,7 @@ const ViewAdmin = () => {
   const handleAddCountryModal = async () => {
     try {
       setIsModalLoading(true);
-      const response = await fetch(`https://fun2fun.live/admin/make/official`, {
+      const response = await fetch(`http://139.59.19.172:3000/admin/make/official`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -213,7 +213,7 @@ const ViewAdmin = () => {
     console.log("user id", userid);
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/remove/official`;
+      const url = `http://139.59.19.172:3000/admin/remove/official`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {

@@ -93,7 +93,7 @@ const OverLaySideBar: React.FC<SideBarProps> = ({
   const fetchCoins = async () => {
     try {
       const res = await axios.get(
-        `https://fun2fun.live/admin/merchent/getById/${userid}`
+        `http://139.59.19.172:3000/admin/merchent/getById/${userid}`
       );
       console.log(res.data);
       if (res?.data) {

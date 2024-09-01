@@ -110,7 +110,7 @@ const ViewUser = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "https://fun2fun.live/admin/country-admin/getByRole",
+        "http://139.59.19.172:3000/admin/country-admin/getByRole",
         {
           method: "POST",
           headers: {
@@ -152,7 +152,7 @@ const ViewUser = () => {
     try {
       setIsModalLoading(true);
       const response = await fetch(
-        `https://fun2fun.live/admin/make/country-admin`,
+        `http://139.59.19.172:3000/admin/make/country-admin`,
         {
           method: "POST",
           headers: {
@@ -227,7 +227,7 @@ const ViewUser = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/remove/country-admin`;
+      const url = `http://139.59.19.172:3000/admin/remove/country-admin`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {

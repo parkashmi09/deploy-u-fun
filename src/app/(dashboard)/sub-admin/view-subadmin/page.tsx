@@ -110,7 +110,7 @@ const ViewSubAdmin = () => {
     setIsLoading(true);
     try {
       const data = await axios.post(
-        "https://fun2fun.live/admin/bd/getByRole",
+        "http://139.59.19.172:3000/admin/bd/getByRole",
         payload
       );
       console.log("data response", data);
@@ -154,7 +154,7 @@ const ViewSubAdmin = () => {
       formData.set("createdByrole",manager.toLowerCase());
 
       const response = await axios.post(
-        "https://fun2fun.live/admin/make/bd",
+        "http://139.59.19.172:3000/admin/make/bd",
         formData,
         {
           headers: {
@@ -213,7 +213,7 @@ const ViewSubAdmin = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `https://fun2fun.live/admin/remove/bd/${userid}`;
+      const url = `http://139.59.19.172:3000/admin/remove/bd/${userid}`;
       const response = await fetch(url, {
         method: "DELETE",
       });
