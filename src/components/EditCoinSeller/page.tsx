@@ -73,7 +73,7 @@ export default function EditCoinSeller(props: EditCoinSellerProps) {
       formData.append("images", adharFront);
       formData.set("countryCode", editFormData?.selectedCountry?.value || "");
       const response = await axios.put(
-        `http://139.59.19.172:3000/admin/coinSeller/update/${editFormData?.id}`,
+        `https://yoyo560live.live/admin/coinSeller/update/${editFormData?.id}`,
         formData,
         {
           headers: {

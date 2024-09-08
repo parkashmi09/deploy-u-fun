@@ -110,7 +110,7 @@ const RechargeHistory = () => {
     setIsLoading(true);
     try {
       const data = await axios.get(
-        `http://139.59.19.172:3000/admin/merchent/get/myRechargeHistory/${managerId}`,
+        `https://yoyo560live.live/admin/merchent/get/myRechargeHistory/${managerId}`,
       );
       console.log("data response", data);
       const modifiedData = data?.data?.data?.map(
@@ -152,7 +152,7 @@ const RechargeHistory = () => {
       formData.set("createdByrole", manager.toLowerCase());
 
       const response = await axios.post(
-        "http://139.59.19.172:3000/admin/coinSeller/add",
+        "https://yoyo560live.live/admin/coinSeller/add",
         formData,
         {
           headers: {
@@ -190,7 +190,7 @@ const RechargeHistory = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `http://139.59.19.172:3000/admin/coinSeller/delete/${userid}`;
+      const url = `https://yoyo560live.live/admin/coinSeller/delete/${userid}`;
       const response = await fetch(url, {
         method: "DELETE",
       });

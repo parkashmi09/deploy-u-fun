@@ -126,7 +126,7 @@ const ViewUser = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/banner/getall",
+        "https://yoyo560live.live/admin/banner/getall",
         // {
         //   method: "POST",
         //   headers: {
@@ -180,7 +180,7 @@ const ViewUser = () => {
     try {
       setIsModalLoading(true);
       const response = await axios.post(
-        `http://139.59.19.172:3000/admin/banner/add`,
+        `https://yoyo560live.live/admin/banner/add`,
         formData,
         {
           headers: {
@@ -264,7 +264,7 @@ const ViewUser = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `http://139.59.19.172:3000/admin/remove/country-admin`;
+      const url = `https://yoyo560live.live/admin/remove/country-admin`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {

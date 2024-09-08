@@ -72,7 +72,7 @@ const handleEdit = async () => {
       }
       formData.set("countryCode", editFormData?.selectedCountry?.value || "");
       const response = await axios.put(
-        `http://139.59.19.172:3000/admin/bd/update/${editFormData?.id}`,
+        `https://yoyo560live.live/admin/bd/update/${editFormData?.id}`,
         formData,
         {
           headers: {

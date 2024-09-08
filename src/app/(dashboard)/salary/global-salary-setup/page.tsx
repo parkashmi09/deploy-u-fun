@@ -42,7 +42,7 @@ const Page = () => {
     // setSendingStatus(true);
     // try {
     //   const response = await fetch(
-    //     `http://139.59.19.172:3000/admin/hostSalary/indian/${amount}`,
+    //     `https://yoyo560live.live/admin/hostSalary/indian/${amount}`,
     //     {
     //       method: "POST",
     //       headers: {

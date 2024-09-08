@@ -57,7 +57,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const fetchBadges = async () => {
     try {
-      const response = await fetch("http://139.59.19.172:3000/admin/tags/getall");
+      const response = await fetch("https://yoyo560live.live/admin/tags/getall");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -70,7 +70,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const fetchVehicles = async () => {
     try {
-      const response = await fetch("http://139.59.19.172:3000/admin/vehicle/getall");
+      const response = await fetch("https://yoyo560live.live/admin/vehicle/getall");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -84,7 +84,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const fetchWallpaper = async () => {
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/wallpaper/getall"
+        "https://yoyo560live.live/admin/wallpaper/getall"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -97,7 +97,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   };
   const fetchFrame = async () => {
     try {
-      const response = await fetch("http://139.59.19.172:3000/admin/frame/getall");
+      const response = await fetch("https://yoyo560live.live/admin/frame/getall");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -111,7 +111,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const fetchChatProfile = async () => {
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/chatBubble/getall"
+        "https://yoyo560live.live/admin/chatBubble/getall"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -124,7 +124,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   };
   const fetchVipList = async () => {
     try {
-      const response = await fetch("http://139.59.19.172:3000/admin/vip/getall");
+      const response = await fetch("https://yoyo560live.live/admin/vip/getall");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -137,7 +137,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const fetchSvip = async () => {
     try {
-      const response = await fetch("http://139.59.19.172:3000/admin/svip/getall");
+      const response = await fetch("https://yoyo560live.live/admin/svip/getall");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -151,7 +151,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const fetchLockRoom = async () => {
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/lockRoom/getall"
+        "https://yoyo560live.live/admin/lockRoom/getall"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -166,7 +166,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const fetchExtraSeat = async () => {
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/extraSeat/getall"
+        "https://yoyo560live.live/admin/extraSeat/getall"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -181,7 +181,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const fetchSpecialId = async () => {
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/specialId/getall"
+        "https://yoyo560live.live/admin/specialId/getall"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -196,7 +196,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const fetchAdmin = async () => {
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/adminuser/getall"
+        "https://yoyo560live.live/admin/adminuser/getall"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -210,7 +210,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const fetchAgency = async () => {
     try {
-      const response = await fetch("http://139.59.19.172:3000/admin/agency/getall");
+      const response = await fetch("https://yoyo560live.live/admin/agency/getall");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -248,7 +248,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const fetchSubAdmin = async () => {
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/subAdminUser/getall"
+        "https://yoyo560live.live/admin/subAdminUser/getall"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -266,7 +266,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `http://139.59.19.172:3000/user/getbyid/${params?.id}`
+        `https://yoyo560live.live/user/getbyid/${params?.id}`
       );
       const jsonData = await response.json();
       const { data } = jsonData;
@@ -347,7 +347,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `http://139.59.19.172:3000/admin/user/update/${userData?.userId}`,
+        `https://yoyo560live.live/admin/user/update/${userData?.userId}`,
         {
           method: "PUT",
           headers: {

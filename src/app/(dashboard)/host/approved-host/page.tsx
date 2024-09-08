@@ -70,7 +70,7 @@ const ViewAgency = () => {
   const fetchData = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`http://139.59.19.172:3000/host/getApproved`);
+      const response = await fetch(`https://yoyo560live.live/host/getApproved`);
       const data = await response?.json();
       // Calculate total pages based on data count
 
@@ -98,7 +98,7 @@ const ViewAgency = () => {
   };
   const handleActive = async (checked: boolean, id: string) => {
     try {
-      const response = await fetch("http://139.59.19.172:3000/admin/user/banUserId", {
+      const response = await fetch("https://yoyo560live.live/admin/user/banUserId", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -154,7 +154,7 @@ const ViewAgency = () => {
 
     })
     try {
-      const response= await axios.post(`http://139.59.19.172:3000/admin/host/changeStatus`, 
+      const response= await axios.post(`https://yoyo560live.live/admin/host/changeStatus`, 
         {
           "id":id,
           "status":"Approved"
@@ -326,7 +326,7 @@ const ViewAgency = () => {
 
     else{
 try {
-      const response= await axios.delete(`http://139.59.19.172:3000/host/removeByid/${userDeleteId}`)
+      const response= await axios.delete(`https://yoyo560live.live/host/removeByid/${userDeleteId}`)
       console.log("response",response)
       const data= response.data;
 

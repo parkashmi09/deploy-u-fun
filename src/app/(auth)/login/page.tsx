@@ -85,7 +85,7 @@ const LoginForm = () => {
           ? "admin/bd"
           : "";
       console.log(endpoint, "endpoint");
-      const res = await fetch(`http://139.59.19.172:3000/${endpoint}/login`, {
+      const res = await fetch(`https://yoyo560live.live/${endpoint}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

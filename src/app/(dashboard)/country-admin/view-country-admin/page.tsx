@@ -110,7 +110,7 @@ const ViewUser = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "http://139.59.19.172:3000/admin/country-admin/getByRole",
+        "https://yoyo560live.live/admin/country-admin/getByRole",
         {
           method: "POST",
           headers: {
@@ -152,7 +152,7 @@ const ViewUser = () => {
     try {
       setIsModalLoading(true);
       const response = await fetch(
-        `http://139.59.19.172:3000/admin/make/country-admin`,
+        `https://yoyo560live.live/admin/make/country-admin`,
         {
           method: "POST",
           headers: {
@@ -227,7 +227,7 @@ const ViewUser = () => {
   const handleDeleteAdmin = async () => {
     try {
       setIsModalLoading(true);
-      const url = `http://139.59.19.172:3000/admin/remove/country-admin`;
+      const url = `https://yoyo560live.live/admin/remove/country-admin`;
       const response = await fetch(url, {
         method: "DELETE",
         headers: {

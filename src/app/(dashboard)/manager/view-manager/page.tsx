@@ -68,7 +68,7 @@ const ViewManager = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://139.59.19.172:3000/admin/manager/getall?page=${currentPage}&limit=${10}`);
+      const response = await fetch(`https://yoyo560live.live/admin/manager/getall?page=${currentPage}&limit=${10}`);
       const data = await response?.json();
       console.log("data is", data?.data?.data    )
       setTotalPages(Math.ceil(data?.data?.totalUsers / 10));
@@ -97,7 +97,7 @@ const ViewManager = () => {
 
   const handleActive = async (checked: boolean, id: string) => {
     try {
-      const response = await axios.post("http://139.59.19.172:3000/admin/manager/ban", 
+      const response = await axios.post("https://yoyo560live.live/admin/manager/ban", 
        {
           userId: id,
           is_active: checked,
@@ -184,7 +184,7 @@ const ViewManager = () => {
 
   const handleAddManager = async () => {
     try {
-      const response = await fetch(`http://139.59.19.172:3000/admin/make/manager`, {
+      const response = await fetch(`https://yoyo560live.live/admin/make/manager`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

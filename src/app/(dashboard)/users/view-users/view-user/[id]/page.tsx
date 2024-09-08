@@ -26,7 +26,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://139.59.19.172:3000/user/getbyid/${params?.id}`
+        `https://yoyo560live.live/user/getbyid/${params?.id}`
       );
       if (!response.ok) {
         setIsLoading(false);
@@ -45,7 +45,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const handleBanLive = async (e: any) => {
     try {
       const response = await axios.post(
-        "http://139.59.19.172:3000/admin/user/banUserId",
+        "https://yoyo560live.live/admin/user/banUserId",
 
         {
           userId: data?.userId,

@@ -88,7 +88,7 @@ const Sidebar: React.FC<SideBarProps> = ({ showSidebar, setShowSidebar }) => {
   const fetchCoins = async () => {
     try {
       const res = await axios.get(
-        `http://139.59.19.172:3000/admin/merchent/getById/${userid}`
+        `https://yoyo560live.live/admin/merchent/getById/${userid}`
       );
       console.log(res.data);
       if (res?.data) {

@@ -45,7 +45,7 @@ const Page = () => {
     try {
       // Send form data to API using Axios
       const response = await axios.post(
-        "http://139.59.19.172:3000/admin/wallpaper/add",
+        "https://yoyo560live.live/admin/wallpaper/add",
         formData,
         {
           headers: {

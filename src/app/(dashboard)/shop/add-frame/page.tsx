@@ -43,7 +43,7 @@ const Page = () => {
     try {
       // Send form data to API using Axios
       const response = await axios.post(
-        "http://139.59.19.172:3000/admin/frame/add",
+        "https://yoyo560live.live/admin/frame/add",
         formData,
         {
           headers: {

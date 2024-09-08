@@ -12,7 +12,7 @@ export default function Page({ params }: { params: { id: string } }) {
     
     const fetchData = async () => {
         try {
-            const response = await fetch(`http://139.59.19.172:3000/user/receive/gift/get/${params?.id}`, {
+            const response = await fetch(`https://yoyo560live.live/user/receive/gift/get/${params?.id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

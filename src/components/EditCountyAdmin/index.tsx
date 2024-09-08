@@ -62,7 +62,7 @@ export default function EditCountryAdmin(props: EditCountryAdminProps) {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `http://139.59.19.172:3000/admin/country-admin/update/${editFormData?.id}`,
+        `https://yoyo560live.live/admin/country-admin/update/${editFormData?.id}`,
         {
           method: "PUT",
           headers: {

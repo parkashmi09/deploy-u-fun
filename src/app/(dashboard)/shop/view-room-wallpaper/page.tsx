@@ -15,7 +15,7 @@ const  Page=()=> {
     
     const fetchData = async () => {
         try {
-            const response = await fetch(`http://139.59.19.172:3000/admin/wallpaper/getall`, {
+            const response = await fetch(`https://yoyo560live.live/admin/wallpaper/getall`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
